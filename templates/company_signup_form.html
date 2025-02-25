@@ -1,0 +1,317 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    section {
+  display: flex;
+  flex-flow: row wrap;
+}
+section > div {
+  flex: 1;
+  padding: 0.5rem;
+}
+input[type="radio"] {
+  display: none;
+  &:not(:disabled) ~ label {
+    cursor: pointer;
+  }
+  &:disabled ~ label {
+    color: hsla(150, 5%, 75%, 1);
+    border-color: hsla(150, 5%, 75%, 1);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+label {
+  height: 100%;
+  display: block;
+  background: white;
+  border: 2px solid coral;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  //margin: 1rem;
+  text-align: center;
+  box-shadow: 0px 3px 10px -2px hsla(150, 5%, 65%, 0.5);
+  position: relative;
+}
+input[type="radio"]:checked + label {
+  background: coral;
+  color: hsla(215, 0%, 100%, 1);
+  //box-shadow: 0px 0px 20px hsla(150, 100%, 50%, 0.75);
+  &::after {
+    color: coral;
+    font-family: FontAwesome;
+    border: none;
+    content: "OK";
+    font-size: 24px;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    background: white;
+    //box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+  }
+}
+
+input[type="radio"]#control_05:checked + label {
+  background: red;
+  border-color: red;
+}
+
+p {
+  font-weight: 700;
+  font-size:14px;
+}
+
+small{
+    color:;font-weight:bold;font-size:11px
+}
+
+.ea_radio_cont{
+    width:150px; !important;
+    height:auto !important;
+}
+
+
+@media only screen and (max-width: 700px) {
+  section {
+    flex-direction: column;
+  }
+}
+</style>
+<div class="tags">
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}</div>
+  <h1 >Welcome, <br><span class="spans">Create Account</span></h1>
+  <p class="paras-subtopics">It’s inspiring to see local companies not only providing
+      job opportunities, but also creating a pathway for training & skill development before settling for a permanent job.</p><br>
+    <!----FORM----->
+  <div id="login-page" class="general-flex">
+          <div style="max-width:1000px;background-color:3ab;" class="form_container_comp anim">
+                <div class="card_comp">
+                    <div style="width:100%;" class="card-body py-md-4">
+                        <h2 style="padding-left:8%;padding-top:8%" class="card-title text-center">Company Sign-up</h2>
+                        <form _lpchecked="1" action="" method="post">
+
+                            <div class="group">
+                                {{company_register.hidden_tag()}}
+                                {{   company_register.company_name(class="form-control",placeholder="Name")}}
+                                {% if company_register.company_name.errors %}
+                                    {% for error in company_register.company_name.errors %}
+                                        <span class="span-error" >*[Company Name] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+                               <!--<input type="text" class="form-control" id="name" name="nm" placeholder="Name">-->
+                              </div>
+                              <div class="group">
+                                  {{ company_register.company_email(class="form-control",placeholder="Email")}}
+                                  {% if company_register.company_email.errors %}
+                                    {% for error in company_register.company_email.errors %}
+                                        <span class="span-error" >*Company Email{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+                                <!--<input type="email" class="form-control" id="email" name="email" placeholder="Email">-->
+                              </div>
+                             <div class="group">
+                                 {{ company_register.company_password(id="password", class="form-control",placeholder="Password")}}
+                                 {% if company_register.company_password.errors %}
+                                    {% for error in company_register.company_password.errors %}
+                                        <span class="span-error" >*[Password] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+                               <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+                             <div class="power-container">
+                                        <div id="power-point" class="power-point"></div>
+                                    </div><br>
+
+
+                             <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.company_confirm(class="form-control",placeholder="Confirm Password")}}
+                                 {% if company_register.company_confirm.errors %}
+                                    {% for error in company_register.company_confirm.errors %}
+                                        <span class="span-error" >*[Confirm Password] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+
+                             </div>
+
+                            <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.company_contacts(class="form-control",placeholder="Contacts")}}
+                                 {% if company_register.company_contacts.errors %}
+                                    {% for error in company_register.company_contacts.errors %}
+                                        <span class="span-error" >*[Contacts] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                             </div>
+                            <div style="padding-left:50px;width:80%;min-width:350px" class="form-group">
+                                 <h3> Upload Company Logo</h3>
+                                 {{ company_register.company_logo(id="imageInput", class="acc-form-control",placeholder="reference_2")}}
+                            </div><br>
+
+                             <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.company_address(class="form-control",placeholder="Physical Address")}}
+                                 {% if company_register.company_address.errors %}
+                                    {% for error in company_register.company_address.errors %}
+                                        <span class="span-error" >*[Physical Address] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+
+                             </div>
+
+                             <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.website_link(class="form-control",placeholder="Website Link")}}
+                                 {% if company_register.website_link.errors %}
+                                    {% for error in company_register.facebook_link.errors %}
+                                        <span class="span-error" >*[Website Link] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+
+
+                             </div>
+                             <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.facebook_link(class="form-control",placeholder="Facebook Link")}}
+                                 {% if company_register.facebook_link.errors %}
+                                    {% for error in company_register.facebook_link.errors %}
+                                        <span class="span-error" >*[Facebook Link] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                             </div>
+
+
+                             <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.twitter_link(class="form-control",placeholder="Twitter Link")}}
+                                 {% if company_register.twitter_link.errors %}
+                                    {% for error in company_register.twitter_link.errors %}
+                                        <span class="span-error" >*[Twitter Link] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                             </div>
+
+                            <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 {{ company_register.youtube_link(class="form-control",placeholder="Youtube Link")}}
+                                 {% if company_register.youtube_link.errors %}
+                                    {% for error in company_register.youtube_link.errors %}
+                                        <span class="span-error" >*[Youtube Link] {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                            </div><br>
+
+                            <div class="group">
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                                 <p style="color:#006769">Choose Payment Plan:</p>
+                            </div>
+
+                            <div style="justify-content:center" class="group resume-summary">
+                                <div class="ea_radio_cont"  style="">
+                                  <input type="radio" id="control01" name="payment_options" value="monthly" >
+                                  <label for="control01">
+                                    <p>Pay Monthly</p>
+                                    <small>SZL 100</small>
+                                    <small>Exclusive</small>
+                                  </label>
+                                </div>
+
+                                <div class="ea_radio_cont" style="">
+                                  <input type="radio" id="control02" name="payment_options" value="per_add" >
+                                  <label for="control02">
+                                    <p>Pay Per Advert</p>
+                                    <small>SZL 150</small>
+                                  </label>
+                                </div>
+
+                                <div class="ea_radio_cont" style="">
+                                  <input type="radio" id="control03" name="payment_options" value="annually" >
+                                  <label for="control03">
+                                    <p>Pay Annually</p>
+                                      <small>SZL 1080</small><br>
+                                      <small>10% Discount</small>
+                                  </label>
+                                </div>
+
+                                <div class="ea_radio_cont" style="">
+                                  <input type="radio" id="control04" name="payment_options" value="free" checked >
+                                  <label for="control04">
+                                    <p>Use Free For Now</p>
+                                      <small>SZL 0</small><br>
+                                      <small>Limited Benefits</small>
+                                      <small>Promotional</small>
+                                  </label>
+                                </div>
+                                <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                             </div><br><br><br><br><br>
+
+                            <div style="margin:0 auto;" class="group">
+                                 <div style="padding-left:;width:100%;background-color:339ab3" class="d-flex flex-row align-items-center justify-content-between">
+                                     {{ company_register.submit(class="btns") }}
+                                     <!--<input class="btns" type="submit" value="Create Account" />-->
+                                     <a class="form-a links" href="login">Login instead?</a>
+                                </div>
+                            </div><br>
+
+                            <small style="font-size:11px"> <span style="color:coral;font-weight:bold">Tip:</span>
+                                Password should include at least One of the following; <span style="font-weight:bold">Capital Letter, Special Character, Number, lower-case</span>
+                            </small>
+
+                         </form>
+                    </div>
+                </div>
+            </div>
+          </div>
+</div>
+<div>
+</div>
+<script>
+//Password Checker
+let password = document.getElementById("password");
+let power = document.getElementById("power-point");
+confirm_password = document.getElementById("confirm_password");
+
+if (password && power) {
+    password.oninput = function () {
+        let point = 0;
+        let value = password.value;
+        let widthPower =
+            ["1%", "25%", "50%", "75%", "100%"];
+        let colorPower =
+            ["#D73F40", "#DC6551", "#F2B84F", "#BDE952", "#3ba62f"];
+
+        if (value.length >= 6) {
+            let arrayTest =
+                [/[0-9]/, /[a-z]/, /[A-Z]/, /[^0-9a-zA-Z]/];
+            arrayTest.forEach((item) => {
+                if (item.test(value)) {
+                    point += 1;
+                }
+            });
+        }
+        power.style.width = widthPower[point];
+        power.style.backgroundColor = colorPower[point];
+    };
+}
+</script>
+{% endblock %}

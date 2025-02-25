@@ -1,0 +1,40 @@
+
+{% extends "blog_base.html" %}
+
+{% block blog_content %}
+<!----BANNER------->
+<div class="container"> <!---width:60%----->
+
+
+        <div style="background-color:" class="cont-container"> <!---width:60%----->
+
+            <form class="blog-form" action="" enctype="multipart/form-data" method="post">
+                <div class="blog-title"><h4 style="color:#24788f">Write A Blog</h4></div>
+                <div style="background-color:" class="form-group">
+
+                    <p> <label>Title:</label><br>
+                    <input type="text" name="title" placeholder="blog-title"/></p>
+                </div>
+
+                <div class="form-group">
+                    <p> <label>Blog:</label><br>
+                    <textarea class="text-area" name="body" ></textarea></p>
+                </div>
+                <div>
+                    <label>Upload Image:</label><br>
+                    <p><input type="file" name="blog-image" id="image" /></p>
+                </div>
+
+                <div class="form-group">
+                    <p> <label>Author:</label><br>
+                    <input type="text" name="author" placeholder="write blog"/></p>
+                </div>
+                <div class="form-group">
+                    <p><input type="submit" value="Submit"/></p>
+                </div>
+            </form>
+
+        </div>
+
+</div>
+{% endblock %}

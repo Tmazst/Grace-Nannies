@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+        <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <p class="paras-subtopics"></p>
+        <!--    {% if current_user.is_authenticated %}-->
+        <!--    {% endif %}-->
+        <div class="job_main-cont">
+
+
+            {% if freelancer_user %}
+            <!----FORM----->
+            <div style=""  class="job_ad_container">
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <div  padding="10px;" class="card">
+                                <div class="card-body py-md-4">
+                                    <div class="card-cont">
+                                        <form _lpchecked="1" action="" method="post" enctype="multipart/form-data" class="forms" >
+                                            <h2>Hire Freelancer</h2>
+
+                                            <div class="img-cont">
+                                                <img class="prf-image" src="static/images/{{freelancer_user.image}}"/>
+                                            </div>
+
+                                            <!-------JOB TITLE--------->
+                                            <small>You are about to hire {{freelancer_user.name}}.
+                                                An email will be sent to their account to acknowledge your interest in hiring their services</small>
+
+                                            <!-------THEIR ADDRESS--------->
+                                            <p><span class="material-icons">place</span>
+                                                {{freelancer_user.address}}
+                                            </p>
+
+                                            <hr>
+                                            <legend >You can also contact {{freelancer_user.name}} on the following:</legend><br>
+
+                                            <div>
+                                                <label>Facebook</label><br>
+                                                <small class="labels-resu"><span ></span>{{freelancer_user.contacts}}</small><br><br>
+
+                                                <Label>Call / SMS</Label><br>
+                                                <small class="labels-resu"><span ></span>{{freelancer_user.contacts}}</small><br><br>
+
+                                                <label>Email</label><br>
+                                                <small class="labels-resu"><span></span>{{freelancer_user.email}}</small><br><br>
+                                            </div>
+
+                                            <div>
+                                                <label>Job Brief</label>
+                                                <textarea class="text-area-size form-control" placeholder="Write Here" name="purpose_for_hire"> </textarea>
+                                                <input type="submit" value="Submit" class="btns" />
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+            </div>
+
+        </div>
+        {% endif %}
+</div>
+{% endblock %}

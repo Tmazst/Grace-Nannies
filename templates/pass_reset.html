@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags">
+    <div class="fake-space"></div>
+    <div class="flash-messages" >
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+  <h1 ><br><span class="spans">Reset Password</span></h1>
+  <p class="paras-subtopics">Please use a more secured password!</p>
+    <!----FORM----->
+  <div id="login-page" class="general-flex">
+          <div style="max-width:600px;background-color:3ab;" class="form_container anim">
+                <div class="card">
+                    <div style="width:100%;" class="card-body py-md-4">
+                    <h2 class="card-title text-center">Reset Details</h2>
+                    <form _lpchecked="1" action="" method="post">
+                         {% if current_user.is_authenticated %}
+                         {{reset_form.hidden_tag()}}
+
+                             <div class="group">
+                                 {{ reset_form.old_password(class="form-control",placeholder="Old Password")}}
+                                 {% if reset_form.old_password.errors %}
+                                    {% for error in reset_form.old_password.errors %}
+                                        <span class="span-error" >*{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                               <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                              <div class="group">
+                                 {{ reset_form.new_password(class="form-control",placeholder="New Password")}}
+                                 {% if reset_form.new_password.errors %}
+                                    {% for error in reset_form.new_password.errors %}
+                                        <span class="span-error" >*Password {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                               <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                              <div class="group">
+                                 {{ reset_form.confirm_password(class="form-control",placeholder="Confirm Password")}}
+                                 {% if reset_form.confirm_password.errors %}
+                                    {% for error in reset_form.confirm_password.errors %}
+                                        <span class="span-error" >*Confirm Password{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                               <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                         {% else %}
+
+                              <div class="group">
+                                 {{ reset_form.new_password(class="form-control",placeholder="New Password")}}
+                                 {% if reset_form.new_password.errors %}
+                                    {% for error in reset_form.new_password.errors %}
+                                        <span class="span-error" >*Password {{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                                  <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                             <div class="group">
+                                 {{ reset_form.confirm_password(class="form-control",placeholder="Confirm Password")}}
+                                 {% if reset_form.confirm_password.errors %}
+                                    {% for error in reset_form.confirm_password.errors %}
+                                        <span class="span-error" >*Confirm Password{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                                 <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                         {% endif %}
+                         <div class="d-flex flex-row align-items-center justify-content-between">
+                             {{ reset_form.reset(class="btns") }}
+                             <!--<input class="btns" type="submit" value="Create Account" />-->
+<!--                             <a class="form-a links" href="sign_up">Back</a>-->
+                        </div>
+                    </form>
+                </div>
+            </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

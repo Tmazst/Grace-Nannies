@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+    
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    
+    <p class="paras-subtopics"></p>
+
+<br><br>
+  <div style="background-color:ae23a3;" class="general-flex-x">
+        {% if users %}
+            {% for item in users %}
+            <!----FORM----->
+                    <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style_usr anim">
+
+                            <div style="" class="center-prl-img">
+                                <div style="margin:15px auto 0px auto;"  class="img-cont">
+                                   {% if item.image %}
+                                        <img class="prf-image" src="{{url_for('static', filename='images/' + item.image)}}"/>
+                                   {% else %}
+                                        <img class="prf-image" src="static/images/default.jpg"/>
+                                   {% endif %}
+                                </div>
+                            </div>
+
+                            <h2 style="margin-bottom:0px;margin-top:0px;">{{user.query.get(item.hired_user_id ).name}}<br></h2>
+                            <span><small style="color:#aaa" >{{user.query.get(item.hired_user_id).email}}</small></span>
+                            <span><small style="color:#aaa" >{{user.query.get(item.hired_user_id).address}}</small></span>
+
+                            <!-------JOB TITLE--------->
+                        {% if user.query.get(item.hired_user_id).other %}
+                            <p class="job-title">{{user.query.get(item.hired_user_id ).other}}</p>
+                        {% endif %}<br>
+
+                        {% if job_ads.query.get(item.job_details).job_title %}
+                            <small class="small-bold-color">Hired for:</small>
+                            <small style="font-size:16px" class="">{{job_ads.query.get(item.job_details).job_title}}</small>
+                        {% endif %}<br>
+
+                        {% if job_ads.query.get(item.job_details).job_title %}
+                            <small class="small-bold-color">Job Type:</small>
+                            <small style="font-size:16px"  class="">{{job_ads.query.get(item.job_details).job_type}}</small>
+                        {% endif %}<br>
+
+                        {% if item.usr_cur_job == 1 %}
+                            <small style="margin:0 auto;"  class="caption-btn">Currently Employed</small>
+                        {% endif %}<br><br>
+
+<!--                        <p>At the end of the term of contract with the young employee, you requested to issue <br> an 'End of Term Report Form'-->
+<!--                        for your employee to fill. After filling the form the young person will send it back you to read and approve <br>-->
+<!--                        if the content written is true or not.</p>-->
+<!--                        <small>The "End of Term Form" is used by The Hustlers Time create a portfolio for the young person-->
+<!--                            <br> This forms will be consolidated together consecutively to create a single work experience profile</small>-->
+<!--                        <small>Thank You for your valuable contribution in sharping young generation future for a better economy,<br> thus contributing back to-->
+<!--                        the community for a lasting solution</small>-->
+
+                        <small>Click submit below to issue the 'End of Term Report Form'</small><br>
+                        <div style="dispaly:block">
+                                 <a class="view_user" href="/send_endof_term_form?id={{ser.dumps({'data7':item.hired_user_id})}}">Submit</a>
+                        </div>
+                    </div>
+            {% endfor %}
+            {% else %}
+                <div style="padding-left:30px;padding-right:70px"  class="job_ad_container">
+                  <div class="flash-messages alert-error"> You have not hired anyone yet!!</div>
+                </div>
+            {% endif %}
+      </div>
+  </div>
+{% endblock %}

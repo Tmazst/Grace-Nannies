@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<!---------------FLASH------------------->
+<div style="margin:0 auto;" class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div style="margin-top:150px;" class="tags">
+
+    <div class="account_container">
+        <h3 style="font-size:25px;margin-left:55px;margin-bottom:0;"> {{current_user.name.title()}} <br> <span class="spans" style="font-size:16px">{{current_user.email}}</span></h3>
+        <div  style="width:60%;margin-left:30px;" ><hr></div>
+        <div style="padding-left:50px" class="form-group">
+            <h2 class="media-h2"> Work Experience Generator Form </h2>
+            <p> Please Confirm & Approve the 'End of Term Form' </p>
+            <small>If the information entered below is not correct or corresponding, the applicant may be required to re-send a new request</small>
+                {{approve_form.hidden_tag()}}
+            <div style="padding-left:"  class="form-group">
+                <h3 class="media-h2"> Exposure & Work Experience Acquired </h3>
+                <textarea class="form-control adj-width-60 font-color" style="height:200px" name="work_feedback">Work Details:  {{ usr_portfolio_entry.portfolio_feedback}}</textarea>
+                <p>UID: {{user_.name}}</p>
+                <p>Date Employed: {{usr_portfolio_entry.date_employed}}</p>
+                <form action="" method="post">
+                    <div class="form-group">
+                        {{approve_form.submit(class="btns")}}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

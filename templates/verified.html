@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags">
+
+      <div class="flash-messages" class="btns">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+     </div>
+<!--      <h3>How are you Today!<br> <span class="spans"></span></h3>-->
+    <br><br><br>
+     <p class="paras-subtopics">Good Day,</p>
+    <h1><br><span class="spans">Verifiy Your Email</span></h1>
+            <!----FORM----->
+     <div id="login-page" class="general-flex">
+          <div style="max-width:600px;background-color:3ab;height:auto" class="form_container anim">
+                <div class="card">
+                    <div style="width:100%;" class="card-body py-md-4">
+                        <form _lpchecked="1" action="" method="post">
+                                <p>Any Object Found: {{usr_obj}}</p>
+<!--                             <div class="group">-->
+<!--                                    <p>Congratulations! You have successfully created a new Account with T.H.T</p>-->
+<!--                                    <p>Please go to your email account and verify your email & the confirmation link we sent.</p>-->
+<!--                                &lt;!&ndash;<input type="email" class="form-control" id="email" name="email" placeholder="Email">&ndash;&gt;-->
+<!--                             </div>-->
+
+                             <div class="group">
+
+                               <!--<input type="password" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div>
+
+                             <div style="margin:0 auto;" class="group">
+                                     <div style="padding-left:;width:100%;background-color:339ab3" class="d-flex flex-row align-items-center justify-content-between">
+                                        <button>Re-send Link</button>
+                                         <!--<input class="btns" type="submit" value="Create Account" />-->
+                                    </div>
+                             </div>
+
+                        </form>
+                    </div>
+                </div>
+
+          </div>
+         <div class="login-img-cont">
+              <img src="static/icons/login-img_Artboard.svg" />
+         </div>
+    </div>
+    <br><br><br><br><br><br><br><br>
+</div>
+{% endblock %}

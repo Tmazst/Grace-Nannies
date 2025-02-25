@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <p class="paras-subtopics"></p>
+
+<br><br>
+  <div style="background-color:ae23a3;" class="general-flex-x">
+        {% if users %}
+            {% for item in users %}
+                {% if item.role == 'job_user' %}
+            <!----FORM----->
+                    <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style_usr anim">
+
+                            <div style="" class="center-prl-img">
+                                <div style="margin:15px auto 0px auto;"  class="img-cont">
+                                   {% if item.image %}
+                                        <img class="prf-image" src="{{url_for('static', filename='images/' + item.image)}}"/>
+                                   {% else %}
+                                        <img class="prf-image" src="static/images/default.jpg"/>
+                                   {% endif %}
+                                </div>
+                            </div>
+
+                            <h2 style="margin-bottom:0px;margin-top:0px;">{{item.name}}<br></h2>
+                            <span><small style="color:#aaa" >{{item.email}}</small></span>
+                            <span><small style="color:#aaa" >{{item.address}}</small></span><br>
+
+                            <!-------JOB TITLE--------->
+                        {% if item.skills %}
+                            <small style="color:#006769;width:90%;margin:0 auto;font-weight:600">"{{item.skills}}"</small><br><br>
+                        {% endif %}
+                        {% if item.tertiary %}
+                            <div><small class="view_applicant_p" ><span class="view_freelanca_p" >Tertiary</span><span></span></small></div>
+                            <div><small class="view_applicant_p" ><span style="font-wight:bold;" ></span>{{item.tertiary}}</small></div><br><br>
+                        {% endif %}
+                            <!---------JOB TYPE--------->
+                        {% if item.experience %}
+                            <div><small class="view_applicant_p" ><span class="view_freelanca_p" >Experience</span><span></span></small></div>
+                            <div><small class="view_applicant_p" ><span style="font-wight:bold;" ></span>{{item.experience}}</small></div>
+                        {% endif %}
+                        <br><br>
+                        <div class="space-filler"></div>
+                        <div style="dispaly:block">
+                                 <a class="view_user" href="/user_viewed?id={{ser.dumps({'data6':item.id})}}">View</a>
+                        </div>
+                    </div>
+                    {% endif %}
+            {% endfor %}
+              {% endif %}
+  </div>
+</div>
+{% endblock %}

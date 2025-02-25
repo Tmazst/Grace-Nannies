@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<div style="margin-bottom:100px"   class="tags">
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+    <!----FORM----->
+    <div id="browse-job" style="min-width:350px;"  class="form_container add-border">
+        <div class="jb-viewed-card-body">
+
+            <div style="margin-top:100px"  class="img-cont">
+                  {% if db.session.query(company_user).get(item.job_posted_by) %}
+                        {% if not db.session.query(company_user).get(item.job_posted_by).image == None %}
+                            <img class="prf-image" src="{{url_for('static', filename='images/' + db.session.query(company_user).get(item.job_posted_by).image)}}"/>
+                        {% endif %}
+                  {% else %}
+                        <img class="prf-image" src="static/images/default.jpg"/>
+                  {% endif %}
+            </div>
+
+            <h2 style="margin-top:-15px" class="card-title text-center">{{db.session.query(company_user).get(item.job_posted_by).name}}</h2>
+
+            <div style="background-color:#fff;" class="job_ad_group marginise-bottom adj-wid">
+                <h2 style="font-weight:bold;color:#006769;">{{item.job_title}}</h2>
+                <hr>
+            </div>
+
+             <!-------JOB TYPE--------->
+            {% if item.job_type %}
+             <div class="job_ad_group marginise-bottom">
+                 <label for="Job Type" class="labels">Job Type: </label>
+                 <p>{{ item.job_type}}</p>
+             </div>
+            {% endif %}
+
+             <!-------PAY TYPE--------->
+            {% if item.pay_type %}
+            <div class="job_ad_group marginise-bottom">
+            <label for="Pay Type" class="labels">Pay Type: </label>
+                  <p>{{item.pay_type}}</p>
+            </div>
+            {% endif %}
+
+            <!-------JOB DESCRIPTION--------->
+            <div class="job_ad_group adj-wid marginise-bottom">
+                <label for="Job Descriptions" class="labels">Job Descriptions: </label>
+                  <p>{{ item.description}}</p>
+
+            </div>
+
+                {% if item.work_duration %}
+             <!-------WORK DURATION--------->
+            <div class="job_ad_group marginise-bottom">
+                <label for="Work Duration" class="labels">Work Duration: </label>
+                <div style="display:flex"><p>{{item.work_duration}}</p> <p> - </p> <p>{{item.work_duration2}}</p></div>
+
+            </div>
+            {% endif %}
+
+
+             <!-------WORK DAYS--------->
+            {% if item.work_days %}
+             <div class="job_ad_group marginise-bottom">
+
+                <label for="Work Days" class="labels">Work Days: </label>
+                <p>{{ item.work_days}}</p>
+
+             </div>
+            {% endif %}
+
+             <!-------WORK HOURS--------->
+            {% if item.work_hours %}
+             <div class="job_ad_group marginise-bottom">
+                <label for="Working Hourse" class="labels">Working Hours: </label>
+                <p>{{ item.work_hours}}</p>
+
+             </div>
+            {% endif %}
+
+             <!-------RESPONSIBILITIES--------->
+            {% if item.responsibilities %}
+             <div class="job_ad_group marginise-bottom">
+                <label for="Responsibilities" class="labels">Responsibilities: </label>
+                <p>{{item.responsibilities}}</p>
+
+             </div>
+            {% endif %}
+
+             <!-------QUALIFICATIONS--------->
+            <div class="job_ad_group marginise-bottom">
+                <label for="Qualifications" class="labels">Qualifications: </label>
+                <p>{{ item.qualifications}}</p>
+
+             </div>
+
+             <!-------AGE RANGE--------->
+            {% if item.age_range %}
+              <div class="job_ad_group marginise-bottom">
+                  <label for="Age Range" class="labels">Age Range: </label>
+                  <p>{{ item.age_range}}</p>
+             </div>
+            {% endif %}
+
+             <!-------BENEFITS--------->
+            {% if item.benefits %}
+              <div class="job_ad_group marginise-bottom">
+                  <label for="Benefits" class="labels">Benefits: </label>
+                  <p>{{item.benefits}}</p>
+             </div>
+            {% endif %}
+
+             <!-------DEADLINE--------->
+            {% if item.application_deadline %}
+              <div  class="job_ad_group marginise-bottom">
+                  <label for="Benefits" class="labels">Deadline: </label>
+                  <p id="deadline" >{{item.application_deadline}}</p>
+             </div>
+            {% endif %}
+            {% if days_left >= 0 %}
+             <div id="apply" >
+                 <!--<input class="btns" type="submit" value="Create Account" />-->
+                {% if current_user.role != 'company_user' and not chekif_usr_applied %}
+                    <a class="btns" href="/send_application?job_id={{ser.dumps({'data1':item.job_id})}}" >Apply Now</a>
+                  {% elif chekif_usr_applied %}
+                    <a class="btns" href="/delete_entry?jo_id={{ser.dumps({'data_2':item.job_id})}}" > Undo Application </a>
+<!--                 Check the company_user -->
+                 {% elif current_user.role == 'company_user' and current_user.id == item.job_posted_by %}
+                    <a class="btns" href="/edit_job_ads_form?jo_id={{ser.dumps({'data_11':item.job_id})}}" > Edit </a>
+                {% endif %}
+             </div>
+            {% else %}
+                <a style="background-color:#bbb;border:none;color:white" class="btns"  >Closed</a>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

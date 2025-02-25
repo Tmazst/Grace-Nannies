@@ -1,0 +1,35 @@
+
+{% extends "blog_base.html" %}
+
+{% block blog_content %}
+
+<!----BANNER------->
+<div class="container" > <!---width:60%----->
+
+        <div style="" class="cont-container"> <!---width:60%----->
+
+            <div class="p-blog-image-cont"><img src="static/images/blog_images/{{blog['picture']}}" /></div>
+
+            <div class="content-block"> <!---width:100%----->
+
+                <div class="blog-title"><h4 style="text-align:center">{{title}}</h4></div>
+
+                <div style="background-color:#24788f;margin:0 auto;" class="line"></div>
+
+                <div class="page-content" > <!---width:100%--->
+                    <p>{{blog["body"]}}</p>
+                </div>
+
+                <div class="details">
+                    <ul style="gap:30px" class="normal-flex">
+<!--                        <li><a href="#">like (23)</a></li>-->
+                        <li><a href="#">{{blog["author"]}}</a></li>
+                        <li><a href="#">{{blog["date"]}}</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+</div>
+
+{% endblock %}

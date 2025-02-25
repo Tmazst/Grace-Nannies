@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+    {% if all_applications %}
+
+        <!----FORM----->
+        <div style="background-color:ae23a3;" class="general-flex-x">
+            {% for ea_application in all_applications %}
+                {% if ea_application.employer_id == current_user.id %}
+                    <div style="display:flex;flex-direction:column;width:300px;padding:10px;height:inherit;" class="new_job_ad_style anim">
+
+                        <div style="background-color:" class="center-prl-img">
+                            <div style="margin:15px auto 0px auto;"  class="img-cont">
+                              {% if user.query.get(ea_application.applicant_id).image %}
+                                <img class="prf-image" src="static/images/{{user.query.get(ea_application.applicant_id).image}}"/>
+                              {% else %}
+                                <img class="prf-image" src="static/images/default.jpg"/>
+                              {% endif %}
+                            </div>
+                        </div><br>
+                        <!-------JOB TITLE--------->
+                        <label style="margin-top:-10px;font-weight:600" class="centralise_font">{{user.query.get(ea_application.applicant_id).name}}</label>
+                        <!-------THEIR ADDRESS--------->
+                        <div><p class="centralise_font size-it"><span class="material-icons">place</span><br></p></div>
+                            <label style="margin-top:-10px;font-weight:600" class="centralise_font"> {{user.query.get(ea_application.applicant_id).address}}</label>
+                        <h3 style="background-color:"><span style="color:#909090" class="material-icons">work</span> <br><span>{{freelance_ads.query.get(ea_application.freel_job_details_id).service_title}}</span></h3>
+                        <!-------DATE OF APPLICATION--------->
+                         <!-------THEIR QUALIFICATIONS--------->
+                        <p style="margin-top:-10px;font-weight:600;font-size:15px !important" class="centralise_font">"{{esw_freelancers.query.filter_by(uid=ea_application.applicant_id).first().what_do_you_do}}"</p>
+                         <!--------ADVERT'S DEADLINE-------------->
+                            <div class="space-filler"></div>
+                        <div style="">
+                            <a class="view_job" href="/freelancer_viewed?frid={{ser.dumps({'data13':ea_application.applicant_id})}}">View Applicant</a>
+                        </div>
+
+                </div>
+
+
+                {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+
+
+{% endblock %}

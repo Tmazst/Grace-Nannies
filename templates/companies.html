@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+    <div class="flash-messages" class="btns">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}80
+            {% endif %}
+        {% endwith %}</div>
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+  <p class="paras-subtopics"></p>
+<!--    {% if current_user.is_authenticated %}-->
+<!--    {% endif %}-->
+    <br><br>
+  <div style="background-color:ae23a3;" class="general-flex-x">
+            {% for company in companies_list %}
+            <!----FORM----->
+            <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style anim">
+
+                        <div style="" class="center-prl-img">
+                            <div style="margin:15px auto 0px auto;"  class="img-cont">
+                                    {% if company.image%}
+                                        <img class="prf-image" src="{{url_for('static', filename='images/' + company.image)}}"/>
+                                    {% else %}
+                                        <img class="prf-image" src="static/images/default.jpg"/>
+                                    {% endif %}
+                            </div>
+                        </div>
+
+                        <h2 style="margin-bottom:0px;margin-top:0px;">{{company.name}}<br>
+                        <span><small style="color:#aaa" >{{company.name}}</small></span></h2>
+
+                        <!-------LOCATIONS--------->
+                        <div class="">
+                            <p class="centralise_font size-it" ><span class="material-icons">place</span></p>
+                            <div style="margin-top:-10px" class="centralise_font" ><label>{{company.company_address}}</label></div>
+                        </div>
+
+                        <!------DESCRIPTIONS--------->
+
+                        <div style="width:100%;background-color:ddd" class="general-flex">
+                            <!-------JOB TYPE--------->
+                            <div style="" class="flex-column">
+                                <a href="#" ><img style="" class="prf-image" src="static/images/freelance-icon.svg"/></a>
+                                <a href="#" ><img class="prf-image" src="static/images/like-icon.svg"/></a>
+                            </div>
+
+                            <div style="" class="flex-column">
+                                <a href="#" ><img class="prf-image" src="static/images/freelance-icon.svg"/></a>
+                                <a href="#" ><img class="prf-image" src="static/images/like-icon.svg"/></a>
+                            </div>
+
+                            <div style="" class="flex-column">
+                                <a href="#" ><img class="prf-image" src="static/images/freelance-icon.svg"/></a>
+                                <a href="#" ><img class="prf-image" src="static/images/like-icon.svg"/></a>
+                            </div>
+
+                            <div style="" class="flex-column">
+                                <a href="#" ><img class="prf-image" src="static/images/freelance-icon.svg"/></a>
+                                <a href="#" ><img class="prf-image" src="static/images/like-icon.svg"/></a>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    {% endfor %}
+            </div>
+        </div>
+{% endblock %}

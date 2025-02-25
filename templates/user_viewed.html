@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<div style="margin-bottom:100px;background-color:;"   class="tags ">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+    <!----FORM----->
+    <div class="portfolio-row">
+        {% if job_usr %}
+    <div id="" style="min-width:350px;"  class="form_container_ browse-job">
+
+                  <div style="" class="form-group">
+                      <h2 style="font-size:29px" class="card-title text-center">Job Seeker Details</h2>
+
+                      <div style="margin-left:10px"   class="img-cont">
+                          {% if not job_usr.image == None %}
+                                <img class="prf-image" src="static/images/{{job_usr.image}}"/>
+                          {% else %}
+                                <img class="prf-image" src="static/images/default.jpg"/>
+                          {% endif %}
+
+                     </div>
+
+                     <div class="form-group">
+                         <h3>Personal Information</h3>
+                            <div style="width:60%;margin-bottom:-10px" class="line-separator"></div>
+                       <p class="view_applicant_p" ><span  class="acc-labels" style="font-wight:bold;" > </span>{{job_usr.name}}</p>
+                      <p class="view_applicant_p"><span style="font-wight:bold;float:left" > </span>{{job_usr.email}}</p>
+                         {% if job_usr.date_of_birth %}
+                            <p class="view_applicant_p"><span style="font-wight:bold;float:left" > </span>{{job_usr.date_of_birth}}</p>
+                         {% endif %}
+                    </div>
+
+                      <div class="form-group">
+                          <h3 style="display:block;width:260px;"> Education & Work Experience</h3>
+                          <div style="width:60%;margin-bottom:-10px" class="line-separator"></div>
+                          <p class="view_applicant_p" ><span style="font-wight:bold;" >High School: </span>{{job_usr .school}}</p>
+
+                          <p class="view_applicant_p" ><span style="font-wight:bold;" >Tertiary: </span>{{job_usr .tertiary}}</p>
+
+                          <p class="view_applicant_p" ><span style="font-wight:bold;" >Work Experience: </span>{{job_usr .experience}}</p>
+                          {% if job_usr.other %}
+                            <div class="form-group">
+                                <h3 style="margin-bottom:-10px">Check My Resume</h3><br>
+                                <a id="open_pdf" style="background-color:#f66;" class="view_freelanca_p"  href="/pdf_viewer?opn_fl={{job_usr.other}}">Open Resume</a>
+                            </div>
+                          {% endif %}
+                    </div>
+
+
+                      <div class="form-group">
+                         <h3>Competencies</h3>
+                            <div style="width:60%;margin-bottom:-10px" class="line-separator"></div>
+                          <p class="view_applicant_p" ><span style="font-wight:bold;" > </span>{{job_usr .skills}}</p>
+                          <p class="view_applicant_p" ><span style="font-wight:bold;" >Hobbies: </span>{{job_usr .hobbies}}</p>
+                    </div>
+
+                    <div style="padding-bottom:25px;" class="form-group">
+                        <h3>References</h3>
+                        <div style="width:60%;margin-bottom:-10px" class="line-separator"></div>
+                        <p class="view_applicant_p" ><span style="font-wight:bold;" >Physical Address: </span>{{job_usr.address}}</p>
+                        <p class="view_applicant_p" ><span style="font-wight:bold;" >Reference (one): </span>{{job_usr .reference_1}}</p>
+                        <p class="view_applicant_p" ><span style="font-wight:bold;" >Reference (Two): </span>{{job_usr .reference_2}}</p>
+                    </div>
+
+                    <div class="d-flex flex-row align-items-center justify-content-between">
+
+                   </div>
+                      <div style="dispaly:block">
+                       <!--<input class="btns" type="submit" value="Create Account" />-->
+                       <a class="btns" href="{{ url_for('hire_applicant', id=ser.dumps({'data2':job_usr.id})) }}">Hire {{ job_usr.name }}</a>
+                    </div>
+                  </div>
+
+            </div>
+            {% endif %}
+
+            <div  style="min-width:350px;padding:20px"  class="form_container_ browse-job">
+                <div class="portfolio-div">
+                    <h2 style="color:coral">Portfolio</h2>
+                        <div class="portfolio-cont">
+
+<!--                             To list the job opening the user has filled since joining THT to-date-->
+                            {% if portfolio_approved_jobs %}
+                                <div class="jobs-list">
+                                {% for ea_job in portfolio_approved_jobs%}
+                                    {% if ea_job.usr_id == job_usr.id %}
+                                    <div class="resume-details"><br>
+
+                                        <div class="resume-summary">
+                                            <div><small style="background-color:" class="labels-resu"><span class="labels-span">Employer: </span> {{user.query.get(job_ad.query.get(ea_job.job_details).job_posted_by).name}}</small></div>
+                                            <div><small style="background-color:" class="labels-resu"><span class="labels-span">Position: </span>{{job_ad.query.get(ea_job.job_details).job_title}}</small></div>
+                                            <div><small style="background-color:" class="labels-resu"><span class="labels-span">Contract/Duration: </span>{{job_ad.query.get(ea_job.job_details).job_type}}</small></div>
+                                        </div>
+
+                                        <small  class="labels-resu">
+                                            <span class="labels-span">Work Experience / Work Exposure: </span><br><br>
+                                            {{ea_job.portfolio_feedback}}
+                                        </small><br><br>
+
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+
+                                <div style="background-color:#fefefe;border:1xp solid #eee;" class="resume-summary">
+                                    <div><small style="background-color:" class="labels-resu"><span class="labels-span">Accumulated Work Experience :</span> None </small></div>
+                                    {% if current_job %}
+                                        <div><small style="background-color:" class="labels-resu"><span class="labels-span">Current Placement: </span> {{job_ad.query.get(current_job.job_details).job_title}}</small></div>
+                                        <div><small style="background-color:" class="labels-resu"><span class="labels-span">Company: </span>{{user.query.get(job_ad.query.get(current_job.job_details).job_posted_by).name}}</small></div>
+                                    {% endif %}
+                                    <small style="background-color:" class="labels-resu"><span class="labels-span">Position:</span> None </small>
+                                </div>
+                            {%else%}
+
+                                <div style="background-color:#fefefe;border:1xp solid #eee;" class="resume-summary">
+                                    <div><small style="background-color:" class="labels-resu">Job Seeker has not acquired any work experience with T.H.T yet</small></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="">
+
+                        </div>
+                    </div>
+            </div>
+    </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!---------------FLASH------------------->
+<div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</div>
+
+<div style="margin-top:150px;" class="tags">
+    
+    <div class="account_container"><br><br>
+
+        <form action="" method="post">
+
+            <h3 style="font-size:25px;"> {{current_user.name.title()}}<br> <span class="spans" style="font-size:16px">{{current_user.email}}</span></h3>
+
+            <div style="padding-left:50px" class="form-group">
+                {{feedback_form.csrf_token}}
+                <h2 class="media-h2"> Work Experience Generator Form </h2>
+                <small>Hey! Users after finishing the current (latest) Job Contract or Post, All users are required to fill this 'End of Term Form' </small>
+                <small>This information will enhance your Work Experience Profile, giving you a competitive edge in the job market.</small><br><br>
+            </div>
+
+            <div style="padding-left:50px"  class="form-group">
+                     <h2 class="media-h2"> Exposure & Work Experience Acquired </h2>
+                    {{ feedback_form.job_feedback(style="width:90%;height:200px;",class="acc-form-control",placeholder="Write Work Experience") }}
+                    {{ feedback_form.submit(class="btns") }}<br><br>
+            </div><br><br>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

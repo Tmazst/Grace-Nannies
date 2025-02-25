@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-top:150px !important" class="tags ">
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}</div>
+        <h1 >We would like to hear from you, <br><span class="spans">Write to us</span></h1>
+        <div class="contact-form">
+            <form style="width:100%;" action = "{{url_for('contact_us')}}" method="post" >
+                {{contact_form.hidden_tag()}}
+                <div  style="width:100%;">
+                    {{contact_form.name(class="contact-form-control",placeholder="Name")}}
+                </div>
+                 <div>
+                    {{contact_form.email(class="contact-form-control",placeholder="Email Address")}}
+                </div>
+                <div>
+                    {{contact_form.subject(class="contact-form-control",placeholder="Subject")}}
+                </div>
+                <div>
+                    {{contact_form.message(class="contact-form-control  text-area",placeholder="Message")}}
+                </div>
+                <div>
+                    {{contact_form.submit}}
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

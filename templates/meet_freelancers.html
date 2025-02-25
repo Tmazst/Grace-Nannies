@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <p class="paras-subtopics"></p>
+
+<br><br>
+  <div style="background-color:ae23a3;" class="general-flex-x">
+        {% if esw_freelancers %}
+            {% for item in esw_freelancers %}
+            <!----FORM----->
+                    <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style_usr anim">
+
+                            <div style="" class="center-prl-img">
+                                <div style="margin:15px auto 0px auto;"  class="img-cont">
+                                   {% if item.image %}
+                                        <img class="prf-image" src="{{url_for('static', filename='images/' + user.query.get(item.uid).image)}}"/>
+                                   {% else %}
+                                        <img class="prf-image" src="static/images/default.jpg"/>
+                                   {% endif %}
+                                </div>
+                            </div>
+
+
+
+                            <h3 style="margin-bottom:0px;margin-top:0px;font-weight:600;color:coral">{{user.query.get(item.uid).name}}<br></h3>
+                            <span><small style="color:#aaa" class="labels-resu " >{{user.query.get(item.uid).address}}</small></span>
+                            {% if item.other_fl %}
+                                <small style="font-weight:500" class="labels-resu">"{{item.other_fl}}"</small> <!----Selling tage---->
+                            {% endif %}
+
+                            <div class="for_links_icons">
+
+                                {% if item.fb_link %}
+                                <div style="width:100%">
+                                    <a href="{{item.fb_link}}" ><div style="background-color:;margin:2px;" class="">
+                                        <img class="social-icon sized" src="static/icons/fb_icon.png" /></div></a>
+                                </div>
+                                {% endif %}
+
+                                {% if item.pinterest_link %}
+                                <div style="width:100%">
+                                    <a href="{{item.pinterest_link}}" ><div style="background-color:;margin:2px;" class="">
+                                        <img class="social-icon sized" src="static/icons/pinterest_icon.png" /></div></a>
+                                </div>
+                                {% endif %}
+
+                                {% if item.twitter_link %}
+                                <div style="width:100%">
+                                    <a href="{{item.twitter_link}}" ><div style="background-color:;margin:2px;" class="">
+                                        <img class="social-icon sized" src="static/icons/x_icon.png" /></div></a>
+                                </div>
+                                {% endif %}
+
+
+                                {% if item.youtube %}
+                                <div style="width:100%">
+                                    <a href="{{item.youtube_link}}" ><div style="background-color:;margin:2px;" class="">
+                                        <img class="social-icon sized" src="static/icons/youtube_icon.png" /></div></a>
+                                </div>
+                                {% endif %}
+
+                                {% if item.instagram_link %}
+                                <div style="width:100%">
+                                    <a href="{{item.instagram_link}}" ><div style="background-color:;margin:2px;" class="">
+                                        <img class="social-icon sized" src="static/icons/instagram_icon.png" /></div></a>
+                                </div>
+                                {% endif %}
+
+                            </div>
+
+                            <!-------JOB TITLE--------->
+                            <p style="padding:10px;font-size:14px !important;background-color:#eee;color:#555;font-weight:600" class="job-title text-limit">{{item.what_do_you_do}}</p>
+
+                            {% if item.fl_experience %}
+                                <small style="color:coral" class="labels-resu text-limit">{{item.fl_experience}}</small>
+                            {% endif %}
+
+                        <div class="space-filler"></div>
+                        <div style="dispaly:block">
+                                 <a class="view_freelancer" href="/freelancer_viewed?frid={{ser.dumps({'data13':item.uid})}}">View</a>
+                        </div>
+                    </div>
+
+            {% endfor %}
+        {% endif %}
+  </div>
+</div>
+{% endblock %}

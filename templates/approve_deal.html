@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<!---------------FLASH------------------->
+<div style="margin:0 auto;" class="flash-messages">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for  category, message in messages %}
+                <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<div style="margin-top:150px;" class="tags">
+
+    <div class="account_container">
+        <div  style="width:60%;margin-left:30px;" ><hr></div>
+        <div style="padding-left:50px" class="form-group">
+            <h2 class=""> Expression of Interest to Hire Your Services </h2>
+            <p> Please see Details below & Approve the Deal </p>
+            <div style=""  class="form-group">
+                <h3 class=""> Job Brief </h3>
+                <textarea class="form-control adj-width-60 " style="height:200px" name="work_feedback">{{deal_obj.purpose_for_hire}}</textarea>
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Tendered by: </span><span>: : :</span> {{user.query.get(deal_obj.employer_id).name}}</p>
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Contacts: </span><span>: : :</span> {{user.query.get(deal_obj.employer_id).contacts}}</p>
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Email: </span><span>: : :</span> {{user.query.get(deal_obj.employer_id).email}}</p>
+                <p>Date: {{deal_obj.hired_date}}</p>
+                <form action="" method="post">
+                    <div class="form-group">
+                        <input type="submit" value="Confirm Deal" class="btns"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

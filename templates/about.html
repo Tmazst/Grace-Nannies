@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="padding:0 20px;margin-top:150px !important" class="tags">
+
+        <div class="flash-messages" class="btns">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <h1>Here is everything we like you to know, <br><span class="spans">About Us</span></h1>
+
+        <div class="objectives-div">
+            <p>We aim to reduce the unemployement of Eswatini by placing young people at the spot-light where their skills and talents can easily be
+                identified by the prospective employers.By joining hands with local employers we are helping the young people</p>
+                <ul>
+                    <li>Collectively accumulate Experience through short-term jobs to build a professional profile</li>
+                    <li>Cultivate their skills & talents that are in demand in the job market</li>
+                    <li>Generate passive income to breach bankrupt</li>
+                    <li>To curb casualties & health issues i.e. depression, stress, robbery due the stress caused by lack employment</li>
+                </ul>
+               <p> Therefore, we seek to invite local institutions & companies to create temporary, hourly, temporary-to-hire, work from home
+            job vacancies as well as voluntary jobs. We would to also have them enhance Internship programs, Volunteering opportunities, Job Shadowing
+            and Mentorships. This centre of innovation also presents companies with a different approach to plough back to the nation by helping young people
+            achieve their dreams from an awkward position because permanent job opportunities are scarce.</p>
+
+        </div>
+
+        <div style="background-color:" class="page-pic"><img style="height:inherit;" alt="the-hustlers-time-light-up-eswatini-youth" src="static/images/bulb_yellow.png"/><p style="padding:20px;font-weight:600;color:#006769">
+            "By emphasizing potential and merit over other constraints, we are helping to create a more equitable job market and increase the chances for young individuals to succeed in their careers.
+            This can involve thorough assessments, interviews, and understanding the needs of both job-seekers and employers."</p></div>
+
+        <div style="margin-top:20px;" >
+                <p>The Hustlers Time is highly interested in finding new ways for the unemployed youth to consecutively get current short-term job recruitments from various employers.
+                    The sole purpose (beyond earning) is to help them gain work experience and increase their potential so that they eventually be employable and be empowered to develop new ideas to start their own businesses, though not permanently employed. The Hustlers Time is an ongoing project, as the name implies,
+                we want to turn the other side of the coin and explore other alternatives that be put in place to curb unemployment rate and at the same time produce a workforce that will be game-changer in the industry.
+                We want to stress out need to also focus on effectively matching individuals with the right opportunities based on their skills, interests, and potential they are practically showcasing.</p>
+                <p>
+                </p>
+            </div>
+
+        <h1 class="spans">Our Team</h1>
+
+        <div class="about-team-cont" >
+
+            <div class="about-team" >
+                <div class="bg-drop">
+                    <div class="img-cont-about-team"><img src="/static/images/default.jpg" /></div>
+                </div>
+                <div class="team-details">
+                    <br><br>
+                    <p style="font-size:14px">Ms. Nompumelelo Mdlovu</p>
+                    <p class="team-pos">Marketing Support Specialist(TechX-MS)</p>
+                    <p class="team-email">mpumi@techxolutions.co.sz</p>
+                </div>
+            </div>
+
+            <div style class="about-team" >
+                <div class="bg-drop">
+                    <div class="img-cont-about-team"><img src="/static/images/default.jpg" /></div>
+                </div>
+                <div class="team-details">
+                    <br><br>
+                    <p style="font-size:14px">Mr. Thabo Maziya</p>
+                    <p class="team-pos">Developer(TechX-Dev)</p>
+                    <p class="team-email">Founder</p>
+                    <p class="team-email">thabo@techxolutions.co.sz</p>
+                </div>
+            </div>
+        </div>
+
+        <br><br><br>
+
+        <div class="hidden_Y">
+            <h1>The Hustlers Time (THT)</h1>
+            <label>P O Box 647 Ezulwini,</label><br>
+            <label>kaMvubu Township (~3km)</label><br><br>
+            <ul>
+                <div class="contact-icons-div"><img class="contact-icons" alt="The Hustlers Time contacts" src="/static/icons/telephone_icon.png" /> <small>+268 3424 4434</small></div>
+                <div class="contact-icons-div"><img style="height:x;width:x;" class="contact-icons" alt="The Hustlers Time contacts-whatsapp" src="/static/icons/whatsapp_icon.png" /> <small>+268 7965 1471</small></div>
+                <div class="contact-icons-div"><img class="contact-icons" alt="The Hustlers Time contacts-whatsapp" src="/static/icons/email_icon.png" /> <small>info@thehustlerstime.com</small></div>
+                <div class="contact-icons-div"><img class="contact-icons" alt="The Hustlers Time contacts-whatsapp" src="/static/icons/facebook_icon.png" /> <small>The Hustlers Time</small></div>
+            </ul>
+            <small>The Hustlers Time project, is founded by Tech Xolutions</small>
+        </div>
+
+
+    <div style="margin-top:150px" >
+<!--        <div style="display:flex;align-items:center;width:100%;font-size:20px;"><h1 style="color:#006769">Join The Hustlers Time (T.H.T) Network </h1><div class="title-strokes" style="background-color:#23aeb2;height:4px;width:550px;"></div></div>-->
+
+<!--        <div class="home-content-why-hot">-->
+<!--            <div style="" class="home-cont-items job_ad_style anim" >-->
+<!--                <i style="font-size:120px !important;color:#006769;" class="material-icons">timer</i>-->
+<!--                <p class="invite-cards" style="width:90%">Look! Self-directed learning and proactive skill development are highly valuable in demonstrating your commitment, growth mindset, and adaptability to potential employers.-->
+<!--                    By staying ahead and continuously updating your skills, you enhance your chances of standing out in the competitive job market. Good luck!-->
+<!--                </p>-->
+<!--            </div>-->
+
+<!--            <div style="" class="home-cont-items job_ad_style anim">-->
+<!--                <i style="font-size:120px;color:#006769;" class="material-symbols-rounded">psychiatry</i>-->
+<!--               <p class="invite-cards" style="width:90%">Absolutely! Having a Plan B is always a smart move. By collectively accumulating industry skills and experience with short-term,-->
+<!--                   temporary, hourly, or temporary-to-hire jobs through The Hustlers Time Network,-->
+<!--                   you can continue to build your professional profile while remaining flexible in your career search</p>-->
+<!--            </div>-->
+
+<!--            <div style="" class="home-cont-items job_ad_style anim">-->
+<!--                <i style="font-size:120px;color:#006769;" class="material-symbols-rounded">skateboarding</i>-->
+<!--               <p class="invite-cards" style="width:90%">Embrace temporary jobs as part of your career strategy, you can continue to accumulate skills, gain experience, and maintain your professional momentum.-->
+<!--                   This approach allows you to be proactive, adaptable, and prepared for the next permanent job opportunity that comes your way. and business ideas you can spot out there, and become a Game-Changer that Leaves an Unforgettable Impression.</p>-->
+<!--            </div>-->
+
+<!--        </div>-->
+    </div>
+</div>
+<script>
+//The code animates all elements as they appear on the screen during scroll
+//Select all the elements with the .hidden class attr
+const divs = document.querySelectorAll('.hidden_Y');
+
+//Create an observer object that will detect each of the element if the appear on screen
+var observer = new IntersectionObserver(entries => {
+
+   entries.forEach(entry => {
+        console.log("Observer CAlled",)
+        entry.target.width="100px";
+    })
+    }
+    );
+
+//Observe each of the elements
+divs.forEach(div => {
+    observer.observe(div)
+});
+</script>
+{% endblock %}

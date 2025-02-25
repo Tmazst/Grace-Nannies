@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags gen-flex-col">
+
+      <div class="flash-messages" class="btns">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+     </div>
+     <!----FORM----->
+     <div id="login-page" class="general-flex">
+          <div style="max-width:400px;background-color:3ab;" class="form_container anim">
+                <div class="card">
+                    <div style="width:100%;" class="card-body py-md-4">
+                        <h2 style="padding-left:4%;" class="card-title text-center">Login</h2>
+                        <form _lpchecked="1" action="" method="post">
+                            <!--Email-->
+                             <div class="group">
+                                  {{login.hidden_tag()}}
+                                  {{ login.email(class="form-control",placeholder="Email")}}
+                                  {% if login.email.errors %}
+                                    {% for error in login.email.errors %}
+                                        <span class="span-error" >*{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}</div>
+                                <!--Pass Word-->
+                             <div class="group">
+                                 {{ login.password(class="form-control",placeholder="Password")}}
+                                 {% if login.password.errors %}
+                                    {% for error in login.password.errors %}
+                                        <span class="span-error" >*{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}</div>
+
+                            <div class="">
+                                {{ login.use_2fa_auth.label(style="font-size:13px,font-weight:600;color:coral")}}{{ login.use_2fa_auth(style="",id="2fa_check_box")}}
+                            </div><br><br>
+
+                             <div style="margin:0 auto;" class="group group-flex">
+                                <div style="padding-left:;width:40%;background-color:339ab3" class="d-flex flex-row align-items-center justify-content-between">
+                                    {{ login.submit(style="font-size:13px",class="btns", id="login_btn") }}
+                                <a style="font-size:13px;" class="form-a links" href="reset_request">Forgot Password?</a>
+                                </div>
+                                <div style="text-align:right;width:40%;background-color:339ab3;" class="">
+                                    {{ login.stay_signed.label(style="font-size:13px")}}
+                                        {{ login.stay_signed}}
+                                </div>
+                             </div>
+
+
+
+                        </form>
+                    </div>
+                </div>
+
+          </div>
+    </div>
+    <br><br><br><br><br><br><br><br>
+</div>
+{% endblock %}

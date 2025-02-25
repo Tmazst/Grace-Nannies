@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+    <div class="flash-messages" class="btns">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}80
+            {% endif %}
+        {% endwith %}</div>
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+  <p class="paras-subtopics"></p>
+<!--    {% if current_user.is_authenticated %}-->
+<!--    {% endif %}-->
+    <br><br>
+    <h2>Filtered</h2><br>
+    {% if category_set %}
+    <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <div class="category-filter">
+            <select onchange="location = this.value;" id="category-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
+                 <option value="/job_ads">--------Category Filter-------</option>
+                    {% for each_cat in category_set %}
+                     <option value="/job_ads_filtered?value={{each_cat}}">{{each_cat}}</option>
+                    {% endfor %}
+            </select>
+        </div>
+
+        <div class="category-filter">
+            <label for="Job Category"> <span></span></label>
+            <select onchange="location = this.value;" id="date-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
+                 <option value="/job_ads">--------Date Filter-------</option>
+                    <option value="/job_ads_filtered?value=today">Today</option>
+                    <option value="/job_ads_filtered?value=yesterday">Yesterday</option>
+                    <option value="/job_ads_filtered?value=this_week">This Week</option>
+                    <option value="/job_ads_filtered?value=this_month">This Month</option>
+            </select>
+        </div>
+    </div><br><br>
+    {% endif %}
+
+    <a href="/job_ads"><button id="view-all" class="btns-margin btns">View All</button></a>
+
+
+  <div style="background-color:ae23a3;" class="general-flex-x">
+        {% if job_ads %}
+            {% for item in job_ads %}
+            <!----FORM----->
+            <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style anim">
+
+                        <div style="" class="center-prl-img">
+                            <div style="margin:15px auto 0px auto;"  class="img-cont">
+                              {% if db.session.query(company_user).get(item.job_posted_by) %}
+                                    {% if not db.session.query(company_user).get(item.job_posted_by).image == None %}
+                                        <img class="prf-image" src="{{url_for('static', filename='images/' + db.session.query(company_user).get(item.job_posted_by).image)}}"/>
+                                    {% endif %}
+                              {% else %}
+                                    <img class="prf-image" src="static/images/default.jpg"/>
+                              {% endif %}
+                            </div>
+                        </div>
+
+                        <h2 style="margin-bottom:0px;margin-top:0px;">{{db.session.query(company_user).get(item.job_posted_by).name}}<br>
+                        <span><small style="color:#aaa" >{{db.session.query(company_user).get(item.job_posted_by).name}}</small></span></h2>
+
+                        <!-------JOB TITLE--------->
+                        <p class="job-title">{{item.job_title}}</p>
+                        <small class="" style="color:#999;font-size:11px;margin-top:-10px">{{item.date_posted.strftime("%d %B %y  | %H:%M")}}</small>
+                        <p style="color:#006769;font-weight:600;font-size:13px">{{item.category}}</p>
+                        <div class="job-sub-title">
+                            <!-------JOB TYPE--------->
+                            <div class="job-info">
+                                <p class="centralise_font size-it"><span class="material-icons ">work</span>    Job Type</p>
+                                <label style="margin-top:-10px" class="centralise_font">{{item.job_type}}</label>
+                            </div>
+                            <!--------------DEADLINE-------------->
+                            <div class="job-info">
+                                <p  id="deadline-div" class="centralise_font size-it" ><span class="material-icons ">calendar_month</span>    Project Due</p>
+                                <label id="deadline" class="centralise_font" style="font-size:10;margin-top:-10px">{{item.application_deadline.strftime("%d %b %y")}}</label>
+                                <small id="days_left" class="" style="color:#999;font-size:11px;margin-top:-10px"></small>
+                            </div>
+
+                        </div>
+
+
+                         <!-------RESPONSIBILITIES--------->
+                        <div class="">
+                                <p class="centralise_font size-it" ><span class="material-icons">place</span></p>
+                                <div style="margin-top:-10px" class="centralise_font" ><label>{{db.session.query(company_user).get(item.job_posted_by).company_address}}</label></div>
+                        </div>
+
+                        <div style="background-color:ea2a30;flex-grow:5;" >
+                             <p class="centralise_font" ></p>
+                        </div>
+
+                        <!--------VIEW BUTTON-------------->
+                        <div style="dispaly:block">
+                             <!--<input class="btns" type="submit" value="Create Account" />-->
+                             <a class="view_job" href="/job_ad_opened?id={{item.job_id}}">View</a>
+                        </div>
+
+                    </div>
+                    {% endfor %}
+            </div>
+        {% endif %}
+        </div>
+{% endblock %}

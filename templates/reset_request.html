@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags">
+
+  <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+  </div>
+
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+  <p class="paras-subtopics">An email with a reset link will be sent to your email inbox</p>
+    <!----FORM----->
+  <div class="form_container">
+      <div class="card">
+            <div style="width:100%;" class="card-body py-md-4">
+                <h2 class="card-title text-center">Enter Registered Email</h2>
+                <form _lpchecked="1" action="" method="post">
+
+                     <div class="group">
+                          {{reset_request_form.hidden_tag()}}
+                          {{ reset_request_form.email(class="form-control",placeholder="Email")}}
+                          {% if reset_request_form.email.errors %}
+                            {% for error in reset_request_form.email.errors %}
+                                <span class="span-error" >*{{error}}</span>
+                            {% endfor %}
+                         {% endif %}
+                     </div>
+
+                     <div>
+                         {{ reset_request_form.reset(class="btns") }}
+                         <!--<input class="btns" type="submit" value="Create Account" />-->
+                         <a class="form-a links" href="login">Back Login</a>
+                    </div>
+
+                </form>
+           </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

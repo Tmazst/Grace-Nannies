@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br><br>
+<div style="margin-bottom:100px;background-color:;"   class="tags ">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+    <!----FORM----->
+    <div class="portfolio-row">
+    <div id="" style="min-width:350px;"  class="form_container_ browse-job">
+            <div class="jb-viewed-card-body">
+
+                <div style="margin-top:100px;margin-left:50px;"  class="img-cont">
+                    <div style="margin:0px auto 0px auto;"  class="">
+                       {% if item.image %}
+                            <img class="prf-image" src="{{url_for('static', filename='images/' + item.image)}}"/>
+                      {% else %}
+                            <img class="prf-image" src="static/images/default.jpg"/>
+                      {% endif %}
+                    </div>
+                </div><br>
+
+                <h2 style="margin-top:-15px;background-color:;" class="card-title text-center">{{item.name}}</h2>
+                <small class="card-title text-center" style="color:#aaa;margin-top:-25px;" >{{item.email}}</small>
+                <span><small style="color:#aaa" >{{item.address}}</small></span>
+
+                <div style="background-color:#fff;" class="job_ad_group marginise-bottom adj-wid">
+                    <h2 style="font-weight:bold;color:#006769;">{{item.other}}</h2>
+                    <hr>
+                </div>
+
+                 <!-------JOB TYPE--------->
+                {% if item.tertiary %}
+                 <div class="job_ad_group marginise-bottom">
+                     <label for="Tertiary" class="labels">Tertiary: </label>
+                     <p>{{ item.tertiary}}</p>
+                 </div>
+                {% endif %}
+
+                 <!-------PAY TYPE--------->
+                {% if item.experience %}
+                <div class="job_ad_group marginise-bottom">
+                <label for="Experience" class="labels">Experience: </label>
+                      <textarea>{{item.experience}}</textarea>
+                </div>
+                {% endif %}
+
+                <!-------JOB DESCRIPTION--------->
+                {% if item.skills %}
+                <div class="job_ad_group adj-wid marginise-bottom">
+                    <label for="Job Descriptions" class="labels">Skills: </label>
+                      <textarea>{{item.skills}}</textarea>
+
+                </div>
+                {% endif %}
+
+                {% if item.hobbies %}
+                <div class="job_ad_group adj-wid marginise-bottom">
+                    <label for="Job Descriptions" class="labels">Hobbies: </label>
+                      <textarea>{{item.hobbies}}</textarea>
+
+                </div>
+                {% endif %}
+
+                <p>h4:</p>
+                    {% if item.reference_1 %}
+                    <div class="job_ad_group adj-wid marginise-bottom">
+                        <label for="Job Descriptions" class="labels">Reference One: </label>
+                          <textarea>{{item.reference_1}}</textarea>
+
+                    </div>
+                    {% endif %}
+
+                    {% if item.reference_2 %}
+                    <div class="job_ad_group adj-wid marginise-bottom">
+                        <label for="Job Descriptions" class="labels">Reference Two: </label>
+                          <textarea>{{item.reference_2}}</textarea>
+
+                    </div>
+                    {% endif %}
+
+                 <!-------WORK DAYS--------->
+                {% if item.work_days %}
+                 <div class="job_ad_group marginise-bottom">
+
+                    <label for="Work Days" class="labels">Work Days: </label>
+                    <p>{{ item.work_days}}</p>
+
+                 </div>
+                {% endif %}
+
+                 <!-------WORK HOURS--------->
+                {% if item.work_hours %}
+                 <div class="job_ad_group marginise-bottom">
+                    <label for="Working Hourse" class="labels">Working Hours: </label>
+                    <p>{{ item.work_hours}}</p>
+
+                 </div>
+                {% endif %}
+
+                 <!-------RESPONSIBILITIES--------->
+                {% if item.responsibilities %}
+                 <div class="job_ad_group marginise-bottom">
+                    <label for="Responsibilities" class="labels">Responsibilities: </label>
+                    <p>{{item.responsibilities}}</p>
+
+                 </div>
+                {% endif %}
+
+                 <!-------QUALIFICATIONS--------->
+                <div class="job_ad_group marginise-bottom">
+                    <label for="Qualifications" class="labels">Qualifications: </label>
+                    <p>{{ item.qualifications}}</p>
+
+                 </div>
+
+                 <!-------AGE RANGE--------->
+                {% if item.age_range %}
+                  <div class="job_ad_group marginise-bottom">
+                      <label for="Age Range" class="labels">Age Range: </label>
+                      <p>{{ item.age_range}}</p>
+                 </div>
+                {% endif %}
+
+                 <!-------BENEFITS--------->
+                {% if item.benefits %}
+                  <div class="job_ad_group marginise-bottom">
+                      <label for="Benefits" class="labels">Benefits: </label>
+                      <p>{{item.benefits}}</p>
+                 </div>
+                {% endif %}
+
+                 <div>
+                     <!--<input class="btns" type="submit" value="Create Account" />-->
+                    {% if current_user.role != 'company_user' %}
+                        <a class="btns" href="/send_application?job_id={{item.job_id}}">Apply Now</a>
+                     {% endif %}
+                 </div>
+            </div>
+    </div>
+
+    <div  style="min-width:350px;padding:20px"  class="form_container_ browse-job">
+        <div class="portfolio-div">
+            <h2>Portfolio / Consecutive</h2>
+
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

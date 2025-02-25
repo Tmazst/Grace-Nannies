@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Display the countdown timer in an element -->
+<p id="demo"></p>
+
+<script>
+    // Set the date we're counting down to
+    var countDownDate = new Date("July 1, 2024 15:37:25").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+      // Get today's date and time
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Display the result in the element with id="demo"
+      document.getElementById("countdown").innerHTML = days  + " Days " + " + " + hours + " Hours "  + " + " + minutes + "m " + seconds + "s ";
+
+      // If the count down is finished, write some text
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("demo").innerHTML = "EXPIRED";
+      }
+    }, 1000);
+</script>
+<style>
+
+#countdown {
+    font-weight:600;
+    color:white;
+    font-size:20px !important;
+    background-color:#aaa;
+    border:none;
+}
+
+#nav-div {
+    display:none;
+}
+
+.user{
+    display:none;
+}
+
+
+.positioning{
+    top:150px;
+    width:27%;
+    font-size:25px !important;
+}
+
+.positioning p{
+    color:white !important;
+    border:2px solid white;
+    padding:30px;
+    border-radius:20px;
+}
+
+.positioningA{
+    display:flex
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    right:250px;
+    top:350px;
+    height:400px;
+}
+
+.positioningA img{
+    height:200px;
+}
+
+.positioningB{
+    left:250px;
+    top:650px;
+    height:400px;
+    width:70%;
+}
+
+
+
+
+@media all and (max-width: 575px) {
+
+    .custom-shape-divider-top-1716153030{width:150%;height:400px;margin-left:-15px}
+
+    .positioning{width:250px;}
+
+    .positioning{width:200px !important;left:40px;top:50px;}
+
+    .positioning{width:250px;font-size:0.8em !important;}
+
+    .positioningA img{height:80px;margin:0 auto;}
+    .positioningA{right:0px !important;width:150px;top:270px;}
+    .positioningA h1{font-size:14px;font-weight:bold;color:#006769;align-text:center}
+    .positioningA small{font-size:6px;font-weight:bold;color:#006769;text-align:center}
+    .spaceFiller{height:480px;}
+    .positioningB{top:370px !important;left:10px;width:90%}
+    .positioningB h1{font-size:16px !important;left:10px;font-weight:600;color:#909090}
+    .count-down-dv{width:100% !important}
+    .count-down-dv p{font-size:10px !important}
+
+
+}
+
+
+
+
+</style>
+
+<div style="position:"  id="tags-in-mobile" class="tags">
+
+    <div style="z-index:2000;position:;background-color:"  class="custom-shape-divider-top-1716153030">
+
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+
+            <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+        </svg>
+    </div>
+    <div style="z-index:2001;position:absolute" class="positioning">
+        <p>Ooops!! Page Temporary Unavailable!</p>
+    </div>
+
+    <div style="z-index:2001;position:absolute" class="positioningA">
+        <img src="static/icons/the-hustlers-time-logo.png" />
+        <h1 style="margin-top:-15px;margin-bottom:-3px">The Hustlers Time</h1>
+        <small style="">Youth Empowered to become Game-Changers</small><br>
+    </div>
+
+    <div class=""></div>
+
+</div><div class=""></div>
+<div style="margin-top:740px;background-color:white"   class="tags">
+    <h1 style="font-size:20px" > We are sorry this page is currently unavailable!! Please check again later!
+        <br><span style="font-size:13px" class=""><a class="nav-link btns user-btns" href="/contact">Report Error</a></span></h1><br>
+        <div style="width:100%" class="row-flex">
+        </div><br>
+
+</div><br><br><br><br>
+{% endblock %}

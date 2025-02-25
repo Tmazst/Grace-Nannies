@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags">
+
+      <div class="flash-messages" class="btns">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+     </div>
+<!--      <h3>How are you Today!<br> <span class="spans"></span></h3>-->
+    <br><br><br>
+<!--     <p class="paras-subtopics">Good Day,</p>-->
+<!--    <h1 >Welcome again, <br><span class="spans">Login</span></h1>-->
+            <!----FORM----->
+     <div id="login-page" class="general-flex">
+          <div style="max-width:400px;background-color:3ab;" class="form_container anim">
+                <div class="card">
+                    <div style="width:100%;" class="card-body py-md-4">
+                        <h2 style="padding-left:8%;padding-top:8%;color:#006769" class="card-title text-center">2-Factor Authentication</h2>
+                        <form _lpchecked="1" action="" method="post">
+
+                            <div class="group">
+                                {{ two_fa_form.use_2fa_auth_input.label(style="font-weight:600;color:coral")}}
+                                {{ two_fa_form.use_2fa_auth_input(class="form-control")}}
+                                 {% if two_fa_form.use_2fa_auth_input.errors %}
+                                    {% for error in two_fa_form.use_2fa_auth_input.errors %}
+                                        <span class="span-error" >*{{error}}</span>
+                                    {% endfor %}
+                                 {% endif %}
+                               <!--<input type="use_2fa_auth_input" class="form-control" id="password" name="passw" placeholder="Password">-->
+                             </div> Code Expires in: <small style="color:coral;font-weight:600" id="aut2fa_countdown"> </small><br><br>
+
+                            <div style="margin:0 auto;" class="group group-flex">
+                                 <div style="padding-left:;width:40%;background-color:339ab3" class="d-flex flex-row align-items-center justify-content-between">
+                                     {{ two_fa_form.submit(class="btns") }}
+                                     <a  class="form-a links" href="">Re-send Code?</a>
+                                     <!--<input class="btns" type="submit" value="Create Account" />-->
+<!--                                         <a  class="form-a links" href="/2fa">Re-send Code?</a>-->
+                                </div>
+                                <div style="text-align:right;width:40%;background-color:339ab3;" class="">
+                                    <a style="color:coral" class="form-a links" href="{{url_for('login')}}"><-- Back to Login</a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+          </div>
+    </div>
+    <br><br><br><br><br><br><br><br>
+    <script>
+        window.onload = function() {
+         startOTPTimer();
+        };
+
+
+        function startOTPTimer() {
+            const otpExpirySeconds = 60; // Adjust this value based on your OTP expiry time
+            const countdownElement = document.getElementById('aut2fa_countdown'); // Corrected typo: Changed 'aut2fa_countdwon' to 'aut2fa_countdown'
+
+            let timeLeft = otpExpirySeconds;
+
+            function updateCountdown() {
+                const minutes = Math.floor(timeLeft / 60);
+                let seconds = timeLeft % 60;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                countdownElement.innerText = `${minutes}:${seconds}`;
+                console.log("Countdown: ", countdownElement); // Corrected typo: Changed 'Contdown' to 'Countdown'
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElement.innerText = 'OTP Expired';
+                }
+            }
+
+            updateCountdown(); // Initial call
+            const countdownInterval = setInterval(updateCountdown, 1000);
+}
+
+    </script>
+</div>
+{% endblock %}

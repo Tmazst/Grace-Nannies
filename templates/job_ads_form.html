@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div  style="margin-bottom:700px" class="tags">
+    <div class="flash-messages" class="btns">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+    <!----FORM----->
+  <div style="background-color:" class="form_container">
+     <div class="row justify-content-center">
+    <div class="col-md-5">
+     <div style="padding-left:30px;padding-right:30px;display:;"  class="card">
+
+        <h2 class="card-title text-center">Job Advert Form</h2>
+        <form style="background-color:f8db5a;width:;"  _lpchecked="1" action="" method="post">
+            <small style="font-weight:600;" class="paras-subtopics "><span style="color:coral">Tip:</span></span> Tick Fields with boxes to include them on the Job Advert</small><br><br>
+             <div style="background-color: f8f95a;" class="job-ad-group marginise-bottom">
+                  {{job_ad_form.hidden_tag()}}
+                 {{job_ad_form.csrf_token}}
+                 {{ job_ad_form.job_title.label(class="labels")}}
+                  {{ job_ad_form.job_title(class="form-control adj-width-60",placeholder="Job Title",value=job_ad.job_title)}}
+                  {% if job_ad_form.job_title.errors %}
+                    {% for error in job_ad_form.job_title.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------JOB TYPE--------->
+             <div class="job-ad-group marginise-bottom">
+                 <label for="Job Type" class="labels">Job Type: </label>
+
+                 <select  class="form-control"  style="margin-bottom:10px;width:40%" name="job_type_sel" inputmode="text">
+                     <option value="">------Choose Options------</option>
+                     <option value="Part-Time">Part-Time</option>
+                     <option value="Full-Time on Part-Time">Full-Time on Part-Time</option>
+                     <option value="Internship">Internship</option>
+                     <option value="Internship">Volunteer</option>
+                     <option value="Contract">Contract</option>
+                     <option value="Apprenticeship">Apprenticeship</option>
+                     <option value="Casual Employment">Casual Employment</option>
+                     <option value="Seasonal Employment">Seasonal Employment</option>
+                     <option value="Employment-on-Commission">Employment-on-Commission</option>
+                 </select>
+
+                 <div>
+                    <label for="Pay Type" class="labels">     </label>
+                      {{ job_ad_form.other_job_type(class="form-control adj-width-other",placeholder="Other")}}
+                      {% if job_ad_form.other_job_type.errors %}
+                        {% for error in job_ad_form.other_job_type.errors %}
+                            <span class="span-error" >*{{error}}</span>
+                        {% endfor %}
+                     {% endif %}
+                 </div>
+
+             </div>
+
+             <!-------PAY TYPE--------->
+             <div class="job-ad-group marginise-bottom">
+                 <label for="Pay Type" class="labels">Pay Type: </label>
+                 <select  class="form-control" style="margin-bottom:10px;width:40%" name="pay_type_sel">
+                     <option value="">--------Choose Options--------</option>
+                     <option value="Pay-per-Hour">Pay-per-Hour</option>
+                     <option value="Paid Daily">Paid Daily</option>
+                     <option value="Pay-per-Week">Pay-per-Week</option>
+                     <option value="Monthly">Monthly</option>
+                     <option value="Pay-per-Project">Pay-per-Project</option>
+                 </select>
+                 {{ job_ad_form.pay_type_bl()}}
+                 <div>
+                    <label for="Pay Type" class="labels">     </label>
+                  {{ job_ad_form.other_pay_type(class="form-control adj-width-other",placeholder="Other")}}
+                  {% if job_ad_form.other_pay_type.errors %}
+                    {% for error in job_ad_form.other_pay_type.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+                 </div>
+             </div>
+
+            <!--   Category  -->
+            <div class="job-ad-group marginise-bottom">
+                 <label for="category" class="labels">Field Category: </label>
+                 <select class="form-control" style="margin-bottom:10px;width:40%" name="field_category_sel">
+                     <option value="">--------Choose Options--------</option>
+                     <option value="Media & Technology">Media & Technology</option>
+                     <option value="Information Technology">Information Technology</option>
+                     <option value="Occupational Health & Safety">Health & Safety</option>
+                     <option value="Miscellaneous">Miscellaneous</option>
+                     <option value="Education">Education</option>
+                     <option value="Science & History">Science & History</option>
+                     <option value="Engineering">Engineering</option>
+                     <option value="Music & Entertainment">Music & Entertainment</option>
+                     <option value="Transport & Logistics">Transport & Logistics</option>
+                     <option value="Pharmacy">Pharmacy</option>
+                     <option value="Tourism & Hospitality">Tourism & Hospitality</option>
+                     <option value="Literature">Literature</option>
+                     <option value="Life Skills">Life Skills</option>
+                     <option value="Geography & Culture">Geography & Culture</option>
+                     <option value="Health">Typist</option>
+                 </select>
+
+                 <div>
+                    <label for="Category" class="labels">     </label>
+                    {{ job_ad_form.category(class="form-control adj-width-other",placeholder="Other")}}
+                    {% if job_ad_form.category.errors %}
+                    {% for error in job_ad_form.category.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                    {% endif %}
+                 </div>
+             </div>
+
+            <!-------ABOUT COMPANY--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.about_company.label(class="labels")}}<br>
+                  {{ job_ad_form.about_company(class="form-control adj-width-60", style="min-height:150px",placeholder="")}}
+                  {% if job_ad_form.about_company.errors %}
+                    {% for error in job_ad_form.about_company.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+            <!-------JOB DESCRIPTION--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.description.label(class="labels")}}<br>
+                  {{ job_ad_form.description(class="form-control adj-width-60", style="min-height:150px",placeholder="Job Description")}}
+                  {% if job_ad_form.description.errors %}
+                    {% for error in job_ad_form.description.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------WORK DURATION--------->
+             <div style="display:flex;" class="work-days">
+                 <div class="job-ad-group marginise-bottom">
+                     {{ job_ad_form.start_date.label(class="labels")}}
+                      {{ job_ad_form.start_date(class="form-control adj-width-other")}}
+                      {% if job_ad_form.start_date.errors %}
+                        {% for error in job_ad_form.start_date.errors %}
+                            <span class="span-error" >*{{error}}</span>
+                        {% endfor %}
+                     {% endif %}
+                 </div><p style="margin:0 5px;">   </p>
+                <div class="job-ad-group marginise-bottom">
+                     {{ job_ad_form.end_date.label(class="labels")}}{{ job_ad_form.work_duration_bl()}}
+                      {{ job_ad_form.end_date(class="form-control adj-width-other")}}
+                      {% if job_ad_form.end_date.errors %}
+                        {% for error in job_ad_form.end_date.errors %}
+                            <span class="span-error" >*{{error}}</span>
+                        {% endfor %}
+                     {% endif %}
+                 </div>
+            </div>
+
+             <!-------WORK DAYS--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.work_days.label(class="labels")}}
+
+                 {{ job_ad_form.work_days_bl()}}<br>
+
+                  {{ job_ad_form.work_days(class="form-control adj-width-60",placeholder="e.g Mondays - Wednesdays")}}
+                  {% if job_ad_form.work_days.errors %}
+                    {% for error in job_ad_form.work_days.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------WORK HOURS--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.work_hours.label(class="labels")}}
+
+                 {{ job_ad_form.work_hours_bl()}}<br>
+
+                  {{ job_ad_form.work_hours(class="form-control adj-width-60",placeholder="e.g 8:00am - 1:00pm")}}
+                  {% if job_ad_form.work_hours.errors %}
+                    {% for error in job_ad_form.work_hours.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------QUALIFICATIONS--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.qualifications.label(class="labels")}}<br>
+                  {{ job_ad_form.qualifications(class="form-control adj-width-60",placeholder="e.g. High School Certificate or Diploma in Secretariate")}}
+                  {% if job_ad_form.qualifications.errors %}
+                    {% for error in job_ad_form.qualifications.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------AGE RANGE--------->
+              <div class="job-ad-group marginise-bottom">
+                 {{ job_ad_form.age_range_bl.label(class="labels")}}
+                  {{ job_ad_form.age_range_bl()}}<br>
+
+                  {{ job_ad_form.age_range(class="form-control adj-width-60",placeholder="18years - 35 years")}}
+                  {% if job_ad_form.age_range.errors %}
+                    {% for error in job_ad_form.age_range.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+
+             </div>
+
+             <!-------BENEFITS--------->
+              <div class="job-ad-group marginise-bottom">
+
+<!--                  <div class="job-ad-group marginise-bottom">-->
+<!--                     <label for="benefits" class="labels">Benefits (Press + Hold CRTL): </label>{{ job_ad_form.benefits_bl()}}<br>-->
+<!--                     <select class="form-control id="benefits" style="margin-bottom:10px;width:100%" name="benefits" multiple >-->
+<!--                         <option value="Flexible working hours">Flexible working hours</option>-->
+<!--                         <option value="Free House for Accommodation">Free House for Accommodation</option>-->
+<!--                         <option value="Work From Home">Work From Home</option>-->
+<!--                         <option value="Training & Development">Training & Development</option>-->
+<!--                         <option value="Free Food ">Free Food </option>-->
+<!--                         <option value="Performance Bonus"> Performance Bonus/Awards/Gifts</option>-->
+<!--                         <option value="Wellness Resources"> Wellness Resources</option>-->
+<!--                         <option value="Employee Discounts"> Employee Discounts</option>-->
+<!--                         <option value="Employee Assistance Program">Employee Assistance Program - Counselling</option>-->
+<!--                     </select>-->
+<!--                 <div>-->
+                     <br>
+                    {{ job_ad_form.benefits.label(class="labels")}}{{ job_ad_form.benefits_bl()}}
+                    {{ job_ad_form.benefits(class="form-control adj-width-60",placeholder="e.g. Free House for Accommodation,Work From Home,Performance Bonus/Awards/Gifts ")}}
+                  {% if job_ad_form.benefits.errors %}
+                    {% for error in job_ad_form.benefits.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+              </div>
+
+             <!-------Application Deadline--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.application_deadline.label(class="labels")}}<br>
+                  {{ job_ad_form.application_deadline(class="form-control adj-width-60",placeholder="Application Deadline")}}
+                  {% if job_ad_form.application_deadline.errors %}
+                    {% for error in job_ad_form.application_deadline.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------Post By--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.posted_by.label(class="labels")}}<br>
+                  {{ job_ad_form.posted_by(class="form-control adj-width-60",placeholder="e.g. Posted: John Doe")}}
+                  {% if job_ad_form.posted_by.errors %}
+                    {% for error in job_ad_form.posted_by.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <div>
+                 {% if usr_id %}
+                    {{ job_ad_form.publish(class="btns", value="Complete") }}
+                 {% else %}
+                    {{ job_ad_form.publish(class="btns") }}
+                 {% endif %}
+                 <!--<input class="btns" type="submit" value="Create Account" />-->
+
+            </div>
+         </form>
+       </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

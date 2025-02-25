@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script></script>
+
+<!----BANNER------->
+{% if not current_user.is_authenticated %}
+
+{% endif %}
+
+<style>
+    .profile-sections{
+        display:none;
+    }
+    .next-btns{
+       font-size:40px;
+       color:white;
+    }
+    @media all and (max-width: 575px) {
+        .not-on-mobile{display:none;}
+        .h1-tag{font-size:26px;}
+        .topics{padding:5px;}
+        .tags{margin-top:-20px;
+        }
+    }
+</style>
+
+<div class="tags">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="wide-image-hldr gen-flex">
+        <img id="img-no1" src="static/images/woman_in_red.webp" />
+        <img class="logo-abso" style="height:85px;width:75px" src="static/icons/logo_icon.png" />
+        <div class="ad-content gen-flex">
+            <h3>We provide Skilled, Reliable helpers that can work with no supervision</h3>
+            <button class="btns ">Job Seekers</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script>
+
+    var sections = document.querySelectorAll(".profile-sections");
+    var selIcon = document.querySelectorAll(".sel-icon");
+    var currentSectionIndex = 0;
+    var firstSection = sections[0];
+    var noSections = sections.length;
+
+    if (currentSectionIndex == 0){
+        firstSection.style.display = "flex";
+        selIcon[currentSectionIndex].classList.toggle("sel-icon-bg");
+        }else{
+            firstSection.style.display = "none";
+    };
+
+function showNextSection(event, clickedId) {
+    event.preventDefault(); // Prevent reloading
+
+    console.log("Clicked ID: ", clickedId);
+
+    for (let i = 0; i < sections.length; i++) {
+        if (clickedId == "icon1" && i === 0) {
+            sections[i].style.display = "flex";
+            selIcon[i].classList.add("sel-icon-bg");
+            console.log("Clicked ID: ", clickedId,i);
+        } else if (clickedId == "icon2" && i === 1) {
+            sections[i].style.display = "flex";
+            selIcon[i].classList.add("sel-icon-bg");
+            console.log("Clicked ID: ", clickedId,i);
+        } else if (clickedId == "icon3" && i === 2) {
+            sections[i].style.display = "flex";
+            selIcon[i].classList.add("sel-icon-bg");
+            console.log("Clicked ID: ", clickedId,i);
+        } else {
+            selIcon[i].classList.remove("sel-icon-bg");
+            //selIcon[i].style.background = "#eee"; // Reset style for non-clicked icons
+            sections[i].style.display = "none"; // Hide sections not clicked
+            console.log("Not Clicked ID: ",i);
+        }
+    }
+}
+
+var currentIndex = 0; // Initialize the current section index
+
+// Get the element to which the swipe functionality will be added
+var swipeContainer = document.getElementById('swipe-cont');
+
+// Create a new instance of Hammer for the swipe container
+var hammertime = new Hammer(swipeContainer);
+
+// Add a swipe event listener
+hammertime.on('swipe', function(ev) {
+    // Handle the swipe based on the direction
+    if (ev.direction === Hammer.DIRECTION_LEFT) {
+        // Handle swipe left
+        console.log('Swiped left!');
+        if (currentIndex < sections.length - 1) {
+            sections[currentIndex].style.display = "none";
+            sections[currentIndex + 1].style.display = "flex";
+            selIcon[currentIndex].classList.remove("sel-icon-bg");
+            selIcon[currentIndex+1].classList.add("sel-icon-bg");
+            currentIndex++;
+            console.log("Current Section Index: " + currentIndex);
+        } else {
+            console.log("Reached the last section, cannot swipe left.");
+        }
+    } else if (ev.direction === Hammer.DIRECTION_RIGHT) {
+        // Handle swipe right
+        console.log('Swiped right!');
+        if (currentIndex > 0) {
+            sections[currentIndex].style.display = "none";
+            sections[currentIndex - 1].style.display = "flex";
+            selIcon[currentIndex].classList.remove("sel-icon-bg");
+            selIcon[currentIndex-1].classList.add("sel-icon-bg");
+            currentIndex--;
+            console.log("Current Section Index: " + currentIndex);
+        } else {
+            console.log("Reached the first section, cannot swipe right.");
+        }
+    }
+});
+</script>
+
+
+
+
+{% endblock %}

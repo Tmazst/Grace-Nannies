@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+        <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <p class="paras-subtopics"></p>
+        <!--    {% if current_user.is_authenticated %}-->
+        <!--    {% endif %}-->
+        <div class="job_main-cont">
+
+        {% for ea_application in all_applications %}
+        {% if ea_application.employer_id == current_user.id %}
+
+            <!----FORM----->
+            <div style=""  class="job_ad_container">
+                <div style="width:370px" class="job_ad_style">
+                    <div class="row justify-content-center">
+                        <div class="col-md-5">
+                            <div class="card">
+                                <div class="card-body py-md-4">
+                                    <div class="card-cont">
+
+                                        <h2>Job Application Card</h2>
+
+                                        <div class="img-cont">
+                                            <img class="prf-image" src="static/images/{{job_user.query.get(ea_application.applicant_id).image}}"/>
+                                        </div>
+
+                                        <!-------JOB TITLE--------->
+
+                                        <h2 style="margin-bottom:0px">{{job_user.query.get(ea_application.applicant_id).name}}</h2>
+
+                                        <!-------THEIR ADDRESS--------->
+                                        <p><span class="material-icons">place</span>
+                                            {{job_user.query.get(ea_application.applicant_id).address}}
+                                        </p>
+
+                                        <hr>
+                                        <legend >You can contact {{job_user.query.get(ea_application.applicant_id).name}} on the following:</legend>
+
+                                        <div>
+                                            <label>Watsapp</label>
+                                            <p><span></span>{{job_user.query.get(ea_application.applicant_id).contacts}}</p>
+
+                                            <Label>Call / SMS</Label>
+                                            <p><span></span>{{job_user.query.get(ea_application.applicant_id).contacts}}</p>
+
+                                            <label>Email</label>
+                                            <p><span></span>{{job_user.query.get(ea_application.applicant_id).email}}</p>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endif %}
+        {% endfor %}
+        </div>
+</div>
+{% endblock %}

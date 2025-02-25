@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div style="overflow-x:auto;display:flex;" class="companies-cont border-radius-15">
+
+            {%for cmp in al_users %}
+            <br><br><br><br>
+            <div style="padding:30px;" class="companies-chd-cont">
+                <div class="img-cont"><img class="prf-image" src="static/images/{{cmp.image}}"></div>
+                <h4>{{cmp.name}}</h4>
+                <div style="width:150px" class="flex-justify-align">
+                    <p>{{cmp.verified}}</p>
+                </div>
+            </div>
+
+            {% endfor %}
+
+</div>
+
+{% endblock %}

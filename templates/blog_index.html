@@ -1,0 +1,68 @@
+{% extends "blog_base.html" %}
+
+{% block blog_content %}
+
+
+<!----BANNER------->
+<div class="blog_banner-container">
+
+
+    <div class="blog_banner-cap">
+
+        <div class="center-prl-img">
+<!--            <div style=""  class="img-cont">-->
+<!--                 <img class="prf-image" src="static/images/tht_logo.jpg">-->
+<!--            </div>-->
+<!--            <h4 style="color:green" class="text-center">The Hustlers Time</h4>-->
+            <div class="line" ></div>
+            <p class="text-center">We analyze basic trends in the Job Market, Economy & Technology, shedding light on how these insights are simple impacting and shaping our daily lives.</p>
+        </div>
+
+    </div>
+
+
+    <!--    Blogs-->
+    <div style="width:60%" class="container" >
+
+        <div class="banner-container">
+
+            {% for title in blog_titles %}
+            <div class="blog-container">
+                <div class="blog-image-cont"><img src="static/images/blog_images/{{blogs_dict[title]['picture']}}" /></div> <!---{{blogs_dict[title]['picture']}}--->
+
+                <div class="content">
+
+                    <div class="blog-title"><h4>{{title}}</h4></div>
+                    <div style="background-color:#24788f" class="line" ></div>
+
+                    <div class="content-cap">
+                        <p id="p-tags-card" >
+                            {{blogs_dict[title]["body"]}}
+                        </p>
+                    </div>
+
+                    <label class="round_btns"><a href="/blog-page?title={{title}}">read</a></label>
+
+                    <div class="details">
+                        <ul style="gap:30px" class="normal-flex">
+<!--                            <li><a href="#">like (23)</a></li>-->
+                            <li><a href="#">{{blogs_dict[title]["author"]}}</a></li>
+                            <li><a href="#">{{blogs_dict[title]["date"]}}</a></li>
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+            {%endfor%}
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

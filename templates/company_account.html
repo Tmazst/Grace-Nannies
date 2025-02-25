@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    section {
+  display: flex;
+  flex-flow: row wrap;
+}
+section > div {
+  flex: 1;
+  padding: 0.5rem;
+}
+#pay-opt-div input[type="radio"] {
+  display: none;
+  &:not(:disabled) ~ label {
+    cursor: pointer;
+  }
+  &:disabled ~ label {
+    color: hsla(150, 5%, 75%, 1);
+    border-color: hsla(150, 5%, 75%, 1);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+}
+#pay-opt-div label {
+  height: 100%;
+  display: block;
+  background: white;
+  border: 2px solid coral;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  //margin: 1rem;
+  text-align: center;
+  box-shadow: 0px 3px 10px -2px hsla(150, 5%, 65%, 0.5);
+  position: relative;
+}
+#pay-opt-div input[type="radio"]:checked + label {
+  background: coral;
+  color: hsla(215, 0%, 100%, 1);
+  //box-shadow: 0px 0px 20px hsla(150, 100%, 50%, 0.75);
+  &::after {
+    color: coral;
+    font-family: FontAwesome;
+    border: none;
+    content: "OK";
+    font-size: 24px;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50px;
+    width: 50px;
+    line-height: 50px;
+    text-align: center;
+    border-radius: 50%;
+    background: white;
+    //box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+  }
+}
+
+#pay-opt-div input[type="radio"]#control_05:checked + label {
+  background: red;
+  border-color: red;
+}
+
+#pay-opt-div p {
+  font-weight: 700;
+  font-size:14px;
+}
+
+#pay-opt-div small{
+    color:;font-weight:bold;font-size:11px
+}
+
+.ea_radio_cont{
+    width:150px; !important;
+    height:auto !important;
+}
+
+
+@media only screen and (max-width: 700px) {
+  section {
+    flex-direction: column;
+  }
+}
+</style>
+<div style="padding-left:10px;" class="tags">
+  <h3><br> <span class="spans"></span></h3>
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+  <p class="paras-subtopics"></p>
+    <!----FORM----->
+  <div class="pad-on-mobile">
+    <div class="row justify-content-center">
+    <div class="col-md-5">
+<!--     <div style="width:100%;margin-left:1px"  class="">-->
+
+        <div style="width:80%;margin-left:1px" class="card-body py-md-4">
+
+        <form _lpchecked="1" action="" method="post"  enctype="multipart/form-data" >
+            <div id="cmpny-acc-prl-cont" style="width:300px;background-color:" class="my-card">
+                <div style=""  class="img-cont">
+                      {% if not image_fl == None %}
+                            <img class="prf-image" src={{image_fl}}/>
+                      {% else %}
+                            <img class="prf-image" src="static/images/default.jpg"/>
+                      {% endif %}
+                 </div>
+                <h3 style="font-size:25px;text-align:center;background-color:">{{current_user.name.title()}}<br> <span class="spans" style="font-size:16px">{{current_user.email}}</span></h3>
+            </div>
+            <h3 style="font-size:32px;margin-left:17px;" class="card-title text-center">Corporate Details</h3>
+
+            <hr>
+            <div style="flex-direction:column;"  class="account">
+            <div class="group">
+                {{company_update.hidden_tag()}}
+                <div class="acc-labels">{{ company_update.company_name.label(class="acc-form-control-up")}}</div>
+                {{ company_update.company_name(class="acc-form-control-up",placeholder="Name",value=current_user.name)}}
+                {% if company_update.company_name.errors %}
+                    {% for error in company_update.company_name.errors %}
+                        <span class="span-error" >*[Company Name] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+               <!--<input type="text" class="acc-form-control-up" id="name" name="nm" placeholder="Name">-->
+              </div>
+
+            <div class="group">
+                  <div class="acc-labels">{{ company_update.company_email.label(class="acc-form-control-up")}}</div>
+                  {{ company_update.company_email(class="acc-form-control-up",placeholder="Email",value=current_user.email)}}
+                  {% if company_update.company_email.errors %}
+                    {% for error in company_update.company_email.errors %}
+                        <span class="span-error" >*Company Email{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+                <!--<input type="email" class="acc-form-control-up" id="email" name="email" placeholder="Email">-->
+            </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                <div class="acc-labels">{{ company_update.company_contacts.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.company_contacts(class="acc-form-control-up",placeholder="Contacts",value=current_user.company_contacts)}}
+                 {% if company_update.company_contacts.errors %}
+                    {% for error in company_update.company_contacts.errors %}
+                        <span class="span-error" >*[Contacts] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+            </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                 <div class="acc-labels">{{ company_update.company_address.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.company_address(class="acc-form-control-up",placeholder="Physical Address",value=current_user.company_address)}}
+                 {% if company_update.company_address.errors %}
+                    {% for error in company_update.company_address.errors %}
+                        <span class="span-error" >*[Physical Address] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+            </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                 <div class="acc-labels">{{ company_update.website_link.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.website_link(class="acc-form-control-up",placeholder="Website Link",value=current_user.web_link)}}
+                 {% if company_update.website_link.errors %}
+                    {% for error in company_update.facebook_link.errors %}
+                        <span class="span-error" >*[Website Link] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+            </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                 <div class="acc-labels">{{ company_update.facebook_link.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.facebook_link(class="acc-form-control-up",placeholder="Facebook Link",value=current_user.fb_link)}}
+                 {% if company_update.facebook_link.errors %}
+                    {% for error in company_update.facebook_link.errors %}
+                        <span class="span-error" >*[Facebook Link] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                  <div class="acc-labels">{{ company_update.twitter_link.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.twitter_link(class="acc-form-control-up",placeholder="Twitter Link",value=current_user.twitter_link)}}
+                 {% if company_update.twitter_link.errors %}
+                    {% for error in company_update.twitter_link.errors %}
+                        <span class="span-error" >*[Twitter Link] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+            </div>
+
+            <div class="group">
+                <!--<input type="password" class="acc-form-control-up" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                 <div class="acc-labels">{{ company_update.youtube_link.label(class="acc-form-control-up")}}</div>
+                 {{ company_update.youtube_link(class="acc-form-control-up",placeholder="YouTube Link",value=current_user.youtube)}}
+                 {% if company_update.youtube_link.errors %}
+                    {% for error in company_update.youtube_link.errors %}
+                        <span class="span-error" >*[Youtube Link] {{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+            </div>
+
+                </div>
+            <div class="group">
+                    <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                     <p style="color:#006769">Choose Payment Plan:</p>
+                </div>
+                <div id="pay-opt-div" style="justify-content:center" class="group resume-summary">
+                    <div class="ea_radio_cont"  style="">
+                      <input type="radio" id="control01" name="payment_options" value="monthly" {% if current_user.payment_options == "monthly" %} checked {% endif %}>
+                      <label for="control01">
+                        <p>Pay Monthly</p>
+                        <small>SZL 100</small>
+                        <small>Exclusive</small>
+                      </label>
+                    </div>
+
+                    <div class="ea_radio_cont" style="">
+                      <input type="radio" id="control02" name="payment_options" value="per_add" {% if current_user.payment_options == "per_add" %} checked {% endif %}>
+                      <label for="control02">
+                        <p>Pay Per Advert</p>
+                        <small>SZL 150</small>
+                      </label>
+                    </div>
+
+                    <div class="ea_radio_cont" style="">
+                      <input type="radio" id="control03" name="payment_options" value="annually" {% if current_user.payment_options == "annually" %} checked {% endif %} >
+                      <label for="control03">
+                        <p>Pay Annually</p>
+                          <small>SZL 1080</small><br>
+                          <small>10% Discount</small>
+                      </label>
+                    </div>
+
+                    <div class="ea_radio_cont" style="">
+                      <input type="radio" id="control04" name="payment_options" value="free" {% if current_user.payment_options == "annually" %} checked {% endif %}>
+                      <label for="control04">
+                        <p>Use Free For Now</p>
+                          <small>SZL 0</small><br>
+                          <small>Limited Benefits</small>
+                          <small>Promotional</small>
+                      </label>
+                    </div>
+                    <!--<input type="password" class="form-control" id="confirm-password" name="confirm_pass" placeholder="confirm-password">-->
+                 </div><br><br><br><br><br>
+
+            <div style="padding-left:50px;width:80%;min-width:350px" class="form-group">
+                 <h3> Update Company Logo</h3>
+                 {{ company_update.company_logo(id="imageInput", class="acc-form-control",placeholder="reference_2")}}
+            </div><br>
+
+
+
+            <div style="width:40% !important;padding-left:45px;" class="d-flex flex-row align-items-center justify-content-between">
+                 {{ company_update.company_submit(class="btns") }}
+                 <!--<input class="btns" type="submit" value="Create Account" />-->
+                 <a class="form-a links" href="logout">Logout</a>
+            </div>
+            <br><br>
+
+         </form>
+       </div>
+    </div>
+<!--  </div>-->
+  </div>
+  </div></div>
+ <script src="https://unpkg.com/cropperjs"></script>
+    <script>
+         // Add event listener to the image input field
+         document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('imageInput').addEventListener('change', function() {
+            var image = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+
+                // Initialize Cropper.js after the image is loaded
+                img.onload = function() {
+                    var cropper = new Cropper(img, {
+                        aspectRatio: 1, // Example aspect ratio 1:1
+                        viewMode: 2, // Set cropper to fit the container
+                    });
+                };
+            };
+            reader.readAsDataURL(image);
+        });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div  style="margin-bottom:700px" class="tags">
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}</div>
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+
+    <!----FORM----->
+  <div style="min-width:border:none;" class="form_container">
+    <div class="row justify-content-center">
+    <div class="col-md-5">
+    <div style="padding-left:30px;padding-right:30px;display:block;"  class="ard">
+
+        <div style="background-color: 12db5a;" class="card-body py-md-4">
+        <h2 class="card-title text-center">Freelance Job Advert Form</h2>
+            <small style="font-weight:600" class="paras-subtopics">Tip: Please Tick Fields with tick boxes to include them on the Job Advert</small><br><br>
+        <form style="background-color: f8db5a;width:;"  _lpchecked="1" action="" method="post">
+
+             <div style="background-color: f8f95a;" class="job-ad-group marginise-bottom">
+                  {{fl_job_ad_form.hidden_tag()}}
+                 {{fl_job_ad_form.csrf_token}}
+                 {{ fl_job_ad_form.service_title.label(class="labels")}}
+                  {{ fl_job_ad_form.service_title(class="form-control adj-width-60",placeholder="Project Title")}}
+                  {% if fl_job_ad_form.service_title.errors %}
+                    {% for error in fl_job_ad_form.service_title.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------JOB TYPE--------->
+             <div class="job-ad-group marginise-bottom ">
+                 <label for="Expertise" class="labels ">Expertise / Skill: </label>
+                 <select class="form-control" style="margin-bottom:10px;width:40%;" name="speciality" inputmode="text">
+                     <option value="Graphic Designer">Graphic Designer</option>
+                     <option value="Software Developer">Full-Time on Part-Time</option>
+                     <option value="Illustration Specialist">Software Developer</option>
+                     <option value="Web Developer">Web Developer</option>
+                     <option value="Mobile App Developer">Mobile App Developer</option>
+                     <option value="Photographer">Photographer</option>
+                     <option value="Videographer">Videographer</option>
+                     <option value="Fashion Designer">Fashion Designer</option>
+                     <option value="Therapist">Therapist</option>
+                     <option value="Pharmacist">Pharmacist</option>
+                     <option value="Hair Dresser">Hair Dresser</option>
+                     <option value="Light Driver">Light Driver</option>
+                     <option value="Heavy-Duty Driver">Heavy-Duty Driver</option>
+                     <option value="Electrician">Electrician</option>
+                     <option value="Typist">Typist</option>
+                     <option value="Cook">Cook</option>
+                     <option value="Referee">Referee</option>
+                     <option value="Player Coach">Player Coach</option>
+                     <option value="Event MC">Event MC</option>
+                     <option value="Event Planner">Event Planner</option>
+                     <option value="Wedding Organiser">Wedding Organiser</option>
+                     <option value="Project Management Specialist">Project Management Spec. </option>
+                 </select>
+
+                 <div>
+                    <label for="Expertise" class="labels">     </label>
+                  {{ fl_job_ad_form.speciality(class="form-control adj-width-other",placeholder="Other")}}
+                  {% if fl_job_ad_form.speciality.errors %}
+                    {% for error in fl_job_ad_form.speciality.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+                 </div>
+             </div>
+
+             <!-------PAY TYPE--------->
+             <div class="job-ad-group marginise-bottom">
+                 <label for="Category" class="labels">Field Category: </label>
+                 <select class="form-control"  style="margin-bottom:10px;width:40%" name="field_category_sel">
+                     <option value="Media & Technology">Media & Technology</option>
+                     <option value="Information Technology">Information Technology</option>
+                     <option value="Occupational Health & Safety">Health & Safety</option>
+                     <option value="Miscellenious">Miscellenious</option>
+                     <option value="Education">Education</option>
+                     <option value="Science & History">Science & History</option>
+                     <option value="Engineering">Engineering</option>
+                     <option value="Music & Entertainment">Music & Entertainment</option>
+                     <option value="Transport & Logistics">Transport & Logistics</option>
+                     <option value="Pharmacy">Pharmacy</option>
+                     <option value="Tourism & Hospitality">Tourism & Hospitality</option>
+                     <option value="Literature">Literature</option>
+                     <option value="Life Skills">Life Skills</option>
+                     <option value="Geography & Culture">Geography & Culture</option>
+                     <option value="Health">Typist</option>
+                 </select>
+
+                 <div>
+                    <label for="Category" class="labels">     </label>
+                    {{ fl_job_ad_form.category(class="form-control adj-width-other",placeholder="other")}}
+                    {% if fl_job_ad_form.category.errors %}
+                    {% for error in fl_job_ad_form.category.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                    {% endif %}
+                 </div>
+             </div>
+            <!-------JOB DESCRIPTION--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.description.label(class="labels")}}<br>
+                  {{ fl_job_ad_form.description(class="form-control adj-width-60",placeholder="Describe Project")}}
+                  {% if fl_job_ad_form.description.errors %}
+                    {% for error in fl_job_ad_form.description.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+            <!-------prerequisites--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.working_days.label(class="labels")}}
+
+                  {{ fl_job_ad_form.working_days(class="form-control adj-width-60",placeholder="e.g. Mondays - Wednesdays")}}
+                  {% if fl_job_ad_form.working_days.errors %}
+                    {% for error in fl_job_ad_form.working_days.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------WORK DURATION--------->
+            <div style="display:flex">
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.start_date.label(class="labels")}}
+                  {{ fl_job_ad_form.start_date(class="form-control adj-width-60",placeholder="e.g Mon 23 May 2023 - Fri 23 June 2023")}}
+                  {% if fl_job_ad_form.start_date.errors %}
+                    {% for error in fl_job_ad_form.start_date.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div><p style="margin:0 5px;">   </p>
+            <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.end_date.label(class="labels")}}
+                  {{ fl_job_ad_form.start_date(class="form-control adj-width-60",placeholder="e.g Mon 23 May 2023 - Fri 23 June 2023")}}
+                  {% if fl_job_ad_form.end_date.errors %}
+                    {% for error in fl_job_ad_form.end_date.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+            </div>
+
+
+             <!-------prerequisites--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.project_prerequits.label(class="labels")}}
+                  {{ fl_job_ad_form.project_prerequits(class="form-control adj-width-60",placeholder="e.g. Multimeter, Safety Clothing, Computer")}}
+                  {% if fl_job_ad_form.project_prerequits.errors %}
+                    {% for error in fl_job_ad_form.project_prerequits.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+
+
+
+             <!-------BENEFITS--------->
+              <div class="job-ad-group marginise-bottom">
+                 {{ fl_job_ad_form.benefits_bl.label(class="labels")}}
+                  {{ fl_job_ad_form.benefits_bl()}}<br>
+
+                  {{ fl_job_ad_form.benefits(class="form-control adj-width-60",placeholder="Free House for Accomodation")}}
+                  {% if fl_job_ad_form.benefits.errors %}
+                    {% for error in fl_job_ad_form.benefits.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+
+             </div>
+
+             <!-------Application Deadline--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.application_deadline.label(class="labels")}}<br>
+                  {{ fl_job_ad_form.application_deadline(class="form-control adj-width-60",placeholder="Application Deadline")}}
+                  {% if fl_job_ad_form.application_deadline.errors %}
+                    {% for error in fl_job_ad_form.application_deadline.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------Post By--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ fl_job_ad_form.posted_by.label(class="labels")}}<br>
+                  {{ fl_job_ad_form.posted_by(class="form-control adj-width-60",placeholder="e.g. Posted: John Doe")}}
+                  {% if fl_job_ad_form.posted_by.errors %}
+                    {% for error in fl_job_ad_form.posted_by.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <div>
+                 {{ fl_job_ad_form.publish(class="btns") }}
+                 <!--<input class="btns" type="submit" value="Create Account" />-->
+
+            </div>
+
+        </form>
+       </div>
+    </div>
+  </div>
+  </div>
+  </div></div>
+{% endblock %}

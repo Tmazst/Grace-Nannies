@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!---------------FLASH------------------->
+<div class="flash-messages" id="">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</div>
+
+{% if not current_user.address and current_user.contacts and current_user.reference_1%}
+    <div class="warning-msg-dv"><small class="warning-msg"><span class="warning-word">Warning! </span>Please finish setting up your Account, We need some few details <a href="account">account</a></small></div>
+{% endif %}
+<div style="margin-top:150px;" class="tags">
+<div class="account_container">
+    <div class="card">
+        <div style="width:100%;">
+        <form _lpchecked="1" action="" method="post" enctype="multipart/form-data" class="forms" >
+        <div class="center-prl-img">
+            <div style="margin-left:50px"   class="img-cont">
+                      {% if not image_fl == None %}
+                            <img class="prf-image" src={{image_fl}}/>
+                      {% else %}
+                            <img class="prf-image" src="static/default.jpg">
+                      {% endif %}
+
+            </div>
+        </div>
+
+        <h3 style="font-size:25px;margin-left:50px;margin-bottom:0;"> {{current_user.name.title()}}<br> <span class="spans" style="font-size:16px">{{current_user.email}}</span></h3>
+
+        <div  style="width:60%;margin-left:30px;" ><hr></div>
+
+        <div style="padding-left:50px" class="form-group">
+               {{cv.hidden_tag()}}
+               <h2 class="media-h2"> Account Details </h2>
+
+                <!-- -----------NAME--------------->
+              <div  class="acc-labels margin-l-15">{{ cv.name.label()}}</div>
+               {{   cv.name(class="acc-form-control",placeholder="Name",value=current_user.name)}}
+               {% if cv.name.errors %}
+                   {% for error in cv.name.errors %}
+                       <span class="span-error" >*[name], {{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+              <!-- ------------EMAIL--------------->
+              <div class="acc-labels margin-l-15">{{ cv.email.label()}}</div>
+                 {{ cv.email(class="acc-form-control",placeholder="Email", value=current_user.email)}}
+                 {% if cv.email.errors %}
+                   {% for error in cv.email.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+              <!-- ------------CONTACTS--------------->
+              <div class="acc-labels margin-l-15">{{ cv.contacts.label()}}</div>
+                {{ cv.contacts(class="acc-form-control",placeholder="Contacts", value=current_user.contacts)}}
+                 {% if cv.contacts.errors %}
+                   {% for error in cv.contacts.errors %}
+                       <span class="span-error" >*[Contacts]{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+            <!-- ------------DOB--------------->
+              <div class="acc-labels margin-l-15">{{ cv.date_of_birth.label()}}</div>
+                {{ cv.date_of_birth(class="acc-form-control",placeholder="Contacts", value=current_user.date_of_birth)}}
+                 {% if cv.date_of_birth.errors %}
+                   {% for error in cv.date_of_birth.errors %}
+                       <span class="span-error" >*[Birthday]{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+            <!-- ------------ADDRESS--------------->
+              <div  class="acc-labels margin-l-15">{{ cv.address.label()}}</div>
+                    {% if current_user.address %}
+                        {{ cv.address(class="acc-form-control",placeholder="Physical Address",value=current_user.address)}}
+                    {% else %}
+                        {{ cv.address(class="acc-form-control",placeholder="Physical Address")}}
+                    {% endif %}
+                    {% if cv.address.errors %}
+                       {% for error in cv.address.errors %}
+                           <span class="span-error" >*Physical Address {{error}}</span>
+                       {% endfor %}
+                    {% endif %}
+
+              <div style="margin-left:0;width:100px;" class="user-links" >
+                    <a href="/reset_request"> Change Password </a>
+              </div>
+
+        </div>
+
+
+
+        <div style="padding-left:50px" class="form-group">
+                 <h2 class="media-h2"> Education </h2>
+
+                  <!-- ------------SCHOOL--------------->
+                <div  class="acc-labels margin-l-15">{{ cv.school.label()}}</div>
+                {% if current_user.school %}
+                    {{ cv.school(class="acc-form-control",value=current_user.school)}}
+                {% else %}
+                    {{ cv.school(class="acc-form-control",placeholder="High School")}}
+                {% endif %}
+
+                {% if cv.school.errors %}
+                   {% for error in cv.school.errors %}
+                       <span class="span-error" >*High School{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+                  <!-- ------------TERTIARY--------------->
+                  <div  class="acc-labels margin-l-15">{{ cv.tertiary.label()}}</div>
+                {% if current_user.tertiary %}
+                    {{ cv.tertiary(class="acc-form-control",placeholder="Higher Certificate (Optional)",value=current_user.tertiary)}}
+                {% else %}
+                    {{ cv.tertiary(class="acc-form-control",placeholder="Higher Certificate (Optional)")}}
+                {% endif %}
+                {% if cv.tertiary.errors %}
+                   {% for error in cv.tertiary.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+                <!-- ------------EXPERIENCE--------------->
+                  <div  class="acc-labels margin-l-15">{{ cv.experience.label()}}</div>
+                {% if current_user.experience %}
+                    <textarea  name="experience" class="acc-form-control font-18 media-h2">{{current_user.experience}}</textarea>
+                {% else %}
+                    {{ cv.experience(class="acc-form-control",placeholder="Work Experience (Optional)")}}
+                {% endif %}
+
+                {% if cv.experience.errors %}
+                   {% for error in cv.experience.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+
+        </div>
+
+
+        <div style="padding-left:50px"  class="form-group">
+                 <h2 class="media-h2"> Skills & Interests </h2>
+                  <!-- ------------SKILLS--------------->
+                  <div  class="acc-labels margin-l-15">{{ cv.skills.label()}}</div>
+                {% if current_user.skills %}
+                    <!---{{ cv.skills(class="acc-form-control",datascr=current_user.skills)}}--->
+                   <textarea  name="skills" class="acc-form-control media-h2">{{current_user.skills}}</textarea>
+                {% else %}
+                    {{ cv.skills(class="acc-form-control",placeholder="Efficient and organized secretariat ready to streamline operations and support administrative needs online or on-site")}}
+                {% endif %}
+                {% if cv.skills.errors %}
+                   {% for error in cv.skills.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+                <!-- ------------INTERESTS--------------->
+<!--                Hobbies is replaced with interests, but hobbies attribute is not change in the code, only on html-->
+                  <div  class="acc-labels margin-l-15">{{ cv.hobbies.label()}}</div>
+                {% if current_user.hobbies %}
+
+                  <textarea  name="hobbies" class="acc-form-control media-h2">{{current_user.hobbies}}</textarea>
+                {% else %}
+                    {{ cv.hobbies(class="acc-form-control",placeholder="e.g Agriculture, Farming, Beekeeping")}}
+                {% endif %}
+                {% if cv.hobbies.errors %}
+                   {% for error in cv.hobbies.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+
+        </div>
+
+
+        <div style="padding-left:50px"  class="form-group">
+                <h2 class="media-h2"> References </h2>
+
+                <!-- ------------REFERENCE 1--------------->
+                <div  class="acc-labels margin-l-15">{{ cv.reference_1 .label()}}</div>
+                {% if current_user.reference_1 %}
+                    <textarea  name="reference_1" class="acc-form-control media-h2" placeholder="Name & Contact(s)"> {{current_user.reference_1}}</textarea>
+                {% else %}
+                    {{ cv.reference_1(class="acc-form-control",placeholder="Name & Contact(s)")}}
+                {% endif %}
+                {% if cv.reference_1.errors %}
+                   {% for error in cv.reference_1.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+                <!-- ------------REFERENCE 2--------------->
+                <div  class="acc-labels margin-l-15">{{ cv.reference_2.label()}}</div>
+                {% if current_user.reference_2 %}
+                   <textarea  name="reference_2" class="acc-form-control media-h2" placeholder="Name & Contact(s)"> {{current_user.reference_2}}</textarea>
+                {% else %}
+                    {{ cv.reference_2(class="acc-form-control",placeholder="Name & Contact(s)")}}
+                {% endif %}
+                {% if cv.reference_2.errors %}
+                   {% for error in cv.reference_2.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+        </div>
+
+        <div style="padding-left:50px;width:80%;" class="form-group">
+            <h2 style="font-weight:600" class="media-h2"> Update Profile Image <span style="color:coral">Note: Please upload an ID like image</span></h2>
+            <div style="" class="center-prl-img">
+                <div style="margin:15px auto 0px auto;"  class="img-cont">
+                   <img class="prf-image" src="static/images/default.jpg"/>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding-left:50px;width:80%;" class="form-group">
+              {{ cv.image_pfl(class="acc-form-control")}}
+        </div>
+
+        <div style="padding-left:50px;width:80%;" class="form-group">
+               <h3 class="media-h2"> Upload CV or Resume (Optional)</h3>
+            {{ cv.cv_file(class="acc-form-control")}}
+<!--              {{ cv.image_pfl(class="acc-form-control",placeholder="reference_2")}}-->
+        </div>
+
+        <div style="padding-left:50px;width:40% !important;" class="d-flex flex-row align-items-center justify-content-between">
+              {{ cv.update(class="btns") }}
+        </div>
+            {% if not the_freelancer %}
+                <h3>Are You a Freelancer or You are inspired to be One?</h3>
+                <h4>We ready to usher you in, please follow the link below, </h4>
+                <div  class="btns-margin"><a class="btns" href="/freelancers_form">Join Eswatini Freelancers</a></div>
+            {% else %}
+                <div style="margin-left:50px" class="btns-margin"><a class="btns" href="/freelancers_form_update">Edit Freelance Account?</a></div>
+            {% endif %}
+              </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}

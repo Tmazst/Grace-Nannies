@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flash-messages" class="btns">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</div>
+
+<div class="tags">
+
+
+
+<div id="" style="min-width:350px;"  class="form_container_ browse-job">
+        <div style="" class="form-group">
+              <h2 style="font-size:29px" class="card-title text-center">Freelancer</h2>
+              <div style="margin-left:10px"   class="img-cont">
+                  {% if user_.image %}
+                        <img class="prf-image" src="static/images/{{user_.image}}"/>
+                  {% else %}
+                        <img class="prf-image" src="static/images/default.jpg"/>
+                  {% endif %}
+             </div>
+
+             <div style="" class="form-group">
+                 <div><h3 style="margin-bottom:-10px">Personal Information</h3></div>
+                 <div style="width:60%;margin-bottom:" class="line-separator"></div>
+               <p class="view_applicant_p" ><span  class="acc-labels" style="font-wight:bold;" > </span>{{user_.name}}</p>
+              <p class="view_applicant_p"><span style="font-wight:bold;float:left" > </span>{{user_.email}}</p>
+                 {% if user_.date_of_birth %}
+                    <p class="view_applicant_p"><span style="font-wight:bold;float:left" > </span>{{usr_years}} years</p>
+                 {% endif %}
+                 {% if user_.contacts %}
+                    <p class="view_applicant_p"><span style="font-wight:bold;float:left" > </span>{{user_.contacts}}</p>
+                 {% endif %}
+             </div><br>
+
+              {% if esw_freelancer.other_fl %}
+              <div class="form-group">
+                  <p class="view_applicant_p" ><span style="font-wight:bold;" >"{{esw_freelancer.other_fl}}"</span></p>
+              </div>
+              {% endif %}
+
+            <div class="form-group">
+                  <h3 style="display:block;width:260px;margin-bottom:-10px"> About Freelancer </h3>
+                  <div style="width:60%;margin-bottom:-10px" class="line-separator"></div><br>
+                  <p class="view_applicant_p" ><span class="view_freelanca_p" >Skills </span><span>: : :</span> {{esw_freelancer.other_fl1}}</p><br>
+                  <p class="view_applicant_p" ><span class="view_freelanca_p" >What I Do </span><span>: : : </span> {{esw_freelancer.what_do_you_do}}</p><br>
+                  <p class="view_applicant_p" ><span class="view_freelanca_p"  >Previous Works </span></span><span>: : : </span> {{esw_freelancer.fl_experience}}</p>
+
+            </div>
+
+            <div class="form-group">
+                 <h3 style="margin-bottom:-10px">Follow my Links</h3>
+                 <div style="width:60%;margin-bottom:-10px" class="line-separator"></div>
+                {% if esw_freelancer.fb_link %}
+                    <a href="{{esw_freelancer.fb_link}}" ><p class="view_applicant_p" ><span class="view_freelanca_p" >Facebook </span><span></span></p></a>
+                {% endif %}
+                {% if esw_freelancer.pinterest_link %}
+                    <a href="{{esw_freelancer.pinterest_link}}" ><p class="view_applicant_p" ><span class="view_freelanca_p"> Pinterest </span><span></span></p></a>
+                {% endif %}
+                {% if esw_freelancer.linkedin_link %}
+                    <a href="{{esw_freelancer.linkedin_link}}" ><p class="view_applicant_p" ><span class="view_freelanca_p"> LinkedIn </span><span></span></p></a>
+                {% endif %}
+                {% if esw_freelancer.twitter_link %}
+                    <a href="{{esw_freelancer.twitter_link}}" ><p class="view_applicant_p" ><span class="view_freelanca_p"> X </span><span></span></p></a>
+                {% endif %}
+                {% if esw_freelancer.youtube %}
+                    <a href="{{esw_freelancer.youtube}}"><p class="view_applicant_p" ><span class="view_freelanca_p"> YouTube </span><span></span></p></a>
+                {% endif %}
+                {% if esw_freelancer.instagram_link %}
+                    <a href="{{esw_freelancer.instagram_link}}"><p class="view_applicant_p" ><span class="view_freelanca_p"> Intagram </span><span></span></p></a>
+                {% endif %}
+            </div>
+            {% if esw_freelancer.portfolio_pdf %}
+                <div class="form-group">
+                    <h3 style="margin-bottom:-10px">Check My Resume</h3><br>
+                    <a id="open_pdf" style="background-color:#f66;" class="view_freelanca_p"  href="/pdf_viewer?opn_fl={{esw_freelancer.portfolio_pdf}}">Open Resume</a>
+                </div>
+            {% endif %}
+
+            <div style="padding-bottom:25px;" class="form-group">
+                <h3 style="margin-bottom:-10px">References</h3>
+                <div style="width:60%;" class="line-separator"></div>
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Physical Address </span><span>: : :</span> </span>{{user_.address}}</p>
+
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Reference One </span><span>: : :</span></span>{{user_.reference_1}}</p>
+
+                <p class="view_applicant_p" ><span class="view_freelanca_p" >Reference Two</span><span>: : :</span></span>{{user_.reference_2}}</p>
+
+
+            </div>
+
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <div style="dispaly:block">
+                    <!--<input class="btns" type="submit" value="Create Account" />-->
+                    <a class="btns" href="{{ url_for('hire_freelancer', id=ser.dumps({'data17':user_.id})) }}">Hire My Services</a>
+                </div>
+           </div>
+       </div>
+    </div>
+</div>
+
+
+{% endblock %}
