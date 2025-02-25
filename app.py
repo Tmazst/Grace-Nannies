@@ -19,7 +19,7 @@ import rsa
 # from flask_security import Security,SQLAlchemyUserDatastore
 import pyotp
 # ......for local DB
-import MySQLdb
+# import MySQLdb
 from sqlalchemy import text
 from flask_sqlalchemy import SQLAlchemy
 # from flask_migrate import Migrate
