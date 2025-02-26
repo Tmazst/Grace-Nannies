@@ -16,7 +16,7 @@
     <title>Grace Nannies</title>
     <link rel="icon" type="image/png" href="static/icons/logo_icon.png">
 
-<!--    <div class="main">-->
+
   <div class="logo-container gen-flex">
     <img src="static/icons/logo_icon.png" />
     <div class="logo-ttl-h1s">
@@ -25,10 +25,9 @@
     </div>
   </div>
 
- 
-<!--        <div style="height:77px;"></div>-->
 
-        <div id="nav-div" class="nav-div">
+
+        <div style id="nav-div" class="nav-div">
 
             <div id="nav-div-cont">
                 <ul class="navbar-nav">
@@ -40,15 +39,14 @@
                       {% if count_jobs %}
                      <div class="notif-numb-div"><p style="font-size:10px;" class="notif-numb-update">{{count_jobs}}</p></div>{% endif%}
                   </li>
-                  <!-- <li class="nav-item-main">
-                    <a class="nav-link" href="/about">About</a>
-                  </li>
-                  <li class="nav-item-main">
-                    <a class="nav-link" href="/contact" >Contact Us</a>
-                  </li> -->
                 </ul>
             </div>
             <div class="filler"></div>
+            <div onclick="sideNavFunc(event)" class="menu-btn gen-flex-col">
+              <div class="stroke"></div>
+              <div class="stroke"></div>
+              <div class="stroke"></div>
+            </div>
 
 
             <div class="user">
@@ -68,6 +66,33 @@
             </div>
 
         </div>
+
+        <div onclick="closeSideNavFunc()"  id="side-navig-bg" class="side-nav-bg gen-flex-col">
+          <div id="side-navig-cont" class="side-nav-cont move-to-appear gen-flex-col">
+              <div style="padding-top:25px"  class="gen-flex-col cat-item-cont">
+                <a href="/">
+                  <div class="gen-flex">
+                    <img style="height:70px" src="static/icons/logo_icon.png" />
+                    <span style="color:rgb(34, 34, 34);font-weight: 600;">Grace Nannies</span>
+                  </div>
+                </a>
+                <a href="/"> <div class="cat-item"><span>Home</span></div></a>
+                <a href="#"> <div class="cat-item"><span>Jobs</span></div></a>
+                <a href="#"> <div class="cat-item"><span>About</span></div></a>
+                <a href="#"> <div class="cat-item"><span>Account</span></div></a>
+                {%for category in categories%}
+                <!----Construct number of images--->
+                {% set num_images = images | selectattr('image_category', 'equalto', category) | list | length %} 
+                    <a href="/?cat={{category}}"> <div class="cat-item"><span>{{category}}</span>{%if num_images > 0%}<small class="num gen-flex">{{num_images}}</small>{%endif%}</div></a>
+                {%endfor%}
+              </div>
+              <div class="filler"></div>
+            <div class="gen-flex-col lower-nav">
+                <a href="#" download><div class="gen-flex"><img style="height:30px" src="static/icons/android-icon.png" /><span class="labels">Install App</span></div></a>
+                <a href="#"><div class="gen-flex"><img style="height:30px" src="static/icons/about-icon.png" /><span class="labels">About</span></div></a> 
+            </div>
+          </div>   
+      </div>
 
     {% if current_user.is_authenticated %}
         <div style="" class="user_captions user-acc-captions"><small>Welcome, {{current_user.name}}</small></div>
