@@ -1249,6 +1249,14 @@ input[type="checkbox"]{
     max-width: 400px;
   }
 
+.acc-labels label{
+    margin-left: auto !important;
+}
+
+.media-h2{
+    margin-left: auto !important;   
+}
+
 .layout_ls_cont{
     width:100%;
     margin-left:auto;
@@ -1264,9 +1272,9 @@ input[type="checkbox"]{
 .menu-btn{
     width:60px;
     height: 50px;
-    /* background-color: #303030; */
     align-items: flex-start;
     gap:7px;
+    padding-left: 5px;
 }
 
 .stroke:nth-child(1){
@@ -1856,7 +1864,7 @@ img{
 
 .btns{
     /* height:20px; */
-    padding:7px 12px;
+    padding:5px;
     color:rgb(252, 252, 252);
     font-weight:500 !important;
     border-radius:15px;

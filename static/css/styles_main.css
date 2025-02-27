@@ -2637,8 +2637,8 @@ display:none
 .user-acc-captions{
     position:fixed;
     z-index:1001;
-    right:0;
-    top:-4px;
+    right:5px;
+    top:-40px;
     width:auto !important;
     background-color:coral;
     padding-left:9px;

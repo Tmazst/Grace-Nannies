@@ -272,20 +272,30 @@ def sign_up():
         if request.method == 'POST':
             # context
             # If the webpage has made a post e.g. form post
-            hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
-            user1 = job_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
-                             confirm_password=hashd_pwd, image="default.jpg",
-                             time_stamp=datetime.utcnow())
+            user1 = None
+            print("Role Choice Data: ", register.role_choice.data)
+            if register.role_choice.data: #If job Seeker
+                print(register.role_choice.data)
+                hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
+                user1 = job_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
+                                confirm_password=hashd_pwd, image="default.jpg",
+                                time_stamp=datetime.now())
 
-            try:
-                db.session.add(user1)
-                db.session.commit()
-                flash(f"Account Successfully Created for {register.name.data}", "success")
-                return redirect(url_for('login'))
-            except Exception as e:
-                flash(f"Something went wrong,please check for errors", "error")
-                Register().validate_email(register.email.data)
-
+            if not register.role_choice.data:
+                hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
+                user1 = company_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
+                                confirm_password=hashd_pwd, image="default.jpg",
+                                time_stamp=datetime.now())
+    
+            # try:
+            db.session.add(user1)
+            db.session.commit()
+            flash(f"Account Successfully Created for {register.name.data}", "success")
+            return redirect(url_for('login'))
+            # except Exception as e:
+            #     flash(f"Something went wrong,please check for errors : {e}", "error")
+            #     Register().validate_email(register.email.data)
+    
     elif register.errors:
         flash(f"Account Creation Unsuccessful ", "error")
 
@@ -297,138 +307,40 @@ def about():
     return render_template("about.html")
 
 
-# ----------------BLOG---------------------- #
-blog_cls = blog_class()
-
-@app.route("/blog_index")
-def blog_index():
-
-    blogs_dict = blog_cls.load_blogs()
-
-    blog_titles = blogs_dict.keys()
-
-    return render_template("blog_index.html",blog_titles=blog_titles,blogs_dict=blogs_dict)
-
-
-@app.route("/blog-page",methods=["POST","GET"])
-def blog_page():
-
-    if request.method == "GET":
-
-        title = request.args.get("title")
-        print("TITLE: ",title)
-        print("TITLE: ", blog_cls.load_blogs()[title]['picture'])
-        if title:
-            blog = blog_cls.load_blogs()[title]
-        else:
-            blog=None
-
-    return render_template("blog-page.html",blog=blog,title=title)
-
-@app.route("/write_blog", methods=["POST", "GET"])
-def blog_writer():
-    # blog_form = Blog_Form()
-
-    if request.method == "POST":
-
-        title = request.form['title']
-        body = request.form['body']
-        author = request.form['author']
-        image_path = request.files['blog-image']
-
-        print("BODY: ",body)
-
-        file_name = secure_filename(image_path.filename)
-
-        # image_path.save("static/images/"+file_name)
-
-        # image_path = save_pic(file_name)
-
-        #Create hash for image name
-        img_name, _ext = os.path.splitext(file_name)
-        gen_random = secrets.token_hex(8)
-        new_img_name = gen_random + _ext
-
-        #Save image in designated path
-        image_path.save(os.path.join(app.root_path,"static/images/blog_images", new_img_name))
-
-        # print("Image Name: ", new_img_name)
-
-        blog_cls.blogs_filer(title, body, author, new_img_name)
-
-        return redirect(url_for("blog_writer"))
-
-
-    return render_template("blog_writer.html")
-
-
-
-# --------------END BLOG-------------------- #
-
-
-
 # ----------------UPDATE ACCOUNT --------------#
 @app.route("/account", methods=['POST', 'GET'])
 @login_required
 def account():
     from sqlalchemy import update
 
-    cv = Update_account_form()
-    # print("Current User: ",current_user.name)
+    form = Update_account_form()
 
-    image_fl = url_for('static', filename='images/' + current_user.image)
-
-    the_freelancer = Esw_Freelancers.query.filter_by(uid=current_user.id).first()
-
+    user = job_user.query.get(current_user.id)
+    
     if request.method == 'POST':
 
-        if cv.validate_on_submit():
-            id = current_user.id
-            usr = job_user.query.get(id)
-
-            # Image
-            if usr.image and cv.image_pfl.data:
-                delete_img(usr.image)
-                usr.image = save_pic(picture=cv.image_pfl.data)
-
-            elif cv.image_pfl.data and not usr.image:
-                pfl_pic = save_pic(picture=cv.image_pfl.data)
-                usr.image = pfl_pic
-
-            # PDF
-            if usr.other and cv.cv_file.data:
-                delete_pdf(usr.other)
-                usr.other = save_pdf(cv.cv_file.data)
-
-            elif cv.cv_file.data and not usr.other:
-                file = save_pdf(cv.cv_file.data)
-                usr.other = file
-
-            usr.name = cv.name.data
-            usr.email = cv.email.data
-            usr.date_of_birth = cv.date_of_birth.data
-            usr.contacts = cv.contacts.data
-            usr.school = cv.school.data
-            usr.tertiary = cv.tertiary.data
-            usr.address = cv.address.data
-            usr.hobbies = cv.hobbies.data
-            usr.reference_1 = cv.reference_1.data
-            usr.reference_2 = cv.reference_2.data
-            usr.skills = cv.skills.data
-            usr.experience = cv.experience.data
+        if form.validate_on_submit():
+            user.name = form.name.data
+            user.email = form.email.data
+            user.date_of_birth = form.date_of_birth.data
+            user.contacts = form.contacts.data
+            user.school = form.school.data
+            user.tertiary = form.tertiary.data
+            user.address = form.address.data
+            user.hobbies = form.hobbies.data
+            user.skills = form.skills.data
+            user.experience = form.experience.data
 
             db.session.commit()
 
             flash("Account Updated Successfully!!", "success")
-
-        elif cv.errors:
+        elif form.errors:
             pass
 
-    elif cv.errors:
+    elif form.errors:
         flash("Update Unsuccessful!!, check if all fields are filled", "error")
 
-    return render_template("account.html", cv=cv, title="Account", image_fl=image_fl, ser=ser,
-                           the_freelancer=the_freelancer)
+    return render_template("account.html", form=form, title="Account", user=user)
 
 
 @app.route("/login", methods=["POST", "GET"])
@@ -443,51 +355,17 @@ def login():
         if login.validate_on_submit():
 
             user_login = user.query.filter_by(email=login.email.data).first()
-
-            if user_login:
-                arg_token = user_class().get_reset_token(user_login.id)
-                # flash(f"Token {arg_token}", "success")
-            # else:
-            #     flash(f"Something Wrong, Do you mean! {user_login.name.title()} ", "error")
-            # Stay sign in
-            if user_login:
-                session['user_id'] = user_login.id
-            if request.form.get('stay_signed_in'):
-                token = secrets.token_urlsafe(16)  # Generate a 16-character token
-                user_login.token = token
-                db.session.commit()
-                # Set a persistent cookie with the token
-                resp = make_response("Login successful")
-                resp.set_cookie('stay_signed_in', token, httponly=True, max_age=60 * 60 * 24 * 30)  # 30 days
-                return resp
+           
+            if user_login and encry_pw.check_password_hash(user_login.password, login.password.data):
+                if user_login: #user_login.verified
+                    login_user(user_login)
+                    # After login required prompt, take me to the page I requested earlier
+                    req_page = request.args.get('next')
+                    flash(f"Welcome! {user_login.name.title()}", "success")
+                    return redirect(req_page) if req_page else redirect(url_for('home'))
 
             else:
-                if user_login and encry_pw.check_password_hash(user_login.password, login.password.data):
-                    if not request.form.get("use_2fa_auth") == 'y' and user_login.verified:
-                        login_user(user_login)
-                        # After login required prompt, take me to the page I requested earlier
-                        req_page = request.args.get('next')
-                        flash(f"Hey! {user_login.name.title()} You're Logged In!", "success")
-                        return redirect(req_page) if req_page else redirect(url_for('home'))
-
-                    elif request.form.get("use_2fa_auth") == 'y' and user_login.verified:
-                        # send_opt(user_login.id)
-                        # two_fa_form = Two_FactorAuth_Form()
-                        Quick_Gets.uid_token = arg_token
-                        return redirect(
-                            url_for('two_factor_auth', arg_token=arg_token))  # user_id=arg_token,
-
-                    elif request.form.get("use_2fa_auth") == 'y' and not user_login.verified:
-                        Quick_Gets.uid_token = arg_token
-                        return redirect(url_for('verification', arg=arg_token))
-
-                    elif not request.form.get("use_2fa_auth") == 'y' and not user_login.verified:
-                        user_id_ = user_login.id
-                        return redirect(url_for('verification', arg=arg_token))
-
-
-                else:
-                    flash(f"Login Unsuccessful, please use correct email or password", "error")
+                flash(f"Login Unsuccessful, please use correct email or password", "error")
 
     return render_template('login_form.html', title='Login', login=login)
 

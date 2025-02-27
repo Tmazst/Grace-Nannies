@@ -12,19 +12,17 @@ class Register(FlaskForm):
     email = StringField('email', validators=[DataRequired(),Email()])
     password = PasswordField('password', validators=[DataRequired(), Length(min=8, max=120)])
     confirm = PasswordField('confirm', validators=[DataRequired(),EqualTo('password'), Length(min=8, max=120)])
-    role_choice = RadioField('Job seeker/Employer',choices=[(True,"Job Seeker"),(False,"Employer")])
+    role_choice = RadioField('Job seeker/Employer',choices=[(True,"Job Seeker"),(False,"Employer")],default=True)
 
     submit = SubmitField('Create Account!')
 
 
     def validate_email(self,email):
         from app import db, user,app
-
         # with db.init_app(app):
         user_email = user.query.filter_by(email = self.email.data).first()
         if user_email:
             raise ValidationError(f"This email is already registered in this platform")
-
 
 
 class Login(FlaskForm):
@@ -44,6 +42,7 @@ class Contact_Form(FlaskForm):
     message = TextAreaField("Message",validators=[Length(min=8, max=2000)])
     submit = SubmitField("Send")
 
+
 class Two_FactorAuth_Form(FlaskForm):
     use_2fa_auth_input = StringField("Paste 2FA Code Here: ")
     submit = SubmitField('Continue')
@@ -57,16 +56,11 @@ class Update_account_form(FlaskForm):
     contacts = StringField('Contact(s)', validators=[Length(min=8, max=120)])
     date_of_birth = DateField('Date of Birth:', format="%Y-%m-%d")
     school = StringField('High School', validators=[Length(min=8, max=120)])
-    tertiary = StringField('Tertiary (Optional)',validators=[Length(min=0, max=120)])
     experience = TextAreaField('Work Experience (Optional)',validators=[Length(min=0, max=120)])
     skills = TextAreaField('About Yourself Hint: Why should companies hire you', validators=[Length(min=10, max=30)])
     hobbies = StringField('Interests (Optional)')
     address = StringField('Physical Address', validators=[DataRequired(), Length(min=8, max=120)])
-    cv_file = FileField('Upload CV/Resume', validators=[FileAllowed(['pdf', 'docx'])])
-    reference_1 = TextAreaField('Reference ',
-                                validators=[DataRequired(), Length(min=8, max=200)])
-    reference_2 = TextAreaField('Reference',
-                                validators=[DataRequired(), Length(min=8, max=200)])
+
 
     def validate_email(self,email):
         from app import db, user
