@@ -888,7 +888,6 @@ a{
 }
 
 .warning{
-    //background-color:#e99 !important;
     color:orange;
 }
 
@@ -897,17 +896,15 @@ a{
 
 }
 
-
 ul.paras-subtopics{
     font-size:0.9em;
     color:#606060;
 }
 
 .tags h1,h2,h3{
-    margin: 35px 0;
     color:#404040;
-    //line-height:1x;
 }
+
 .spans{
     color:var(--main-color);
 }
@@ -919,11 +916,7 @@ span.spans{
 
 /* Account Form*/
 .account_container{
-
     width:70%;
-    //min-width:450px;
-    /*background-color: #f8f9fa;*/
-
 }
 
 
@@ -1578,38 +1571,25 @@ font-weight:400;
 /* Fill Up Form*/
 .form_container{
     display:flex;
-    //justify-content:flex-start;
     max-width:600px !important;
-    min-width:350px !important;
+    min-width:295px !important;
     direction:column;
     border-radius:10px;
-    //border:1px solid #aaa;
     padding:10px;
-    //height:50vh;
-    //background-color:red;
+    width:100%
 }
 
 .form_container_{
     display:flex;
     flex-direction:row;
-    justify-content: !important;
-    //flex-wrap:wrap;
+    justify-content: center !important;
     max-width:600px !important;
     min-width:350px !important;
     border-radius:10px;
     padding:50px;
 }
 
-.form-control{
-  background-color: #f8f9fa;
-  padding: 10px;
-  padding: 10px 15px;
-  margin-bottom: 0.8rem;
-  border:1px solid #bebebe;
-  border-radius:10px;
-  //display:inline-block;
-  width:100%
-}
+
 
 h2{
   padding-top: 1.5rem;
@@ -2336,40 +2316,29 @@ width:70% !important;
 }
 
 .card{
-  //max-width: 300px;
-  //min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  max-width: 1000px;
-  width: 800px !important;
+  width: 100%;
   padding: 35px;
-
   border: 1px solid rgba(255, 255, 255, .25);
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.45);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-
   backdrop-filter: blur(15px);
 }
 
 .card-appl{
-  //max-width: 300px;
-  //min-height: 400px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   max-width: 1000px;
   width: 95% !important;
   padding: 35px;
-
   border: 1px solid rgba(255, 255, 255, .25);
   border-radius: 20px;
   background-color: rgba(255, 255, 255, 0.45);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.25);
-
   backdrop-filter: blur(15px);
 }
 

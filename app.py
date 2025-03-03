@@ -10,8 +10,7 @@ from flask_login import login_user, LoginManager, current_user, logout_user, log
 from Forms import Register, Login, Contact_Form, Update_account_form, Reset, Reset_Request, Two_FactorAuth_Form
 from Tokeniser import Tokenise
 from flask_mail import Mail, Message
-from Advert_Forms import Job_Ads_Form, Company_Register_Form, Company_Login, Company_UpdateAcc_Form, Freelance_Ads_Form, \
-    Freelance_Section, Job_Feedback_Form, Approved_Form
+from Advert_Forms import *
 import os
 from PIL import Image
 from sqlalchemy import exc, desc
@@ -37,11 +36,6 @@ import platform
 import base64
 # from bs4 import BeautifulSoup as b_soup
 import requests
-
-# from models.user import get_reset_token, very_reset_token
-# DB sessions
-# db_sessions = sessionmaker(bind=engine)
-# db = db_sessions()
 
 # Applications
 app = Flask(__name__)
@@ -510,26 +504,6 @@ def two_factor_auth(arg_token):
     return render_template('2_facto_form.html', two_fa_form=two_fa_form, _external=True)
 
 
-
-# @app.route('/send_2fa')
-# def send_two_factor_code(user_id, otp_code):
-#     otp = pyotp.TOTP(otp_key)
-#     user_obj = user.query.get(user_id)
-#     code = generate_6_digit_code()
-#     verfy = pyotp.TOTP(user_obj.store_2fa_code)
-#
-#     try:
-#         print("DEBUG send_two_factor_code Trying to Verify", verfy.verify(otp_code))
-#         if verfy.verify(otp_code):
-#             print("DEBUG send_two_factor_code Verified")
-#             login_user(user_obj)
-#             req_page = request.args.get('next')
-#             flash(f"Hey! {user_obj.name.title()} You're Logged In!", "success")
-#             return redirect(req_page) if req_page else redirect(url_for('home'))
-#     except:
-#         return 'Something Wrong Happened or Code time may have expired, Press re-send code'
-
-
 @app.before_request
 def load_user_from_cookie():
     if 'user_id' not in session and 'stay_signed_in' in request.cookies:
@@ -547,19 +521,6 @@ def log_out():
     # make_response('Logged out').delete_cookie('stay_signed_in')
 
     return redirect(url_for('home'))
-
-
-# @app.route("/user")
-# def user_profile():
-#     from sqlalchemy import text
-#
-#     users = []
-#     all = text('''SELECT * FROM company_user;''')
-#     # db has binded the engine's database file
-#     for ea_user in db.execute(all):
-#         users.append(list(ea_user))
-#
-#     return f"{users}"
 
 
 @app.route("/contact", methods=["POST", "GET"])
@@ -711,16 +672,11 @@ If you did not requested the above message please ignore it, and your password w
     return render_template("reset_request.html", reset_request_form=reset_request_form)
 
 
-@app.route("/how_does_it_work")
-def tht_how():
-    return render_template("how_does_it_work.html", ser=ser)
-
-
 @app.route("/job_ads_form", methods=["POST", "GET"])
 @login_required
 def job_ads_form(udi=None):
     job_ad_form = Job_Ads_Form()
-    job_ads_model = Jobs_Ads
+    job_ads_model = Jobs_Adverts
 
     usr_id = request.args.get("udi")
 
@@ -733,108 +689,16 @@ def job_ads_form(udi=None):
             job_post1 = job_ads_model(
                 job_title=job_ad_form.job_title.data,
                 description=job_ad_form.description.data,
-                category=request.form.get('field_category_sel'),
-                responsibilities=job_ad_form.responsibilities.data,
                 qualifications=job_ad_form.qualifications.data,
-                contact_person=job_ad_form.posted_by.data,
-                job_type=request.form.get('job_type_sel'),
                 application_deadline=job_ad_form.application_deadline.data,
-                job_posted_by=current_user.id,
-                about_company=job_ad_form.about_company.data
+                benefits=job_ad_form.benefits.data,
+                job_posted_by=current_user.id
             )
-
-            # if bools are True
-            if job_ad_form.pay_type_bl.data:
-                # print('Job Type: ', job_ad_form.pay_type_bl.data)
-                job_post1.pay_type = job_ad_form.other_pay_type.data
-
-            if job_ad_form.other_job_type.data:
-                job_post1.job_type = job_ad_form.other_job_type.data
-
-            if job_ad_form.work_duration_bl.data:
-                job_post1.work_duration = job_ad_form.start_date.data
-                job_post1.work_duration2 = job_ad_form.end_date.data
-
-            if job_ad_form.work_days_bl.data:
-                job_post1.work_days = job_ad_form.work_days.data
-
-            if job_ad_form.work_hours_bl.data:
-                job_post1.work_hours = job_ad_form.work_hours.data
-
-            if job_ad_form.age_range_bl.data:
-                job_post1.age_range = job_ad_form.age_range.data
-
-            if job_ad_form.benefits_bl.data:
-                job_post1.benefits = job_ad_form.benefits.data
-
-            if not request.form.get('field_category_sel'):
-                job_post1.category = job_ad_form.category.data
 
             db.session.add(job_post1)
             db.session.commit()
 
-            if request.args.get("udi"):
-                uid = request.args.get("udi")
-                id_ = ser.loads(uid)['data2']
-
-                #Check if the user is not currently hired somewhere
-                usr_is_cur_hired = hired.query.filter_by(usr_cur_job=1, hired_user_id=id_).first()
-                if usr_is_cur_hired:
-                    company = company_user.query.get(usr_is_cur_hired.comp_id)
-                    flash(f"This Job Seeker is currently hired and working for: {company.name}")
-                    db.session.delete(Jobs_Ads.query.get(job_post1.job_id))
-                    return redirect(url_for("users"))
-
-                # Logic to hire the user and update the application status
-                hire_user = hired(
-                    comp_id=current_user.id,
-                    hired_user_id=id_,
-                    job_details=job_post1.job_id,
-                    usr_cur_job=1,  # Currently hired
-                    hired_date=datetime.utcnow()
-                )
-
-                db.session.add(hire_user)
-
-                #-------APPLICATION-------#
-                apply = Applications(
-                    applicant_id=id_,
-                    job_details_id=job_post1.job_id,  # db.query(Jobs_Ads).get(jb_id),
-                    employer_id=current_user.id
-                )
-
-                # Check if application not sent before
-                job_appl = Applications.query.filter_by(job_details_id=job_post1.job_id, applicant_id=id_).first()
-                company_obj = company_user.query.get(apply.employer_id)
-
-                # print('----------------------job_appl: ',job_appl)
-                if not job_appl:
-                    db.session.add(apply)
-                    db.session.commit()
-                    # job_title = Jobs_Ads.query.get(jb_id).job_title
-                    # job_id = Jobs_Ads.query.get(jb_id).job_id
-                    # return render_template("send_application.html", send_application=send_application, job_id=job_id,
-                    #                        job_title=job_title,
-                    #                        company_obj=company_obj, ser=ser)
-                #--------END APPLICATION CODE--------_#
-
-                close_appl = Applications.query.filter_by(job_details_id=job_post1.job_id).first()
-                if close_appl:
-                    close_appl.closed = "Yes"  # This means that this user is hired
-
-                db.session.commit()
-
-                # flash message for successful hiring
-                flash(f'You have successfully hired {user.query.get(id_).name} for {Jobs_Ads.query.get(job_post1.job_id).job_title}',
-                    'success')
-
-                return redirect(url_for("users"))
-
-
             flash('Job Posted Successfully!!', 'success')
-
-    # elif request.method == "GET":
-    #     job_ad = Jobs_Ads.query.filter_by(job_id=ser.loads(request.args.get("jo_id"))['data_11']).first()
 
     return render_template("job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad,usr_id=usr_id)
 

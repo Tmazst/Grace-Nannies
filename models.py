@@ -79,9 +79,9 @@ class company_user(user):
     youtube = db.Column(db.String(120))
     other = db.Column(db.String(120))
     payment_options = db.Column(db.String(100))
-    job_ads = relationship("Jobs_Ads", backref='Jobs_Ads.job_title',lazy=True)
+    job_ads = relationship("Jobs_Adverts", backref='Jobs_Adverts.job_title',lazy=True)
     applicantions_posted = relationship("Applications", backref='employer', lazy=True)
-    freelance_job_ads = relationship("Freelance_Jobs_Ads", backref='Freelance_Jobs_Ads.service_title', lazy=True)
+    freelance_job_ads = relationship("Freelance_Jobs_Adverts", backref='Freelance_Jobs_Adverts.service_title', lazy=True)
 
     __mapper_args__ = {
         "polymorphic_identity": 'company_user'
@@ -120,11 +120,6 @@ class Esw_Freelancers(db.Model, UserMixin): #A table form filling prior tht expe
 
 class Freelancers(job_user): #A table form filling prior tht experience
     pass
-#     id = db.Column(db.Integer, ForeignKey('job_user.id'), primary_key=True)
-#     portfolio_pdf = db.Column(db.String(120))
-#     fl_experience = db.Column(db.String(120))
-#     other_fl = db.Column(db.String(120))
-#     what_do_you_do = db.Column(db.String(1000))
 
 
 #After the user finishes the current(latest) job contract they supposed to fill a form to be used to store their work experience
@@ -169,32 +164,22 @@ class Email_Verifications(db.Model, UserMixin):
     generated_hash = db.Column(db.String(120))
     time_stamp = db.DateTime()
 
-class Jobs_Ads(db.Model, UserMixin):
+
+class Jobs_Adverts(db.Model, UserMixin):
 
     __tablename__ = "job_ads"
 
     job_id = db.Column(db.Integer, primary_key=True)
     job_title = db.Column(db.String(100))
-    pay_type = db.Column(db.String(50))
-    job_type = db.Column(db.String(50))
-    about_company = db.Column(db.String(255))
-    category = db.Column(db.String(255))
     description = db.Column(db.String(200))
-    work_duration = db.Column(db.DateTime)
-    work_duration2 = db.Column(db.DateTime)
-    work_days = db.Column(db.String(60))
-    work_hours = db.Column(db.String(60))
-    responsibilities = db.Column(db.String(200))
     qualifications = db.Column(db.String(200))
-    age_range = db.Column(db.String(60))
     benefits = db.Column(db.String(200))
     application_deadline = db.Column(db.DateTime, nullable=False)
-    contact_person = db.Column(db.String(60))
     other = db.Column(db.String(120))
-    date_posted = db.Column(db.DateTime, default=datetime.utcnow, nullable=False) #Records itself
+    date_posted = db.Column(db.DateTime, default=datetime.now, nullable=False) #Records itself
     job_posted_by = db.Column(db.Integer, ForeignKey('company_user.id'),nullable=False) #Records itself
     applicantions = relationship("Applications", backref='All Applications', lazy=True)
-    tht_portfolio_hired = relationship("users_tht_portfolio", backref='users_tht_portfolio.id', lazy=True)
+
 
 class Applications(db.Model, UserMixin):
 
@@ -205,8 +190,9 @@ class Applications(db.Model, UserMixin):
     employer_id = db.Column(db.Integer, ForeignKey('company_user.id'), nullable=False)
     job_details_id = db.Column(db.Integer, ForeignKey('job_ads.job_id'), nullable=False)
     other = db.Column(db.String(120))
-    time_stamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    time_stamp = db.Column(db.DateTime, default=datetime.now, nullable=False)
     closed = db.Column(db.String(200))
+
 
 class FreeL_Applications(db.Model, UserMixin):
 
@@ -220,7 +206,7 @@ class FreeL_Applications(db.Model, UserMixin):
     time_stamp = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     closed = db.Column(db.String(200))
 
-class Freelance_Jobs_Ads(db.Model, UserMixin):
+class Freelance_Jobs_Adverts(db.Model, UserMixin):
 
     __tablename__ = "freelance_job_ads"
 

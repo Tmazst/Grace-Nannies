@@ -16,7 +16,6 @@ class Register(FlaskForm):
 
     submit = SubmitField('Create Account!')
 
-
     def validate_email(self,email):
         from app import db, user,app
         # with db.init_app(app):

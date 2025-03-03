@@ -10,51 +10,13 @@ from Forms import Register
 class Job_Ads_Form(FlaskForm):
 
     job_title = StringField('Job Title:', validators=[DataRequired(), Length(min=2, max=120)])
-    pay_type_bl = BooleanField('Pay Type:')
-    other_pay_type = StringField('Other:')
-    other_job_bl = BooleanField('Other Job Type:')
-    other_job_type = StringField('Other:')
-    about_company = TextAreaField('Brief About Company:')
     description = TextAreaField('Job Description or Tasks:', validators=[DataRequired(), Length(min=5, max=400)])
-    category = StringField('Category:')
-    work_duration_bl = BooleanField('')
-    work_duration = StringField('Work/Project Duration (Start - End):')
-    start_date = DateField('Project Starts:', format="%Y-%m-%d")
-    end_date = DateField('Ends: (Tick To Include)', format="%Y-%m-%d")
-    work_days_bl = BooleanField('')
-    work_days = StringField('Working Days: (Tick To Include)')
-    work_hours_bl = BooleanField('')
-    work_hours = StringField('Work Hours: (Tick To Include)')
-    responsibilities = TextAreaField('Key Roles & Responsibilities:')
     qualifications = TextAreaField('Requirements & Qualifications:', validators=[DataRequired(), Length(min=5, max=400)])
-    age_range_bl = BooleanField('Age Range: (Tick To Include)')
-    age_range = StringField('Age Range: ')
-    benefits_bl = BooleanField('Benefits: (Tick To Include)')
     benefits = TextAreaField('Benefits: ')
     application_deadline = DateField('Application Deadline:',format="%Y-%m-%d")
-    # application_details = TextAreaField('Application Details', validators=[DataRequired(), Length(min=2, max=20)])
-    posted_by = StringField('Posted By:')
 
     publish = SubmitField("Publish")
 
-class Freelance_Ads_Form(FlaskForm):
-
-    service_title = StringField('Project Title:', validators=[DataRequired(), Length(min=2, max=120)])
-    speciality = StringField('Expertise or Skill:')
-    category = StringField('Category:')
-    description = TextAreaField('Project Description:', validators=[DataRequired(), Length(min=5, max=400)])
-    start_date = DateField('Project Starts:',format="%Y-%m-%d")
-    end_date = DateField('Ends:',format="%Y-%m-%d")
-    project_duration = StringField('Project Duration (Start - End):')
-    working_days = StringField('Project Working Days:')
-    project_prerequits = TextAreaField('Pre-requisites for Project:', validators=[DataRequired(), Length(min=5, max=500)])
-    benefits_bl = BooleanField('Include Benefits?:')
-    benefits = TextAreaField('Benefits: (Tick To Include)')
-    application_deadline = DateField('Application Deadline:', format="%Y-%m-%d" )
-    # application_details = TextAreaField('Application Details', validators=[DataRequired(), Length(min=2, max=20)])
-    posted_by = StringField('Posted By:')
-
-    publish = SubmitField("Publish")
 
 class Company_Register_Form(FlaskForm):
 
@@ -109,6 +71,7 @@ class Company_UpdateAcc_Form(FlaskForm):
                 raise ValidationError(f"Company Name, {company_name.value} , already taken.")
 
     company_submit = SubmitField('Update')
+
 
 class Company_Login(FlaskForm):
     company_email = StringField('Company email', validators=[DataRequired(),Email()])
