@@ -83,7 +83,8 @@
                 {%if current_user.is_authenticated and not current_user.role == "admin_user%}
                   <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
                   <a href="/account"> <div class="cat-item"><span>Account</span></div></a>
-                {%elif current_user.is_authenticated and current_user.role == "admin_user"%}
+                {%endif%}
+                {%if current_user.is_authenticated and current_user.role == "admin_user"%}
                   <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
                   <a href="/clients"> <div class="cat-item"><span>Clients</span></div></a>
                   <a href="/sign_up"> <div class="cat-item"><span>+ Job Seeker</span></div></a>
