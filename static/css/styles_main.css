@@ -2504,6 +2504,20 @@ display:none
 
 @media all and (max-width: 575px) {
 
+.card-home{
+    height:120px !important;
+    width:120px !important;
+}
+
+.card-home img{
+    height:70px !important;
+    width:70px !important;
+}
+
+.card-services{
+    font-size: 16px !important;
+}
+
 .profile-sections{
     width:90% !important;
 
