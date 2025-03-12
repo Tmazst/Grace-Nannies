@@ -24,11 +24,7 @@
         <form _lpchecked="1" action="" method="post" enctype="multipart/form-data">
         <div class="center-prl-img">
             <div class="img-cont">
-                {% if not image_fl == None %}
-                    <img class="prf-image" src={{image_fl}}/>
-                {% else %}
-                    <img class="prf-image" src="static/default.jpg">
-                {% endif %}
+                <img class="prf-image" src="static/images/{{current_user.image}}">
             </div>
         </div>
 
@@ -66,15 +62,7 @@
                        <span class="span-error" >*[Contacts]{{error}}</span>
                    {% endfor %}
                 {% endif %}
-
-            <!-- ------------DOB--------------->
-              <div class="acc-labels margin-l-15">{{ form.date_of_birth.label()}}</div>
-                {{ form.date_of_birth(class="acc-form-control",placeholder="Contacts", value=current_user.date_of_birth)}}
-                 {% if form.date_of_birth.errors %}
-                   {% for error in form.date_of_birth.errors %}
-                       <span class="span-error" >*[Birthday]{{error}}</span>
-                   {% endfor %}
-                {% endif %}
+                
 
             <!-- ------------ADDRESS--------------->
               <div  class="acc-labels margin-l-15">{{ form.address.label()}}</div>
@@ -95,65 +83,6 @@
 
         </div>
 
-
-
-        <div class="form-group">
-                 <h2 class="media-h2"> Education </h2>
-
-                  <!-- ------------SCHOOL--------------->
-                <div  class="acc-labels margin-l-15">{{ form.school.label()}}</div>
-                {% if current_user.school %}
-                    {{ form.school(class="acc-form-control",value=current_user.school)}}
-                {% else %}
-                    {{ form.school(class="acc-form-control",placeholder="High School")}}
-                {% endif %}
-
-                {% if form.school.errors %}
-                   {% for error in form.school.errors %}
-                       <span class="span-error" >*High School{{error}}</span>
-                   {% endfor %}
-                {% endif %}
-
-
-                {% if form.experience.errors %}
-                   {% for error in form.experience.errors %}
-                       <span class="span-error" >*{{error}}</span>
-                   {% endfor %}
-                {% endif %}
-
-
-        </div>
-
-
-        <div  class="form-group">
-                 <h2 class="media-h2"> Skills & Interests </h2>
-                  <!-- ------------SKILLS--------------->
-                  <div  class="acc-labels margin-l-15">{{ form.skills.label()}}</div>
-                {% if current_user.skills %}
-                   <textarea  name="skills" class="acc-form-control media-h2">{{current_user.skills}}</textarea>
-                {% else %}
-                    {{ form.skills(class="acc-form-control",placeholder="Efficient and organized secretariat ready to streamline operations and support administrative needs online or on-site")}}
-                {% endif %}
-                {% if form.skills.errors %}
-                   {% for error in form.skills.errors %}
-                       <span class="span-error" >*{{error}}</span>
-                   {% endfor %}
-                {% endif %}
-
-                <!-- ------------INTERESTS--------------->
-                <div  class="acc-labels margin-l-15">{{ form.hobbies.label()}}</div>
-                {% if current_user.hobbies %}
-
-                  <textarea  name="hobbies" class="acc-form-control media-h2">{{current_user.hobbies}}</textarea>
-                {% else %}
-                    {{ form.hobbies(class="acc-form-control",placeholder="e.g Agriculture, Farming, Beekeeping")}}
-                {% endif %}
-                {% if form.hobbies.errors %}
-                   {% for error in form.hobbies.errors %}
-                        <span class="span-error" >*{{error}}</span>
-                   {% endfor %}
-                {% endif %}
-        </div><br>
 
         <div style="width:80%;" class="form-group">
               {{ form.image_pfl(class="acc-form-control")}}

@@ -27,6 +27,7 @@
                                 {% endfor %}
                                 {% endif %}
                         </div>
+                        
                         <!--Email-->
                         <div class="group">
                                 {{ register.email(class="form-control",placeholder="Email")}}
@@ -55,18 +56,10 @@
                                     <span class="span-error" >*Passwords that not match</span>
                                 {% endfor %}
                                 {% endif %}
-                        </div>
+                        </div><br>
 
                         <!--Job Seeker / Employer-->
-                        <div class="group">
-                            {{ register.role_choice.label(class="labels")}}
-                            {{ register.role_choice(style="list-style-type:none", class="form-control")}}
-                            {% if register.role_choice.errors %}
-                                {% for error in register.role_choice.errors %}
-                                    <span class="span-error" >*Passwords that not match</span>
-                                {% endfor %}
-                            {% endif %}
-                        </div><br>
+                      
 
                         <div class="power-container">
                             <div id="power-point" class="power-point"></div>

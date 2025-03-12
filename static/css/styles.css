@@ -13,10 +13,11 @@
 
 
 :root{
-    --main-color : #B75D62;
+    --main-color : #b75d62; /*#B75D62*/
     --main2-color :#5EABAA;
     --main3-color :#6B3318;
-}
+    --main-gradient: linear-gradient(to top, rgba(250, 222, 224, 1)0%,rgba(255,255,255,1)100%);
+} 
 
 body{
     background-image: url("static/images/bg.png") !important;
@@ -55,8 +56,6 @@ body{
 .wide-image-hldr{
     width:100%;
     max-width:600px;
-    max-height: 32vh;
-    overflow:hidden;
     position:relative;
     margin:0 auto;
     padding:
@@ -599,6 +598,16 @@ overflow-y: scroll;
     max-height: 40px;
 }
 
+.card-home{
+    border-radius: 15px;
+    height:170px;
+    width:170px;
+    /* background: var(--main-gradient); */
+    box-shadow:-1px 1px 7px 0px rgba(0,0,0,0.5);
+    padding:10px;
+
+}
+
 .img-card{
     position: relative;
     height: auto;
@@ -695,12 +704,16 @@ del{
     gap:10px
 }
 
+.card-services{
+    font-size: 19px !important;
+}
+
 .gen-flex-col{
     display: flex;
     justify-content: center;
     flex-direction: column !important;
     align-items: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
 }
 .gen-flex-start{
     display: flex;
@@ -1269,6 +1282,66 @@ input[type="checkbox"]{
     gap:10px;
   }
 
+.in-header{
+    background-color:var(--main-color)
+
+}
+
+.new_job_ad_style{
+    border: 2px solid var(--main-color);
+}
+
+.adverts-container{
+    max-width: 1100px ;
+    margin: 0 auto;
+    /* background-color: white; */
+    flex-wrap: wrap;
+}
+
+
+
+
+.maincolor{
+    color:var(--main-color)
+}
+
+
+.menu_btn{
+    width:60px;
+    height: 50px;
+    align-items: flex-start;
+    gap:7px;
+    padding-left: 5px;
+}
+
+.menu_btn .stroke:nth-child(1){
+    border-radius:10px;
+    height:4px;
+    width:20px;
+    background-color:white;
+}
+.menu_btn .stroke:nth-child(2){
+    border-radius:10px;
+    height:4px;
+    width:30px;
+    background-color:white;
+}
+.menu_btn .stroke:nth-child(3){
+    border-radius:10px;
+    height:4px;
+    width:40px;
+    background-color:white;
+}
+
+.menu_btn .stroke:nth-child(1){
+    border-radius:10px;
+    height:4px;
+    width:20px;
+    background-color:white;
+}
+
+
+
 .menu-btn{
     width:60px;
     height: 50px;
@@ -1283,6 +1356,7 @@ input[type="checkbox"]{
     width:20px;
     background-color:var(--main-color);
 }
+
 .stroke:nth-child(2){
     border-radius:10px;
     height:4px;
@@ -1298,6 +1372,16 @@ input[type="checkbox"]{
 
 .stroke:hover{
     background-color:#707070
+}
+
+.jobs-gui{
+    padding:15px !important;
+}
+
+.footer-items{
+    color:#382d2d;
+    font-size: 12px !important;
+    font-weight: 600;
 }
 
 .legends{
@@ -1419,6 +1503,7 @@ overflow:scroll;
     animation: move-to-appear 0.6s ease; 
 }
 
+
 @keyframes move-to-appear{
     0%{
         transform: translate(-100%);
@@ -1427,6 +1512,7 @@ overflow:scroll;
         transform: translate(-20%);
     }
 }
+
 
 /* .btns:hover{
     border:none;
@@ -1713,6 +1799,11 @@ label span{
     background:none;
 }
 
+.card-services{
+    font-weight: 600;
+    color:#423333;
+}
+
 
 #view-cont{
     flex-wrap: wrap;
@@ -1864,7 +1955,7 @@ img{
 
 .btns{
     /* height:20px; */
-    padding:5px;
+    padding:5px 7px;
     color:rgb(252, 252, 252);
     font-weight:500 !important;
     border-radius:15px;
@@ -1872,7 +1963,7 @@ img{
     font-size: 16px;
     background: var(--main-color);
     min-width:70px;  
-    width:max-content;
+    width:max-content !important;
     text-align: center;
 }
 

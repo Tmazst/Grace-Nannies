@@ -29,7 +29,7 @@ class user(db.Model,UserMixin):
     password = db.Column(db.String(120), unique=True)
     token = db.Column(db.String(255), unique=True,nullable=True)
     store_2fa_code=db.Column(db.String)
-    time_stamp=db.Column(db.DateTime())
+    time_stamp=db.Column(db.DateTime)
     confirm_password = db.Column(db.String(120), unique=True)
     verified = db.Column(db.Boolean, default=False)
     role = db.Column(db.String(120))
@@ -50,8 +50,9 @@ class job_user(user):
     school = db.Column(db.String(120))
     tertiary = db.Column(db.String(255))
     contacts = db.Column(db.String(20))
-    date_of_birth = db.Column(db.DateTime())
+    date_of_birth = db.Column(db.Date)
     experience = db.Column(db.String(500))
+    approval = db.Column(db.Boolean,default=False)
     skills = db.Column(db.String(500))
     hobbies = db.Column(db.String(120))
     address = db.Column(db.String(120))
@@ -63,6 +64,12 @@ class job_user(user):
 
     __mapper_args__={
             "polymorphic_identity":'job_user'
+        }
+    
+class admin_user(user):
+    
+     __mapper_args__={
+            "polymorphic_identity":'admin_user'
         }
 
 class company_user(user):
@@ -118,9 +125,6 @@ class Esw_Freelancers(db.Model, UserMixin): #A table form filling prior tht expe
     what_do_you_do = db.Column(db.String(1000))
 
 
-class Freelancers(job_user): #A table form filling prior tht experience
-    pass
-
 
 #After the user finishes the current(latest) job contract they supposed to fill a form to be used to store their work experience
 class users_tht_portfolio(db.Model, UserMixin): #A table for tht experince
@@ -128,7 +132,7 @@ class users_tht_portfolio(db.Model, UserMixin): #A table for tht experince
     usr_id = db.Column(db.Integer, ForeignKey('job_user.id'))
     job_details = db.Column(db.Integer, ForeignKey('job_ads.job_id')) #these entery I will the company(job_posted_by) which posted the job & other details about the job
     portfolio_feedback = db.Column(db.String(1000))
-    date_employed = db.Column(db.DateTime())
+    date_employed = db.Column(db.DateTime)
     approved = db.Column(db.Boolean)
     portfolio_other = db.Column(db.String(120))
     other2 = db.Column(db.String(120))
@@ -140,7 +144,7 @@ class hired(db.Model, UserMixin):
     hired_user_id = db.Column(db.Integer, ForeignKey('user.id'))
     job_details = db.Column(db.String(120)) #Job Id will be sent to the route and be stored in database
     usr_cur_job = db.Column(db.Boolean) #To check which job is open(current job) for the user
-    hired_date = db.Column(db.DateTime())
+    hired_date = db.Column(db.DateTime)
     #I need to add a pending entry checker; a current job of the job_user to identify entry here   ----pending
 
 
@@ -150,11 +154,12 @@ class Hire_Freelancer(db.Model, UserMixin):
     freelancer_id = db.Column(db.Integer, ForeignKey('user.id'))
     purpose_for_hire = db.Column(db.String(120))
     job_done_approved = db.Column(db.Boolean, default=False)
-    hired_date = db.Column(db.DateTime()) #Expression Date
+    hired_date = db.Column(db.DateTime) #Expression Date
     other_hr = db.Column(db.String(120)) #Sealing Deal
     other_hr1 = db.Column(db.String(120))
     other_hr2 = db.Column(db.String(120))
     #I need to add a pending entry checker; a current job of the job_user to identify entry here   ----pending
+
 
 class Email_Verifications(db.Model, UserMixin):
 
@@ -176,6 +181,7 @@ class Jobs_Adverts(db.Model, UserMixin):
     benefits = db.Column(db.String(200))
     application_deadline = db.Column(db.DateTime, nullable=False)
     other = db.Column(db.String(120))
+    location = db.Column(db.String(120))
     date_posted = db.Column(db.DateTime, default=datetime.now, nullable=False) #Records itself
     job_posted_by = db.Column(db.Integer, ForeignKey('company_user.id'),nullable=False) #Records itself
     applicantions = relationship("Applications", backref='All Applications', lazy=True)

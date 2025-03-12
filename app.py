@@ -7,7 +7,7 @@ from flask import Flask, render_template, url_for, redirect, request, flash, ses
 from sqlalchemy.orm import sessionmaker
 from flask_bcrypt import Bcrypt
 from flask_login import login_user, LoginManager, current_user, logout_user, login_required
-from Forms import Register, Login, Contact_Form, Update_account_form, Reset, Reset_Request, Two_FactorAuth_Form
+from Forms import *
 from Tokeniser import Tokenise
 from flask_mail import Mail, Message
 from Advert_Forms import *
@@ -249,13 +249,33 @@ def home():
                            ser=ser)
 
 
+@app.route("/admin_signup", methods=["POST", "GET"])
+def admin_sign_up():
+
+    register = RegisterAdmin()
+
+    if request.method == "POST":
+
+        hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
+        user1 = admin_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
+                        confirm_password=hashd_pwd, image="default.jpg",
+                        time_stamp=datetime.now())
+        
+        db.session.add(user1)
+        db.session.commit()
+        flash("Sign Up Successful!")
+        return redirect(url_for("home"))
+
+    return render_template("admin_signup.html",register=register)
+
+
 @app.route("/sign_up", methods=["POST", "GET"])
 def sign_up():
     register = Register()
 
     db.create_all()
 
-    if current_user.is_authenticated:
+    if current_user.is_authenticated and not current_user.role == 'admin_user':
         return redirect(url_for('home'))
 
     image_fl = url_for('static', filename='images/image.jpg')
@@ -268,18 +288,24 @@ def sign_up():
             # If the webpage has made a post e.g. form post
             user1 = None
             print("Role Choice Data: ", register.role_choice.data)
-            if register.role_choice.data: #If job Seeker
+            if current_user.is_authenticated: #If job Seeker, #Employer = True
                 print(register.role_choice.data)
-                hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
+                hashd_pwd = encry_pw.generate_password_hash("jobseeker1234").decode('utf-8')
                 user1 = job_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
                                 confirm_password=hashd_pwd, image="default.jpg",
                                 time_stamp=datetime.now())
+                db.session.add(user1)
+                db.session.commit()
+                
+                flash(f"Account Successfully Created for {register.name.data}", "success")
+                return redirect(url_for('sign_up'))
 
-            if not register.role_choice.data:
+            else: #Employer = False
                 hashd_pwd = encry_pw.generate_password_hash(register.password.data).decode('utf-8')
                 user1 = company_user(name=register.name.data, email=register.email.data, password=hashd_pwd,
                                 confirm_password=hashd_pwd, image="default.jpg",
                                 time_stamp=datetime.now())
+            
     
             # try:
             db.session.add(user1)
@@ -309,7 +335,12 @@ def account():
 
     form = Update_account_form()
 
-    user = job_user.query.get(current_user.id)
+    user=None
+
+    if current_user.role == "admin_user":
+        user = admin_user.query.get(current_user.id)
+    elif current_user.role == "company_user":
+        user = company_user.query.get(current_user.id)
     
     if request.method == 'POST':
 
@@ -319,7 +350,7 @@ def account():
             user.date_of_birth = form.date_of_birth.data
             user.contacts = form.contacts.data
             user.school = form.school.data
-            user.tertiary = form.tertiary.data
+            # user.tertiary = form.tertiary.data
             user.address = form.address.data
             user.hobbies = form.hobbies.data
             user.skills = form.skills.data
@@ -372,7 +403,6 @@ class Quick_Gets:
     otp_attr = None
     uid_token = None
 
-
 # @app.route('/send_2fa/<arg_token>', methods=['POST', 'GET'])  # /<arg_token>
 def send_otp(otp_code,arg_token):
     # Generate an OTP (One-Time Password) for the current time
@@ -409,8 +439,6 @@ that the Code is Valid for 60 seconds.
     except Exception as e:
         flash(f'Ooops Something went wrong!! Please Retry', 'error')
         return "The mail was not sent"
-
-
 
 # 2FA Auth
 class OTP_Code:
@@ -672,37 +700,6 @@ If you did not requested the above message please ignore it, and your password w
     return render_template("reset_request.html", reset_request_form=reset_request_form)
 
 
-@app.route("/job_ads_form", methods=["POST", "GET"])
-@login_required
-def job_ads_form(udi=None):
-    job_ad_form = Job_Ads_Form()
-    job_ads_model = Jobs_Adverts
-
-    usr_id = request.args.get("udi")
-
-    db.create_all()
-    job_ad = None
-
-    if request.method == 'POST':
-        print("Check Start Date: ", job_ad_form.start_date.data, job_ad_form.work_hours_bl.data)
-        if job_ad_form.validate_on_submit():
-            job_post1 = job_ads_model(
-                job_title=job_ad_form.job_title.data,
-                description=job_ad_form.description.data,
-                qualifications=job_ad_form.qualifications.data,
-                application_deadline=job_ad_form.application_deadline.data,
-                benefits=job_ad_form.benefits.data,
-                job_posted_by=current_user.id
-            )
-
-            db.session.add(job_post1)
-            db.session.commit()
-
-            flash('Job Posted Successfully!!', 'success')
-
-    return render_template("job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad,usr_id=usr_id)
-
-
 class jo_id_cls:
     id_ = None
 
@@ -711,7 +708,7 @@ class jo_id_cls:
 @login_required
 def eidt_job_ads_form():
     job_ad_form = Job_Ads_Form()
-    job_ads_model = Jobs_Ads
+    job_ads_model = Jobs_Adverts
 
     db.create_all()
     job_ad = None
@@ -720,7 +717,7 @@ def eidt_job_ads_form():
     if request.method == 'POST':
         # print("Check Start Date: ", job_ad_form.start_date.data,job_ad_form.work_hours_bl.data)
         if job_ad_form.validate_on_submit():
-            job_post1 = Jobs_Ads.query.filter_by(job_id=ser.loads(request.args.get("jo_id"))['data_11']).first()
+            job_post1 = Jobs_Adverts.query.filter_by(job_id=ser.loads(request.args.get("jo_id"))['data_11']).first()
 
             job_post1.job_title = job_ad_form.job_title.data,
             job_post1.description = request.form.get('description'),
@@ -777,63 +774,14 @@ def eidt_job_ads_form():
         # jo_id_func(jo_id)
         if jo_id:
             jo_id_cls.id_ = jo_id
-            job_ad = Jobs_Ads.query.filter_by(job_id=ser.loads(jo_id)['data_11']).first()
+            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id)['data_11']).first()
 
         else:
-            job_ad = Jobs_Ads.query.filter_by(job_id=ser.loads(jo_id_cls.id_)['data_11']).first()
+            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id_cls.id_)['data_11']).first()
 
     return render_template("edit_job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad)
 
 
-@app.route("/fl_job_ads_form", methods=["POST", "GET"])
-@login_required
-def fl_job_ads_form():
-    fl_job_ad_form = Freelance_Ads_Form()
-    fl_job_ads_model = Freelance_Jobs_Ads
-
-    db.create_all()
-
-    if request.method == 'POST':
-        if fl_job_ad_form.validate_on_submit():
-            job_post1 = fl_job_ads_model(
-                service_title=fl_job_ad_form.service_title.data,
-                specialty=request.form.get('speciality'),
-                description=fl_job_ad_form.description.data,
-                project_duration=fl_job_ad_form.start_date.data,
-                project_duration2=fl_job_ad_form.end_date.data,
-                project_prerequits=fl_job_ad_form.project_prerequits.data,
-                working_days=fl_job_ad_form.working_days.data,
-                service_category=request.form.get('field_category_sel'),
-                contact_person=fl_job_ad_form.posted_by.data,
-                # date_posted = datetime.utcnow(),
-                application_deadline=fl_job_ad_form.application_deadline.data,
-                job_posted_by=current_user.id
-            )
-
-            # if bools are True
-            if not request.form.get('speciality'):
-                job_post1.service_title = fl_job_ad_form.speciality.data
-            if not request.form.get('field_category_sel'):
-                job_post1.service_category = fl_job_ad_form.service_category.data
-            if fl_job_ad_form.benefits_bl.data:
-                job_post1.benefits = fl_job_ad_form.benefits.data
-
-            db.session.add(job_post1)
-            db.session.commit()
-
-            flash('Job Post was successful', 'success')
-
-    return render_template("fl_job_ads_form.html", fl_job_ad_form=fl_job_ad_form, ser=ser)
-
-
-# Companies will issues end of contract form to they employees/user
-# .....they wil fill it for a feedback end of term report report
-# @app.route("/show_hired_users")
-# def show_hired_users():
-#
-#     hired_users = hired.query.all()
-#
-#     return render_template("show_hired_users.html", users=hired_users)
 class Indeed_Search:
     def indeed_url_nearme(self,location=None):
 
@@ -861,10 +809,9 @@ def get_jobs():
 
 
 @app.route("/show_hired_users")
-# @basic_auth.required
 def show_hired_users():
     hired_users = hired.query.all()
-    job_ads = Jobs_Ads
+    job_ads = Jobs_Adverts
 
     return render_template("show_hired_users.html", users=hired_users, user=user, job_ads=job_ads, ser=ser)
 
@@ -936,7 +883,7 @@ def job_feedback(token):
         user_hired = hired.query.filter_by(hired_user_id=current_user.id,
                                            usr_cur_job=1).first()  # usr_cur_job=1 checks which job placement is the user currently place on (their current job will maked by 1/True
         if user_hired:
-            company = user.query.get(Jobs_Ads.query.get(user_hired.job_details).job_posted_by)
+            company = user.query.get(Jobs_Adverts.query.get(user_hired.job_details).job_posted_by)
         # session.query(entity).filter_by(**criteria)
         # createria = {current_user.id}
         # curr_job = hired.query.filter_by=)
@@ -1044,110 +991,6 @@ def pdf_viewer():
 
     return render_template("pdf_viewer.html", pdf_file=pdf_file)
 
-
-@app.route("/freelancer_viewed")
-@login_required
-def freelancer_viewed():
-    if request.method == "GET":
-        id_ = request.args['frid']
-        fr_id = ser.loads(id_)['data13']
-        esw_freelancer = Esw_Freelancers.query.filter_by(uid=fr_id).first()
-        user_ = user.query.get(esw_freelancer.uid)
-
-        years = (datetime.now().date() - user_.date_of_birth).days
-
-        usr_years = int(years / 365)
-
-        print("User Years: ", esw_freelancer.portfolio_pdf)
-
-    return render_template("freelancer_viewed.html", esw_freelancer=esw_freelancer, user_=user_, usr_years=usr_years)
-
-
-@app.route("/freelancers_form", methods=["POST", "GET"])
-@login_required
-def freelancers():
-    freelancer = Freelance_Section()
-
-    the_freelancer = Esw_Freelancers.query.filter_by(uid=current_user.id).first()
-
-    if current_user.role == 'job_user':
-        if request.method == "POST":
-            if freelancer.validate_on_submit():
-                freelancer_details = Esw_Freelancers(
-                    uid=current_user.id,
-                    other_fl=freelancer.other_fl.data,
-                    other_fl1=freelancer.skills.data,
-                    fl_experience=freelancer.experience.data,
-                    what_do_you_do=freelancer.what_do_you_do.data,
-                    fb_link=freelancer.fb_link.data,
-                    pinterest_link=freelancer.pinterest_link.data,
-                    linkedin_link=freelancer.linkedin_link.data,
-                    twitter_link=freelancer.twitter_link.data,
-                    youtube=freelancer.youtube_link.data,
-                    instagram_link=freelancer.instagram_link.data,
-                )
-
-                if freelancer.portfolio_file.data:
-                    freelancer_details.portfolio_pdf = save_pdf(freelancer.portfolio_file.data)
-
-                db.session.add(freelancer_details)
-                db.session.commit()
-                flash('You have successfully joined the Eswatini Freelance Pool!!', 'success')
-            else:
-                for error in freelancer.errors:
-                    print("Error: ", error)
-                    flash("There is an error somewhere", "error")
-    else:
-        flash("Page is available only for Job Seekers", "warning")
-        return redirect(url_for('home'))
-    return render_template("freelance_form.html", freelancer=freelancer, the_freelancer=the_freelancer)
-
-
-@app.route("/freelancers_form_update", methods=["POST", "GET"])
-@login_required
-def freelancers_form_update():
-    freelancer = Freelance_Section()
-
-    the_freelancer = Esw_Freelancers.query.filter_by(uid=current_user.id).first()
-
-    if current_user.role == 'job_user':
-        if request.method == "POST":
-            if freelancer.validate_on_submit():
-
-                the_freelancer.other_fl = freelancer.other_fl.data
-                the_freelancer.other_fl1 = freelancer.skills.data
-                the_freelancer.fl_experience = request.form.get("experience")
-                the_freelancer.what_do_you_do = request.form.get("what_do_you_do")
-                the_freelancer.fb_link = freelancer.fb_link.data
-                the_freelancer.pinterest_link = freelancer.pinterest_link.data
-                the_freelancer.linkedin_link = freelancer.linkedin_link.data
-                the_freelancer.twitter_link = freelancer.twitter_link.data
-                the_freelancer.youtube = freelancer.youtube_link.data
-                the_freelancer.instagram_link = freelancer.instagram_link.data
-
-                # the_freelancer.portfolio_pdf=freelancer.portfolio_file.data
-
-                if freelancer.portfolio_file.data and the_freelancer.portfolio_pdf:
-                    delete_pdf(the_freelancer.portfolio_pdf)
-                    the_freelancer.portfolio_pdf = save_pdf(freelancer.portfolio_file.data)
-
-                elif freelancer.portfolio_file.data and not the_freelancer.portfolio_pdf:
-                    file = save_pdf(freelancer.portfolio_file.data)
-                    the_freelancer.portfolio_pdf = file
-
-                db.session.commit()
-                flash(f'Update was Successful !!', 'success')
-
-            else:
-                for error in freelancer.errors:
-                    print("Error: ", error)
-                    flash("There is an error somewhere", "error")
-    else:
-        flash("Page is available only for Job Seekers", "warning")
-        return redirect(url_for('home'))
-    return render_template("freelance_form.html", freelancer=freelancer, the_freelancer=the_freelancer)
-
-
 @app.route("/company_retieve")
 def cmp_user_profile():
     from sqlalchemy import text
@@ -1163,32 +1006,32 @@ def cmp_user_profile():
 
 def date_filter(input):
     if input.startswith('today'):
-        today_jobs = Jobs_Ads.query.filter(Jobs_Ads.date_posted >= date.today()).all()
+        today_jobs = Jobs_Adverts.query.filter(Jobs_Adverts.date_posted >= date.today()).all()
         return today_jobs
     elif input.startswith('yesterday'):
         yesterday = date.today() - timedelta(days=1)
-        yesterday_jobs = Jobs_Ads.query.filter(Jobs_Ads.date_posted >= yesterday).all()
+        yesterday_jobs = Jobs_Adverts.query.filter(Jobs_Adverts.date_posted >= yesterday).all()
         return yesterday_jobs
     elif input.startswith('this_week'):
         today = date.today()
         start_of_week = today - timedelta(days=today.weekday())  # Monday
         end_of_week = start_of_week + timedelta(days=6)  # Sunday
-        this_week_jobs = Jobs_Ads.query.filter(Jobs_Ads.date_posted.between(start_of_week, end_of_week)).all()
+        this_week_jobs = Jobs_Adverts.query.filter(Jobs_Adverts.date_posted.between(start_of_week, end_of_week)).all()
         return this_week_jobs
     elif input.startswith('this_month'):
         today = date.today()
         start_of_month = date(day=1, month=today.month, year=today.year)
         _, last_day = calendar.monthrange(today.year, today.month)
         end_of_month = date(day=last_day, month=today.month, year=today.year)
-        this_month_jobs = Jobs_Ads.query.filter(Jobs_Ads.date_posted.between(start_of_month, end_of_month)).all()
+        this_month_jobs = Jobs_Adverts.query.filter(Jobs_Adverts.date_posted.between(start_of_month, end_of_month)).all()
         return this_month_jobs
     else:
         flash('No Entries', 'error')
 
 
-@app.route("/job_ads", methods=["GET", "POST"])
+@app.route("/job_ads_", methods=["GET", "POST"])
 # @basic_auth.required
-def job_adverts():
+def job_advert():
     date_today = datetime.now()
     token = user_class()
     encry = encry_pw
@@ -1202,7 +1045,6 @@ def job_adverts():
     db.create_all()
     usr = user()
 
-
     job_ads_form = Job_Ads_Form()
     if request.method == 'GET':
         # id = request.args.get()
@@ -1213,12 +1055,12 @@ def job_adverts():
             # print("Check Get Id: ",id)
             if enc_id:
                 # Filter Ads with a specific company's id
-                # job_ads = Jobs_Ads.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Ads.date_posted))
+                # job_ads = Jobs_Adverts.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Adverts.date_posted))
                 job_ads_latest = [job for job in
-                                  Jobs_Ads.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Ads.date_posted)) if
+                                  Jobs_Adverts.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Adverts.date_posted)) if
                                   (job.application_deadline - date_today).days >= 0]
                 job_ads_older = [job for job in
-                                 Jobs_Ads.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Ads.date_posted)) if
+                                 Jobs_Adverts.query.filter_by(job_posted_by=enc_id).order_by(desc(Jobs_Adverts.date_posted)) if
                                  (job.application_deadline - date_today).days < 0]
 
 
@@ -1228,9 +1070,9 @@ def job_adverts():
 
         # For all companies
         elif not id_:  # not value and
-            job_ads_latest = [job for job in Jobs_Ads.query.order_by(desc(Jobs_Ads.date_posted)).all() if
+            job_ads_latest = [job for job in Jobs_Adverts.query.order_by(desc(Jobs_Adverts.date_posted)).all() if
                               (job.application_deadline - date_today).days >= 0]
-            job_ads_older = [job for job in Jobs_Ads.query.order_by(desc(Jobs_Ads.date_posted)).all() if
+            job_ads_older = [job for job in Jobs_Adverts.query.order_by(desc(Jobs_Adverts.date_posted)).all() if
                              (job.application_deadline - date_today).days < 0]
 
 
@@ -1248,13 +1090,56 @@ def job_adverts():
         return redirect(url_for("intro_eswatini_jobs"))
 
 
+@app.route("/job_ads_form", methods=["POST", "GET"])
+@login_required
+def job_ads_form(udi=None):
+
+    job_ad_form = Job_Ads_Form()
+
+    db.create_all()
+    job_ad = None
+
+    if request.method == 'POST':
+        # print("Check Start Date: ", job_ad_form.start_date.data, job_ad_form.work_hours_bl.data)
+        if job_ad_form.validate_on_submit():
+            job_post1 = Jobs_Adverts(
+                job_title=job_ad_form.job_title.data,
+                description=job_ad_form.description.data,
+                qualifications=job_ad_form.qualifications.data,
+                application_deadline=job_ad_form.application_deadline.data,
+                benefits=job_ad_form.benefits.data,
+                location=job_ad_form.location.data,
+                job_posted_by=current_user.id,
+                other=job_ad_form.category.data
+            )
+
+            db.session.add(job_post1)
+            db.session.commit()
+            print("Successful")
+
+            flash('Job Posted Successfully!!', 'success')
+        else:
+            for error in job_ad_form.errors:
+                print("Error: ", error)
+
+    return render_template("job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad)
+
+
+@app.route("/job_adverts", methods=["GET", "POST"])
+def job_adverts():
+
+    jobs = Jobs_Adverts.query.all()
+
+    return render_template("job_ads_gui.html",jobs=jobs)
+
+
 @app.route("/job_ad_opened", methods=["GET", "POST"])
 @login_required
 def view_job():
     if request.method == 'GET':
         id_ = request.args.get('id')
         dcry_jbid = ser.loads(id_)["data"]
-        job_ad = Jobs_Ads.query.get(dcry_jbid)
+        job_ad = Jobs_Adverts.query.get(dcry_jbid)
 
         deadln = job_ad.application_deadline - datetime.now()
         days_left = deadln.days
@@ -1285,14 +1170,14 @@ def job_adverts_filtered():
     if request.method == 'GET':
         value = request.args.get('value')
 
-        jobs_categories = Jobs_Ads.query.all()
+        jobs_categories = Jobs_Adverts.query.all()
         category_set = None
         if jobs_categories:
             category_list_unfltd = [item.category for item in jobs_categories]
             category_set = set(category_list_unfltd)
 
         if value not in ['today', 'yesterday', 'this_week', 'this_month']:
-            job_ads = Jobs_Ads.query.filter(Jobs_Ads.category.like(f"{value}%")).all()
+            job_ads = Jobs_Adverts.query.filter(Jobs_Adverts.category.like(f"{value}%")).all()
 
         elif value in ['today', 'yesterday', 'this_week', 'this_month']:
             job_ads = date_filter(value)
@@ -1327,10 +1212,10 @@ def freelance_job_adverts():
         # print("Check Get Id: ",id)
         if id:
             # Filter Ads with a specific company's id
-            fl_job_ads = Freelance_Jobs_Ads.query.filter_by(job_posted_by=id).order_by(
-                desc(Freelance_Jobs_Ads.date_posted))
+            fl_job_ads = Freelance_Jobs_Adverts.query.filter_by(job_posted_by=id).order_by(
+                desc(Freelance_Jobs_Adverts.date_posted))
         else:
-            fl_job_ads = Freelance_Jobs_Ads.query.order_by(desc(Freelance_Jobs_Ads.date_posted))
+            fl_job_ads = Freelance_Jobs_Adverts.query.order_by(desc(Freelance_Jobs_Adverts.date_posted))
 
     fl_job_ads_form = Freelance_Ads_Form()
 
@@ -1353,7 +1238,7 @@ def fl_applications():
 
     applications = FreeL_Applications()
 
-    freelance_ads = Freelance_Jobs_Ads
+    freelance_ads = Freelance_Jobs_Adverts
 
     return render_template("fl_applications.html", all_applications=all_applications, user=user,
                            freelance_ads=freelance_ads,
@@ -1380,8 +1265,8 @@ def send_application_fl():
 
                 apply = FreeL_Applications(
                     applicant_id=current_user.id,
-                    freel_job_details_id=tender_id,  # db.query(Jobs_Ads).get(jb_id),
-                    employer_id=Freelance_Jobs_Ads.query.get(tender_id).job_posted_by,
+                    freel_job_details_id=tender_id,  # db.query(Jobs_Adverts).get(jb_id),
+                    employer_id=Freelance_Jobs_Adverts.query.get(tender_id).job_posted_by,
 
                 )
 
@@ -1407,7 +1292,7 @@ def view_tender():
     if request.method == 'GET':
         id = request.args['id']
 
-        tender_ad = Freelance_Jobs_Ads.query.get(id)
+        tender_ad = Freelance_Jobs_Adverts.query.get(id)
 
         # print("Job Ad Title: ",job_ad.job_title)
 
@@ -1447,7 +1332,7 @@ def company_sign_up_form():
                 twitter_link=company_register.twitter_link.data,
                 youtube=company_register.youtube_link.data,
                 payment_options=request.form.get('payment_options'),
-                time_stamp=datetime.utcnow(),
+                time_stamp=datetime.now(),
                                  )
 
             if company_register.company_logo.data:
@@ -1562,7 +1447,7 @@ def company_account():
 # -------------------PARTNERING COMPANIES----------------------#
 @app.route("/partnering_companies", methods=["GET", "POST"])
 def partnering_companies():
-    job_ads = Jobs_Ads.query.all()
+    job_ads = Jobs_Adverts.query.all()
 
     # Fix jobs adds does not have hidden tag
     return render_template("partnering_companies.html", job_ads=job_ads, job_ads_form=job_ads_form, db=db,
@@ -1589,8 +1474,8 @@ def send_application():
                 jb_id = ser.loads(id_)['data1']
                 apply = Applications(
                     applicant_id=current_user.id,
-                    job_details_id=jb_id,  # db.query(Jobs_Ads).get(jb_id),
-                    employer_id=Jobs_Ads.query.get(jb_id).job_posted_by
+                    job_details_id=jb_id,  # db.query(Jobs_Adverts).get(jb_id),
+                    employer_id=Jobs_Adverts.query.get(jb_id).job_posted_by
                 )
 
                 # Check if application not sent before
@@ -1601,8 +1486,8 @@ def send_application():
                 if not job_appl:
                     db.session.add(apply)
                     db.session.commit()
-                    job_title = Jobs_Ads.query.get(jb_id).job_title
-                    job_id = Jobs_Ads.query.get(jb_id).job_id
+                    job_title = Jobs_Adverts.query.get(jb_id).job_title
+                    job_id = Jobs_Adverts.query.get(jb_id).job_id
                     return render_template("send_application.html", send_application=send_application, job_id=job_id,
                                            job_title=job_title,
                                            company_obj=company_obj, ser=ser)
@@ -1619,7 +1504,7 @@ def send_application():
 def local_jb_ads():
     if request.method == 'GET':
         id = ser.loads(request.args['id'])
-        job_ad = Jobs_Ads.query.get(id)
+        job_ad = Jobs_Adverts.query.get(id)
         # print("Job Ad Title: ",job_ad.job_title)
 
 
@@ -1639,14 +1524,65 @@ def delete_entry():
     return f''
 
 
+@app.route("/clients")
+def clients():
+    from sqlalchemy import text
+
+    user_v = []
+    users_ = user.query.filter_by(role="company_user").all()
+
+    return render_template("clients.html", users=users_, ser=ser)
+
 @app.route("/users")
 def users():
     from sqlalchemy import text
 
     user_v = []
-    users_ = user.query.all()
+    users_ = user.query.filter_by(role="job_user").all()
 
     return render_template("user.html", users=users_, ser=ser)
+
+
+@app.route("/jobseekeracc", methods=["POST","GET"])
+@login_required
+def jb_seeker_acc():
+
+    arg = request.args.get('jbid')
+    user_id = ser.loads(arg).get("data")
+    
+
+    user = job_user.query.get(user_id)
+    print("User Id: ", user.name)
+
+    if not user:
+        flash(f"User not found","error")
+        return redirect(url_for("home"))
+
+    form = Update_account_form(obj=user)
+    
+    if request.method == 'POST':
+
+        if form.validate_on_submit():
+            user.name = form.name.data
+            user.email = form.email.data
+            user.date_of_birth = form.date_of_birth.data
+            user.contacts = form.contacts.data
+            user.school = form.school.data
+            user.approval= form.approval.data
+            user.address = form.address.data
+            user.hobbies = form.hobbies.data
+            user.skills = form.skills.data
+            user.experience = form.experience.data
+
+            db.session.commit()
+
+            flash("Account Updated Successfully!!", "success")
+        elif form.errors:
+            for error in form.errors:
+                print("Error: ", error)
+    
+    return render_template("seeker_account.html",user=user,form=form)
+
 
 
 @app.route("/user_viewed", methods=["GET", "POST"])
@@ -1654,18 +1590,12 @@ def view_user():
     # if current_user.role == 'company_user':
     uid = ser.loads(request.args['id'])['data6']
     company_usr = company_user
-    job_ad = Jobs_Ads
+    job_ad = Jobs_Adverts
     portfolio_model = users_tht_portfolio.query.filter_by(usr_id=uid).all()
     portfolio_approved_jobs = users_tht_portfolio.query.filter_by(approved=True).all()
     # The placement that is not marked as approved, assuming is still open / the user is still working
     portfolio_current_job = hired.query.filter_by(usr_cur_job=1, hired_user_id=uid).first()
     job_usr = user.query.get(uid)
-
-        # if request.method == 'POST':
-        #     pass
-    # else:
-    #     flash(f'Only Registered Employers can Hire Job Seekers','warning')
-        # print("Job Ad Title: ",job_ad.job_title)
 
     return render_template('user_viewed.html', job_usr=job_usr, db=db, user=user, company_user=company_user,
                            portfolio_approved_jobs=portfolio_approved_jobs
@@ -1770,7 +1700,7 @@ def applications():
     applications = Applications()
 
     job_usr = job_user
-    job_ads = Jobs_Ads
+    job_ads = Jobs_Adverts
 
     return render_template("applications.html", all_applications=all_applications, job_user=job_usr, job_ads=job_ads,
                            applications=applications, db=db, ser=ser)
@@ -1824,7 +1754,7 @@ def hire_applicant():
 
                 # flash message for successful hiring
                 flash(
-                    f'You have successfully hired {user.query.get(id_).name} for {Jobs_Ads.query.get(app_id).job_title}',
+                    f'You have successfully hired {user.query.get(id_).name} for {Jobs_Adverts.query.get(app_id).job_title}',
                     'success')
             except Exception as e:
                 # flash message for error
@@ -2008,8 +1938,7 @@ def intro_eswatini_fl():
 @app.route("/tht_intro_jobs")
 def intro_eswatini_jobs():
 
-
-    return render_template("jobs_ads_intro.html")
+    return render_template("Jobs_Adverts_intro.html")
 
 @app.route('/sitemap.xml')
 def sitemap():

@@ -25,39 +25,41 @@
     </div>
   </div>
 
-
-
         <div style id="nav-div" class="nav-div">
 
             <div id="nav-div-cont">
+                
                 <ul class="navbar-nav">
+                  <div onclick="sideNavFunc(event)" class="menu_btn gen-flex-col">
+                    <div class="stroke"></div>
+                    <div class="stroke"></div>
+                    <div class="stroke"></div>
+                  </div>
                   <li class="nav-item-main active">
                     <a class="nav-link" href="/">Home </a>
                   </li>
                   <li style="position:relative" class="nav-item-main">
-                    <a class="nav-link" href="#">Jobs</a>
-                      {% if count_jobs %}
-                     <div class="notif-numb-div"><p style="font-size:10px;" class="notif-numb-update">{{count_jobs}}</p></div>{% endif%}
+                    <a class="nav-link" href="/job_adverts">Jobs</a>
+                     {% if count_jobs %}
+                     <!-- <div class="notif-numb-div"><p style="font-size:10px;" class="notif-numb-update"></p></div> -->
+                     {% endif%}
                   </li>
                 </ul>
             </div>
+            
             <div class="filler"></div>
+
             <div onclick="sideNavFunc(event)" class="menu-btn gen-flex-col">
               <div class="stroke"></div>
               <div class="stroke"></div>
               <div class="stroke"></div>
             </div>
 
-
             <div class="user">
                 <ul class="navbar-nav-user">
                 {% if current_user.is_authenticated %}
-                    {% if current_user.role == 'company_user' %}
-                        <li><a class="nav-link btns user-btns" href="company_account">Account</a></li>
-                    {%else%}
-                        <li><a  class="nav-link btns user-btns" href="account">My Account</a></li>
-                    {%endif%}
-                        <li><a class="nav-link btns user-btns" href="logout">Logout</a></li>
+                      <li><a  class="nav-link btns user-btns" href="account">My Account</a></li>
+                      <li><a class="nav-link btns user-btns" href="logout">Logout</a></li>
                 {% else %}
                     <li><a class="nav-link btns user-btns" href="login">Login</a></li>
                     <li><a class="nav-link btns user-btns" href="sign_up">Register</a></li>
@@ -67,7 +69,7 @@
 
         </div>
 
-        <div onclick="closeSideNavFunc()"  id="side-navig-bg" class="side-nav-bg gen-flex-col">
+        <div onclick="closeSideNavFunc()"  id="side-navig-bg" class="side-nav-bg">
           <div id="side-navig-cont" class="side-nav-cont move-to-appear gen-flex-col">
               <div style="padding-top:25px"  class="gen-flex-col cat-item-cont">
                 <a href="/">
@@ -77,10 +79,18 @@
                   </div>
                 </a>
                 <a href="/"> <div class="cat-item"><span>Home</span></div></a>
-                <a href="#"> <div class="cat-item"><span>Jobs</span></div></a>
-                <a href="/job_ads_form"> <div class="cat-item"><span>Post Job</span></div></a>
-                <a href="#"> <div class="cat-item"><span>About</span></div></a>
-                <a href="#"> <div class="cat-item"><span>Account</span></div></a>
+                <a href="/job_adverts"> <div class="cat-item"><span>Jobs</span></div></a>
+                {%if current_user.is_authenticated%}
+                  <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
+                  <a href="/account"> <div class="cat-item"><span>Account</span></div></a>
+                {%endif%}
+                {%if current_user.is_authenticated and current_user.role == "admin_user"%}
+                  <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
+                  <a href="/clients"> <div class="cat-item"><span>Clients</span></div></a>
+                  <a href="/sign_up"> <div class="cat-item"><span>+ Job Seeker</span></div></a>
+                  <a href="/job_ads_form"> <div class="cat-item"><span>Post Job</span></div></a>
+                {%endif%}
+                
                 {%for category in categories%}
                 <!----Construct number of images--->
                 {% set num_images = images | selectattr('image_category', 'equalto', category) | list | length %} 
@@ -99,7 +109,7 @@
         <div style="" class="user_captions user-acc-captions"><small>Welcome, {{current_user.name}}</small></div>
     {% endif %}
 
-    {% if current_user.is_authenticated and current_user.role== 'company_user' %}
+    {% if current_user.is_authenticated and current_user.role== 'compan_user' %}
 <!--        SIDE NAV --->
     <div id="myDrawer" class="sidebar-main">
         <h3>Company Dashboard<br> <span class="spans">Menu</span></h3>
@@ -148,7 +158,12 @@
         {% block content %}
         {% endblock %}
         <div class="mobile-top-space"></div>
-    </div>
+    </div><br><br>
+    <footer class="gen-flex-col">
+      <div style="min-width: 250px;max-width: 1000px;background-color:#382d2d ;" class="line"></div>
+      <div class="footer-items">Grace Nannies Sz, Eswatini</div>
+      <div class="footer-items">developed by Tech Xolutions</div>
+    </footer>
 
     <script src="static/js/js_script.js">
     </script>

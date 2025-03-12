@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField, TextAreaField,BooleanField,RadioField
+from wtforms import StringField,PasswordField,SubmitField, TextAreaField,BooleanField,RadioField,SelectField
 from wtforms.validators import DataRequired,Length,Email, EqualTo, ValidationError,URL
 from flask_login import current_user
 from wtforms.fields import DateField, TelField
@@ -13,8 +13,11 @@ class Job_Ads_Form(FlaskForm):
     description = TextAreaField('Job Description or Tasks:', validators=[DataRequired(), Length(min=5, max=400)])
     qualifications = TextAreaField('Requirements & Qualifications:', validators=[DataRequired(), Length(min=5, max=400)])
     benefits = TextAreaField('Benefits: ')
+    category = SelectField("Category",
+                                choices=[("Nannies", "Nannies"), ("Care Givers", "Care Givers"),
+                                        ("Baby Sitters", "Baby Sitters"), ("Gardners", "Gardners")])
     application_deadline = DateField('Application Deadline:',format="%Y-%m-%d")
-
+    location = StringField('Location:', validators=[DataRequired(), Length(min=2, max=120)])
     publish = SubmitField("Publish")
 
 

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,SubmitField, TextAreaField,BooleanField,DateField,RadioField
-from wtforms.validators import DataRequired,Length,Email, EqualTo, ValidationError
+from wtforms.validators import DataRequired,Length,Email, EqualTo, ValidationError,Optional
 from flask_login import current_user
 from flask_wtf.file import FileField , FileAllowed
 
@@ -13,6 +13,23 @@ class Register(FlaskForm):
     password = PasswordField('password', validators=[DataRequired(), Length(min=8, max=120)])
     confirm = PasswordField('confirm', validators=[DataRequired(),EqualTo('password'), Length(min=8, max=120)])
     role_choice = RadioField('Job seeker/Employer',choices=[(True,"Job Seeker"),(False,"Employer")],default=True)
+
+    submit = SubmitField('Create Account!')
+
+    def validate_email(self,email):
+        from app import db, user,app
+        # with db.init_app(app):
+        user_email = user.query.filter_by(email = self.email.data).first()
+        if user_email:
+            raise ValidationError(f"This email is already registered in this platform")
+
+
+class RegisterAdmin(FlaskForm):
+
+    name = StringField('name', validators=[DataRequired(),Length(min=2,max=20)])
+    email = StringField('email', validators=[DataRequired(),Email()])
+    password = PasswordField('password', validators=[DataRequired(), Length(min=8, max=120)])
+    confirm = PasswordField('confirm', validators=[DataRequired(),EqualTo('password'), Length(min=8, max=120)])
 
     submit = SubmitField('Create Account!')
 
@@ -54,20 +71,20 @@ class Update_account_form(FlaskForm):
     image_pfl = FileField('Profile Image', validators=[FileAllowed(['jpg','png'])])
     contacts = StringField('Contact(s)', validators=[Length(min=8, max=120)])
     date_of_birth = DateField('Date of Birth:', format="%Y-%m-%d")
-    school = StringField('High School', validators=[Length(min=8, max=120)])
+    school = StringField('High School', validators=[Optional()])
+    approval = BooleanField('Approve?', validators=[Optional()])
     experience = TextAreaField('Work Experience (Optional)',validators=[Length(min=0, max=120)])
-    skills = TextAreaField('About Yourself Hint: Why should companies hire you', validators=[Length(min=10, max=30)])
+    skills = TextAreaField('About Yourself Hint: Why should companies hire you', validators=[Optional()])
     hobbies = StringField('Interests (Optional)')
-    address = StringField('Physical Address', validators=[DataRequired(), Length(min=8, max=120)])
+    address = StringField('Physical Address', validators=[Optional(), Length(max=120)])
 
-
-    def validate_email(self,email):
-        from app import db, user
-        if current_user.email != self.email.data:
-            #Check if email exeists in database
-            user_email = user.query.filter_by(email = self.email.data).first()
-            if user_email:
-                raise ValidationError(f"email, {email.value}, already taken by someone")
+    # def validate_email(self,email):
+    #     from app import db, user
+    #     if current_user.email != self.email.data:
+    #         #Check if email exeists in database
+    #         user_email = user.query.filter_by(email = self.email.data).first()
+    #         if user_email:
+    #             raise ValidationError(f"email, {user_email.email}, already taken by someone")
 
 
     update = SubmitField('Update')

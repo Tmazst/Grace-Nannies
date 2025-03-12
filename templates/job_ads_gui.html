@@ -93,288 +93,99 @@
 
     }
 </style>
+<!-- <div class="in-header"> 
+    <img src="static/icons/logo_white.png" />
+</div> -->
 
 <div id="tags-in-mobile" class="tags">
     <div style="background-color:ae23a3;position:relative" class="general-flex-x">
-    <div class="flash-messages" class="btns">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for  category, message in messages %}
-                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
-                {% endfor %}80
-            {% endif %}
-        {% endwith %}</div>
-  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
-  <p style="font-weight:500;color:#006769" class="paras-subtopics">Find available job openings in 2024, Eswatini!</p>
-<!--    {% if current_user.is_authenticated %}-->
-<!--    {% endif %}-->
-    <br><br>
-    {% if category_set %}
-    <div style="display:flex;flex-wrap:wrap;gap:10px;"><p></p>
-        <div class="category-filter">
-            <select onchange="location = this.value;" id="category-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
-                 <option value="/job_ads">--------Category Filter-------</option>
-                    {% for each_cat in category_set %}
-                     <option value="/job_ads_filtered?value={{each_cat}}">{{each_cat}}</option>
-                    {% endfor %}
-            </select>
+        <div class="flash-messages" class="btns">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for  category, message in messages %}
+                        <div class="flash-messages alert-{{category}}">{{ message }}</div>
+                    {% endfor %}80
+                {% endif %}
+            {% endwith %}
         </div>
-
-        <div class="category-filter">
-            <label for="Job Category"> <span></span></label>
-            <select onchange="location = this.value;" id="date-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
-                 <option value="/job_ads">--------Date Filter-------</option>
-                    <option value="/job_ads_filtered?value=today">Today</option>
-                    <option value="/job_ads_filtered?value=yesterday">Yesterday</option>
-                    <option value="/job_ads_filtered?value=this_week">This Week</option>
-                    <option value="/job_ads_filtered?value=this_month">This Month</option>
-            </select>
-        </div>
-    </div><br><br>
-    {% endif %}
-    </div>
-    <div style="background-color:ae23a3;position:relative" class="general-flex-x">
-
-            {% for item in job_ads_latest %}
-            <!----FORM----->
-
-            <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style anim">
-
-                        <div style="" class="center-prl-img">
-                            <div style="margin:15px auto 0px auto;"  class="img-cont">
-                              {% if db.session.query(company_user).get(item.job_posted_by) %}
-                                    {% if not db.session.query(company_user).get(item.job_posted_by).image == None %}
-                                        <img class="prf-image" src="{{url_for('static', filename='images/' + db.session.query(company_user).get(item.job_posted_by).image)}}"/>
-                                    {% endif %}
-                              {% else %}
-                                    <img class="prf-image" src="static/images/default.jpg"/>
-                              {% endif %}
-                            </div>
-                        </div>
-
-                        <h2 style="margin-bottom:0px;margin-top:0px;">{{db.session.query(company_user).get(item.job_posted_by).name}}<br>
-                        <span><small style="color:#aaa" >{{db.session.query(company_user).get(item.job_posted_by).name}}</small></span></h2>
-
-                        <!-------JOB TITLE--------->
-                        <p class="job-title">{{item.job_title}}</p>
-                            <small class="" style="color:#999;font-size:11px;margin-top:-10px">{{item.date_posted.strftime("%d %B %y  | %H:%M")}}</small>
-                        <p style="color:#006769;font-weight:600;font-size:13px">{{item.category}}</p>
-
-                        <div class="job-sub-title">
-
-                            <!---------JOB TYPE--------->
-                            <div class="job-info">
-                                <p class="centralise_font size-it"><span class="material-icons ">work</span>    Job Type</p>
-                                <label style="margin-top:-10px" class="centralise_font">{{item.job_type}}</label>
-                            </div>
-
-                            <!--------------DEADLINE-------------->
-                            <div class="job-info">
-                                <p  id="deadline-div" class="centralise_font size-it" ><span class="material-icons ">calendar_month</span>    Project Due</p>
-                                <label id="deadline" class="centralise_font" style="font-size:10;margin-top:-10px">{{item.application_deadline.strftime("%d %b %y")}}</label>
-                                <small id="days_left" class="" style="color:#999;font-size:11px;margin-top:-10px"></small>
-                            </div>
-
-                        </div>
-
-                         <!-------------RESPONSIBILITIES--------->
-                        <div class="">
-                             <p class="centralise_font size-it" ><span class="material-icons">place</span></p>
-                             <div style="margin-top:-10px" class="centralise_font" ><label>{{db.session.query(company_user).get(item.job_posted_by).company_address}}</label></div>
-                        </div>
-
-                        <div style="background-color:ea2a30;flex-grow:5;" >
-                             <p class="centralise_font"></p>
-                        </div>
-
-                        <!------------VIEW BUTTON-------------->
-                        <div style="dispaly:block">
-                             <!--<input class="btns" type="submit" value="Create Account" />-->
-                             <a onclick="checkDate()" class="view_job"  href="/job_ad_opened?id={{ser.dumps({'data':item.job_id})}}">View</a>
-                        </div>
-
+        <br><br>
+        {% if category_set %}
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+            <div class="category-filter">
+                <select onchange="location = this.value;" id="category-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
+                    <option value="/job_ads">--------Category Filter-------</option>
+                        {% for each_cat in category_set %}
+                        <option value="/job_ads_filtered?value={{each_cat}}">{{each_cat}}</option>
+                        {% endfor %}
+                </select>
             </div>
-            {% endfor %}
+
+            <div class="category-filter">
+                <label for="Job Category"> <span></span></label>
+                <select onchange="location = this.value;" id="date-filter" class="jobs-category" style="margin-bottom:10px" name="field_category_sel">
+                    <option value="/job_ads">--------Date Filter-------</option>
+                        <option value="/job_ads_filtered?value=today">Today</option>
+                        <option value="/job_ads_filtered?value=yesterday">Yesterday</option>
+                        <option value="/job_ads_filtered?value=this_week">This Week</option>
+                        <option value="/job_ads_filtered?value=this_month">This Month</option>
+                </select>
+            </div>
+        </div><br><br>
+        {% endif %}
     </div>
 
+    <div style="position:relative;" class="gen-flex adverts-container">
+        {%for job in jobs%}
+        <div style="max-width: 300px;" class="new_job_ad_style anim">
+
+            <div style="gap:5px" class="maincolor gen-flex" >
+                <img style="height:30px;border-radius: 0;" src="static/icons/briefcase-icon.png" />
+                <span style="font-weight:600 !important;font-size:15px">{{job.category}}</span>
+            </div><br>
+
+            <!-------JOB TITLE--------->
+            <div class="gen-flex-col">
+                <label class="job-title">{{job.job_title}}</label>
+                <small class="" style="color:#999;font-size:11px;">{{job.date_posted.strftime("%d %b %Y - %H:%M")}}</small>
+            </div><br>
+
+            <!-------JOB POSTED--------->
+            <div style="margin: 3px auto;" class="line"><hr></div>
+            <div class="jb-description">
+                {{job.description}}
+            </div>
+
+            <!--------------DEADLINE-------------->
+            <div style="height:55px" class="gen-flex-col">
+                <label  id="deadline-div" class="centralise_font size-it" ><span class="material-icons ">calendar_month</span>Deadline</label>
+                <label id="deadline" class="centralise_font" style="font-size:10;">{{job.application_deadline.strftime("%d %b %Y")}}</label>
+            </div>
+
+
+            <!-------------RESPONSIBILITIES--------->
+            <div class="">
+                 <p class="centralise_font size-it" ><span class="material-icons">place</span></p>
+                 <div style="margin-top:-10px" class="centralise_font" ><label>{{job.location}}</label></div>
+            </div>
+
+            <div style="background-color:ea2a30;flex-grow:5;" >
+                 <p class="centralise_font"></p>
+            </div>
+
+            <!------------VIEW BUTTON-------------->
+            <div style="dispaly:block">
+                 <!--<input class="btns" type="submit" value="Create Account" />-->
+                 <!-- <a onclick="checkDate()" class="view_job"  href="/job_ad_opened">View</a> -->
+                 <div style="gap:5px" class="maincolor gen-flex" >
+                    <span style="font-weight:600 !important;font-size:15px">Interested?</span>
+                </div><br>
+            </div>
+        </div>
+        {%endfor%}
+    </div>
 </div>
+
 
 <br><br><br>
-<section style="background-color:" class="flex-justify-align profile-sections">
-                 <div style="position:;background-color:" class="topics">
-                      <div style="background-color:"  class="paras-subtopics  caption">
-                          <h1 id="main-welcome-h1" class="h1-tag">Finding a job can be challenging, but we have made it a little easier for you.
-                              <span class="spans">Explore other sites to boost your job search efforts.</span><br></h1>
-                      </div>
-        <!--              <div  style="position:"  class="paras-subtopics  caption">-->
-        <!--                  <h1><span class="spans">Get Employability Skills</span> through <br> Are you looking for a Job but no experience, we are your plug!</h1>-->
-        <!--              </div>-->
-        <!--              <div style="position:"  class="paras-subtopics  caption">-->
-        <!--                  <h1><span class="spans">Gain Entreprenuership Skills</span> through <br> Short-term, Remote & Freelance Jobs, Today!</h1>-->
-        <!--              </div>-->
-                  </div>
-
-                  <div id="not-on-mobile" style="background-color:"  class="optimise-mobile trim-edges anim not-on-mobile">
-                      <img style="" class="inherent" alt="young-hustlers-climbing-for-success" src="static/images/job-search-frustrated.jpg" />
-<!--                       <img class="inherent" alt="the-hustlers-time-young-professionals" src="static/icons/young-people-analysing-jobs-online.png" />-->
-                  </div>
-<!--              <button class="next-btns"  onclick="showNextSection()"> + </button>-->
-</section>
-<div style="" class="tags">
-    <div style="background-color:" class="row-flex">
-        <a href="https://jobs.eswazi.org/find-a-job/"><div class="big-btns">
-            Jobs Eswatini<br>
-            <label class="labels"> Jobs Near to you</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/Jobs-Eswatini-Logo.png"/>
-        </div></a>
-
-        <a href="https://www.linkedin.com/jobs/jobs-in-eswatini/?currentJobId=3946680377&originalSubdomain=sz"><div class="big-btns">
-            LinkedIn Jobs<br>
-            <label class="labels"> Jobs Near to you</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:35px" class="" src="static/images/LinkedIn_logo.svg"/>
-        </div></a>
-        <a href="https://www.indeed.com/q-swaziland-jobs.html?vjk=d9da936268eed4c9"><div class="big-btns">
-            Indeed Jobs<br>
-            <label class="labels"> Jobs Near to you</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/indeed_logo.png"/>
-        </div></a>
-        <a href="https://www.indeed.com/jobs?q=&l=Remote&from=searchOnDesktopSerp&vjk=3976da2b5cd2e699">
-        <div class="big-btns">
-            Indeed Jobs<br>
-            <label class="labels">Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px;max-width:inherit" class="" src="static/images/indeed_logo.png"/>
-        </div></a>
-        <a href="https://www.developmentaid.org/jobs/search?sort=highlighted.desc,relevance.desc&searchedText=eswatini">
-        <div class="big-btns">
-            Development Aid<br>
-            <label class="labels">Jobs Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:22px" class="" src="static/images/logo_developmentaid.svg"/>
-        </div></a>
-        <a href="https://www.glassdoor.com/Job/south-africa-jobs-SRCH_IL.0,12_IN211.htm?remoteWorkType=1">
-        <div class="big-btns">
-            Glass Door<br>
-            <label class="labels">Remote Jobs </label><br>
-            <label class="labels">Sign UP Required</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/glassdoor_logo.png"/>
-        </div></a>
-        <a href="https://www.monster.com/jobs/q-work-from-home-jobs?page=4&et=REMOTE&so=p.h.p">
-        <div class="big-btns">
-            Monster Jobs<br>
-            <label class="labels">Remote Jobs </label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/monster_logo.png"/>
-        </div></a>
-        <a href="https://www.ziprecruiter.co.uk/Jobs-/Remote?utm_source=zr_trending_hp">
-        <div class="big-btns">
-            Ziprecruiter<br>
-            <label class="labels">Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:35px" class="" src="static/images/ZipRecruiter_logo.webp"/>
-        </div></a>
-        <a href="https://www.reed.co.uk/jobs/work-from-home-jobs">
-        <div class="big-btns">
-            Reed.co.uk<br>
-            <label class="labels">Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:35px" class="" src="static/images/reedco_uk_logo.svg"/>
-        </div></a>
-        <a href="https://www.simplyhired.com/search?q=work+from+home">
-        <div class="big-btns">
-            Simplyhired<br>
-            <label class="labels">Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:25px" class="" src="static/images/simplehired_logo.png"/>
-        </div></a>
-        <a href="https://www.flexjobs.com/search?joblocations=remote&usecLocation=true&Loc.LatLng=0%2C0&Loc.Radius=30">
-        <div class="big-btns">
-            FlexJobs<br>
-            <label class="labels">Remote</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/flexjobs_logo.svg"/>
-        </div></a>
-
-
-    </div><br><br><br>
-</div>
-<br><br>
-<div style="margin:0 auto;width:70%;background-color:"  class="paras-subtopics  caption">
-              <h1 id="main-welcom" class="h1-tag">
-              <span style="color:coral" class="spans">International Internship Programs For Youth</span><br></h1>
- </div>
-<section id="int-topic"  style="background-color:;" class="flex-justify-align profile-sections">
-            <div id="nt-on-mobile" style="background-color:;"  class="optimise-mobile trim-edges anim not-on-mobile">
-               <img style="height:inherit" class="inherent" alt="young-hustlers-climbing-for-success" src="static/images/youth-tht.jpeg" />
-<!--           <img class="inherent" alt="the-hustlers-time-young-professionals" src="static/icons/young-people-analysing-jobs-online.png" />-->
-          </div>
-         <div style="position:" class="topics">
-              <div style="background-color:"  class="paras-subtopics  caption">
-                  <h1 id="main-welcome" class="h1-tag">Perhaps you are fresh from  college, you might need to polish-up your skills.<br>
-                  <span style="color:coral;"  class="spans">Explore online Internships that have a potential to promote you greater heights in your career.</span><br></h1>
-              </div>
-<!--              <div  style="position:"  class="paras-subtopics  caption">-->
-<!--                  <h1><span class="spans">Get Employability Skills</span> through <br> Are you looking for a Job but no experience, we are your plug!</h1>-->
-<!--              </div>-->
-<!--              <div style="position:"  class="paras-subtopics  caption">-->
-<!--                  <h1><span class="spans">Gain Entreprenuership Skills</span> through <br> Short-term, Remote & Freelance Jobs, Today!</h1>-->
-<!--              </div>-->
-          </div>
-<!--              <button class="next-btns"  onclick="showNextSection()"> + </button>-->
-</section>
-
-<div class="tags">
-    <div class="row-flex">
-    <a href="https://www.kone.com/en/careers/students-and-graduates/?rdrsrc=/en/careers/students-and-graduates/international-trainee-program/&rdrtrg=/en/careers/students-and-graduates/?utm_source=goabroad.com&utm_medium=referral&utm_campaign=article-feature">
-        <div class="big-ibtns">
-            Kone<br>
-            <label class="labels">Trainee & Internships Programs</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/kone_logo.png"/>
-        </div></a>
-        <a href="https://www.goldmansachs.com/careers/students/programs/index.html">
-        <div class="big-ibtns">
-            goldmansachs<br>
-            <label class="labels">Internships Programs</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/goldmansachs_logo.svg"/>
-        </div></a>
-    <a href="https://www.deloitte.com/ie/en/careers/explore-your-fit/students.html">
-        <div class="big-ibtns">
-            Deloitte<br>
-            <label class="labels">Internships Programs</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/deloitte_logo.svg"/>
-        </div></a>
-    <a href="https://www.oysterworldwide.com/search?s_term=internship">
-        <div class="big-ibtns">
-            Oysterworldwide<br>
-            <label class="labels">Internships & Volunteer Programs</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/oyster_logo.png"/>
-        </div></a>
-    <a href="https://career.hm.com/sg-en/blog/job-family/student-early-career/">
-        <div class="big-ibtns">
-            hm<br>
-            <label class="labels">Internships Programs</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/h&m_logo.png"/>
-        </div></a>
-    <a href="https://www.worldbank.org/en/about/careers/programs-and-internships/internship?utm_source=goabroad.com&utm_medium=referral&utm_campaign=article-feature">
-        <div class="big-ibtns">
-            World Bank<br>
-            <label class="labels">Internships</label><br>
-            <label class="labels">Opens Jan 2025</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:30px" class="" src="static/images/worldbank_logo.svg"/>
-        </div></a>
-    <a href="https://www.kpmguscareers.com/early-career/">
-        <div class="big-ibtns">
-            kpmg<br>
-            <label class="labels">Internships</label><br>
-<!--            <label class="labels">Opens Jan 2025</label>-->
-            <img style="position:absolute;left:25px;bottom:0px;height:30px" class="" src="static/images/kpmg_logo.svg"/>
-        </div></a>
-    <a href="https://www.google.com/about/careers/applications/students/">
-        <div class="big-ibtns">
-            google<br>
-            <label class="labels">Internships</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/google_careers.jpg"/>
-        </div></a>
-    <a href="https://www.indeed.com/jobs?q=internship+abroad+2024&sc=0kf%3Aattr%28DSQF7%29%3B&vjk=170db211504117c2">
-        <div class="big-ibtns">
-            indeed<br>
-            <label class="labels">Internships</label>
-            <img style="position:absolute;left:25px;bottom:0px;height:50px" class="" src="static/images/indeed_logo.png"/>
-        </div></a>
-    </div>
-</div><br><br>
 
 {% endblock %}

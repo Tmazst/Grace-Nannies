@@ -18,6 +18,17 @@
 //    scrollingElement.style.position = "relative";
 //  }
 //}
+function sideNavFunc1(event){
+  // var popScrnLogo = document.getElementById("updates");
+  // popScrnLogo.classList.toggle("show-popup");
+  console.log("Side Nav");
+  let sideNavBg = document.querySelector('#side-navig-bg');
+  let sideNavCont = document.querySelector("#side-navig-cont");
+  // document.querySelector("#commentField").value = "";
+  sideNavBg.classList.toggle("show-popup");
+  sideNavCont.classList.toggle("show-menu1");
+  sideNavCont.classList.remove("gen-flex-col");
+  };
 
 function sideNavFunc(event){
   // var popScrnLogo = document.getElementById("updates");
