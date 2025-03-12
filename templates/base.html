@@ -83,12 +83,12 @@
                 {%if current_user.is_authenticated%}
                   <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
                   <a href="/account"> <div class="cat-item"><span>Account</span></div></a>
-                {%endif%}
-                {%if current_user.is_authenticated and current_user.role == "admin_user"%}
+                {%elif current_user.is_authenticated and current_user.role == "admin_user"%}
                   <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
                   <a href="/clients"> <div class="cat-item"><span>Clients</span></div></a>
                   <a href="/sign_up"> <div class="cat-item"><span>+ Job Seeker</span></div></a>
                   <a href="/job_ads_form"> <div class="cat-item"><span>Post Job</span></div></a>
+                  <a href="/account"> <div class="cat-item"><span>Account</span></div></a>
                 {%endif%}
                 
                 {%for category in categories%}
