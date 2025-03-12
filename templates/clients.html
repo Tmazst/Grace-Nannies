@@ -1,0 +1,47 @@
+
+<!-- Clients  -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<div   class="tags">
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }} </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <p class="paras-subtopics"></p>
+
+<br><br>
+  <div style="" class="general-flex-x">
+        {% if users %}
+            {% for item in users %}
+            <!----FORM----->
+                    <div style="display:flex;flex-direction:column;width:300px;" class="new_job_ad_style_clnt anim">
+
+                            <div style="" class="center-prl-img">
+                                <div style="margin:15px auto 0px auto;"  class="img-cont">
+                                    <img class="prf-image" src="{{url_for('static', filename='images/' + item.image)}}"/>  
+                                </div>
+                            </div>
+
+                            <h2 style="margin-bottom:0px;margin-top:0px;">{{item.name}}<br></h2>
+                            <span><small style="color:#808080" >{{item.email}}</small></span>
+                            {%if item.address%}
+                                <span><small style="color:#808080" >{{item.address}}</small></span>
+                            {%endif%}{%if item.contacts%}
+                                <span><small style="color:#808080" >{{item.contacts}}</small></span><br>
+                            {%endif%}
+
+                    </div>
+            {% endfor %}
+        {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="tags gen-flex-col">
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+    <h1 >Welcome,  <br><span class="spans">Create Account</span></h1>
+    <div id="login-page" class="general-flex">
+        <div class="card">
+            <div style="width:100%;" class="card-body py-md-4">
+                    <h2  style="padding-left:4%;" class="card-title text-center">Register</h2>
+                    <form _lpchecked="1" action="" method="post">
+                        <!--Name-->
+                        <div class="group">
+                            {{register.hidden_tag()}}
+                            {{ register.name(class="form-control",placeholder="Name")}}
+                            {% if register.name.errors %}
+                                {% for error in register.name.errors %}
+                                    <span class="span-error" >*Password {{error}}</span>
+                                {% endfor %}
+                                {% endif %}
+                        </div>
+                        <!--Email-->
+                        <div class="group">
+                                {{ register.email(class="form-control",placeholder="Email")}}
+                                {% if register.email.errors %}
+                                {% for error in register.email.errors %}
+                                    <span class="span-error" >*{{error}}</span>
+                                {% endfor %}
+                                {% endif %}
+                        </div>
+
+                        <!--Password-->
+                        <div class="group">
+                                {{ register.password(id="password", class="form-control",placeholder="Type Strong Password (e.g W4@%kg&.ew)")}}
+                                {% if register.password.errors %}
+                                {% for error in register.password.errors %}
+                                    <span class="span-error" >*Password {{error}}</span>
+                                {% endfor %}
+                                {% endif %}
+                        </div>
+                        
+                        <!--Confirm-->
+                        <div class="group">
+                                {{ register.confirm(class="form-control",placeholder="Confirm Password")}}
+                                {% if register.confirm.errors %}
+                                {% for error in register.confirm.errors %}
+                                    <span class="span-error" >*Passwords that not match</span>
+                                {% endfor %}
+                                {% endif %}
+                        </div>
+
+                        <div class="power-container">
+                            <div id="power-point" class="power-point"></div>
+                        </div><br>
+
+                        <div style="" class="group">
+                                <div style="padding-left:;width:100%;background-color:339ab3" class="d-flex">
+                                    <div>{{ register.submit(class="btns user-btns") }}</div><br>
+                                    <div><a class="links" href="login">Login instead?</a></div>
+                            </div>
+                        </div><br>
+                        <small style="font-size:11px"> <span style="color:coral;font-weight:bold">Tip:</span>
+                            Password should include at least One of the following; <span style="font-weight:bold">Capital Letter, Special Character, Number, Lower-case</span>
+                        </small>
+
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+
+<script>
+//Password Checker
+let password = document.getElementById("password");
+let power = document.getElementById("power-point");
+confirm_password = document.getElementById("confirm_password");
+
+if (password && power) {
+    password.oninput = function () {
+        let point = 0;
+        let value = password.value;
+        let widthPower =
+            ["1%", "25%", "50%", "75%", "100%"];
+        let colorPower =
+            ["#D73F40", "#DC6551", "#F2B84F", "#BDE952", "#3ba62f"];
+
+        if (value.length >= 6) {
+            let arrayTest =
+                [/[0-9]/, /[a-z]/, /[A-Z]/, /[^0-9a-zA-Z]/];
+            arrayTest.forEach((item) => {
+                if (item.test(value)) {
+                    point += 1;
+                }
+            });
+        }
+        power.style.width = widthPower[point];
+        power.style.backgroundColor = colorPower[point];
+    };
+}
+</script>
+{% endblock %}

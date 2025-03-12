@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div  style="margin-bottom:700px" class="tags">
+    <div class="flash-messages" class="btns">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+  <!--<h3>Password Reset<br> <span class="spans"></span></h3>--->
+
+    <!----FORM----->
+  <div style="margin:0 auto;" class="form_container">
+     <div class="row justify-content-center">
+    <div class="col-md-5">
+     <div style="padding-left:30px;padding-right:30px;display:;"  class="card">
+
+        <h2 class="card-title text-center">Job Advert Form</h2>
+        <form style="background-color:f8db5a;width:;"  _lpchecked="1" action="" method="post">
+            <small style="font-weight:600;" class="paras-subtopics "><span style="color:coral"></span></span> Fill Job Advert Form</small><br><br>
+             <div style="background-color: f8f95a;" class="job-ad-group marginise-bottom">
+                  {{job_ad_form.hidden_tag()}}
+                 {{job_ad_form.csrf_token}}
+                 {{ job_ad_form.job_title.label(class="labels")}}
+                  {{ job_ad_form.job_title(class="form-control adj-width-60",placeholder="Job Title",value=job_ad.job_title,{%if job_ad.job_title%}value="{{job_ad.job_title}}"{%endif%})}}
+                  {% if job_ad_form.job_title.errors %}
+                    {% for error in job_ad_form.job_title.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+            <!-------CATEGORY--------->
+            <div class="job-ad-group marginise-bottom">
+
+            {{ job_ad_form.description.label(class="labels")}}<br>
+                {{ job_ad_form.description(class="form-control adj-width-60", style="min-height:150px",placeholder="Job Description",{%if job_ad.description%}value="{{job_ad.description}}"{%endif%})}}
+                {% if job_ad_form.description.errors %}
+                {% for error in job_ad_form.description.errors %}
+                    <span class="span-error" >*{{error}}</span>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+            <!-------JOB DESCRIPTION--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.description.label(class="labels")}}<br>
+                  {{ job_ad_form.description(class="form-control adj-width-60", style="min-height:150px",placeholder="Job Description",{%if job_ad.description%}value="{{job_ad.description}}"{%endif%})}}
+                  {% if job_ad_form.description.errors %}
+                    {% for error in job_ad_form.description.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <!-------QUALIFICATIONS--------->
+             <div class="job-ad-group marginise-bottom">
+
+                 {{ job_ad_form.qualifications.label(class="labels")}}<br>
+                  {{ job_ad_form.qualifications(class="form-control adj-width-60",placeholder="e.g. High School Certificate or Diploma in Secretariate",{%if job_ad.qualifications%}value="{{job_ad.qualifications}}"{%endif%})}}
+                  {% if job_ad_form.qualifications.errors %}
+                    {% for error in job_ad_form.qualifications.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+
+             <!-------BENEFITS--------->
+              <div class="job-ad-group marginise-bottom">
+                    {{ job_ad_form.benefits.label(class="labels")}}
+                    {{ job_ad_form.benefits(class="form-control adj-width-60",placeholder="e.g. Free House for Accommodation,Work From Home,Performance Bonus/Awards/Gifts ",{%if job_ad.benefits%}value="{{job_ad.benefits}}"{%endif%})}}
+                  {% if job_ad_form.benefits.errors %}
+                    {% for error in job_ad_form.benefits.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+              </div>
+
+             <!-------Application Deadline--------->
+             <div class="job-ad-group marginise-bottom">
+                 {{ job_ad_form.application_deadline.label(class="labels")}}<br>
+                  {{ job_ad_form.application_deadline(class="form-control adj-width-60",placeholder="Application Deadline",{%if job_ad.application_deadline%}value="{{job_ad.application_deadline}}"{%endif%})}}
+                  {% if job_ad_form.application_deadline.errors %}
+                    {% for error in job_ad_form.application_deadline.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                    {% endfor %}
+                 {% endif %}
+             </div>
+
+             <div>
+                {{ job_ad_form.publish(class="btns") }}
+            </div>
+
+         </form>
+       </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,180 @@
+ <!-- Seeker Account -->
+
+
+ {% extends "base.html" %}
+
+{% block content %}
+<!---------------FLASH------------------->
+<div class="flash-messages" id="">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for  category, message in messages %}
+                    <div class="flash-messages alert-{{category}}"> {{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+</div>
+
+{% if not user.address and user.contacts and user.reference_1%}
+    <div class="warning-msg-dv"><small class="warning-msg"><span class="warning-word">Warning! </span>Please finish setting up your Account, We need some few details <a href="account">account</a></small></div>
+{% endif %}
+
+<div class="tags gen-flex-col">
+<div class="general-flex">
+    
+    <div class="card">
+        <div style="width:100%;">
+        <form _lpchecked="1" action="" method="post" enctype="multipart/form-data">
+        <div class="center-prl-img">
+            <div class="img-cont">
+                <img class="prf-image" src="static/images/{{user.image}}">
+            </div>
+        </div>
+
+        <h3 style="font-size:25px;margin-bottom:0;"> {{user.name.title()}}<br> <span class="spans" style="font-size:16px">{{user.email}}</span></h3>
+
+        <div  style="width:60%;" ><hr></div>
+
+        <div class="form-group">
+               {{form.hidden_tag()}}
+               <h2 class="media-h2"> Account Details </h2>
+
+                <!-- -----------NAME--------------->
+              <div  class="acc-labels margin-l-15">{{ form.name.label()}}</div>
+               {{   form.name(class="acc-form-control",placeholder="Name",value=user.name)}}
+               {% if form.name.errors %}
+                   {% for error in form.name.errors %}
+                       <span class="span-error" >*[name], {{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+              <!-- ------------EMAIL--------------->
+              <div class="acc-labels margin-l-15">{{ form.email.label()}}</div>
+                 {{ form.email(class="acc-form-control",placeholder="Email", value=user.email)}}
+                 {% if form.email.errors %}
+                   {% for error in form.email.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+              <!-- ------------CONTACTS--------------->
+              <div class="acc-labels margin-l-15">{{ form.contacts.label()}}</div>
+                {{ form.contacts(class="acc-form-control",placeholder="Contacts", value=user.contacts)}}
+                 {% if form.contacts.errors %}
+                   {% for error in form.contacts.errors %}
+                       <span class="span-error" >*[Contacts]{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+            <!-- ------------DOB--------------->
+              <div class="acc-labels margin-l-15">{{ form.date_of_birth.label()}}</div>
+                {{ form.date_of_birth(class="acc-form-control",placeholder="Contacts", value=user.date_of_birth)}}
+                 {% if form.date_of_birth.errors %}
+                   {% for error in form.date_of_birth.errors %}
+                       <span class="span-error" >*[Birthday]{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+            <!-- ------------ADDRESS--------------->
+              <div  class="acc-labels margin-l-15">{{ form.address.label()}}</div>
+                    {% if user.address %}
+                        {{ form.address(class="acc-form-control",placeholder="Physical Address",value=user.address)}}
+                    {% else %}
+                        {{ form.address(class="acc-form-control",placeholder="Physical Address")}}
+                    {% endif %}
+                    {% if form.address.errors %}
+                       {% for error in form.address.errors %}
+                           <span class="span-error" >*Physical Address {{error}}</span>
+                       {% endfor %}
+                    {% endif %}
+
+                <!-- ------------ADDRESS--------------->
+              <div   class="acc-labels margin-l-15 ">
+                <div style="width:95px"  class="gen-flex"><span>{{ form.approval.label(style="")}}</span> <span>{{ form.approval()}}</span></div>
+            </div>
+                {% if form.approval.errors %}
+                    {% for error in form.approval.errors %}
+                        <span class="span-error" >*Physical approval {{error}}</span>
+                    {% endfor %}
+                {% endif %}
+
+              <div style="margin-left:0;width:100px;" class="user-links" >
+                    <a href="/reset_request"> Change Password </a>
+              </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+                 <h2 class="media-h2"> Education </h2>
+
+                  <!-- ------------SCHOOL--------------->
+                <div  class="acc-labels margin-l-15">{{ form.school.label()}}</div>
+                {% if user.school %}
+                    {{ form.school(class="acc-form-control",value=user.school)}}
+                {% else %}
+                    {{ form.school(class="acc-form-control",placeholder="High School")}}
+                {% endif %}
+
+                {% if form.school.errors %}
+                   {% for error in form.school.errors %}
+                       <span class="span-error" >*High School{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+
+                {% if form.experience.errors %}
+                   {% for error in form.experience.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+
+        </div>
+
+
+        <div  class="form-group">
+                 <h2 class="media-h2"> Skills & Interests </h2>
+                  <!-- ------------SKILLS--------------->
+                  <div  class="acc-labels margin-l-15">{{ form.skills.label()}}</div>
+                {% if user.skills %}
+                   <textarea  name="skills" class="acc-form-control media-h2">{{user.skills}}</textarea>
+                {% else %}
+                    {{ form.skills(class="acc-form-control",placeholder="Efficient and organized secretariat ready to streamline operations and support administrative needs online or on-site")}}
+                {% endif %}
+                {% if form.skills.errors %}
+                   {% for error in form.skills.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+
+                <!-- ------------INTERESTS--------------->
+                <div  class="acc-labels margin-l-15">{{ form.hobbies.label()}}</div>
+                {% if user.hobbies %}
+
+                  <textarea  name="hobbies" class="acc-form-control media-h2">{{user.hobbies}}</textarea>
+                {% else %}
+                    {{ form.hobbies(class="acc-form-control",placeholder="e.g Agriculture, Farming, Beekeeping")}}
+                {% endif %}
+                {% if form.hobbies.errors %}
+                   {% for error in form.hobbies.errors %}
+                        <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+        </div><br>
+
+        <div style="width:80%;" class="form-group">
+              {{ form.image_pfl(class="acc-form-control")}}
+        </div>
+
+
+        <div style="width:40% !important;" class="d-flex flex-row align-items-center justify-content-between">
+              {{ form.update(class="btns") }}
+        </div>
+    </div>
+</div>
+</div>
+
+
+{% endblock %}
