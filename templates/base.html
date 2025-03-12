@@ -80,7 +80,7 @@
                 </a>
                 <a href="/"> <div class="cat-item"><span>Home</span></div></a>
                 <a href="/job_adverts"> <div class="cat-item"><span>Jobs</span></div></a>
-                {%if current_user.is_authenticated and not current_user.role == "admin_user%}
+                {%if current_user.is_authenticated and not current_user.role == "admin_user"%}
                   <a href="/users"> <div class="cat-item"><span>Job Seekers</span></div></a>
                   <a href="/account"> <div class="cat-item"><span>Account</span></div></a>
                 {%endif%}
