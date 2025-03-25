@@ -28,7 +28,7 @@
                                         <span class="span-error" >*{{error}}</span>
                                     {% endfor %}
                                  {% endif %}</div>
-                                <!--Pass Word-->
+                             <!--Pass Word-->
                              <div class="group">
                                  {{ login.password(class="form-control",placeholder="Password")}}
                                  {% if login.password.errors %}
@@ -37,22 +37,14 @@
                                     {% endfor %}
                                  {% endif %}</div>
 
-                            <div class="">
-                                {{ login.use_2fa_auth.label(style="font-size:13px,font-weight:600;color:coral")}}{{ login.use_2fa_auth(style="",id="2fa_check_box")}}
-                            </div><br><br>
+                             <br><br>
 
                              <div style="margin:0 auto;" class="group group-flex">
                                 <div style="padding-left:;width:40%;background-color:339ab3" class="d-flex flex-row align-items-center justify-content-between">
                                     {{ login.submit(style="font-size:13px",class="btns", id="login_btn") }}
                                 <a style="font-size:13px;" class="form-a links" href="reset_request">Forgot Password?</a>
                                 </div>
-                                <div style="text-align:right;width:40%;background-color:339ab3;" class="">
-                                    {{ login.stay_signed.label(style="font-size:13px")}}
-                                        {{ login.stay_signed}}
-                                </div>
                              </div>
-
-
 
                         </form>
                     </div>
@@ -60,6 +52,6 @@
 
           </div>
     </div>
-    <br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br>
 </div>
 {% endblock %}

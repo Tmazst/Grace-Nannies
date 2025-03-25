@@ -497,6 +497,8 @@ overflow-y: scroll;
     border-radius: 10px;
 }
 
+
+
 .lower-nav{
     min-height:200px
 }
@@ -1296,6 +1298,8 @@ input[type="checkbox"]{
     margin: 0 auto;
     /* background-color: white; */
     flex-wrap: wrap;
+    gap:10px;
+    align-items: stretch !important;
 }
 
 

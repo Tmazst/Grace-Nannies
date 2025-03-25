@@ -1,44 +1,22 @@
 
 
 
-////Fixed Sticky
-//window.onscroll = function() {scrollFunction()};
-//
-//function scrollFunction() {
-//  var scrollingElement = document.getElementById("nav-div");
-//  // Distance from the top of the document to the top of the scrolling element
-//  var elementOffset = scrollingElement.offsetTop;
-//  // Viewport (window) top position
-//  var windowTop = window.pageYOffset || document.documentElement.scrollTop;
-//
-//  if (windowTop > elementOffset) {
-//    scrollingElement.style.position = "fixed";
-//    scrollingElement.style.top = "0";
-//  } else {
-//    scrollingElement.style.position = "relative";
-//  }
-//}
+
 function sideNavFunc1(event){
-  // var popScrnLogo = document.getElementById("updates");
-  // popScrnLogo.classList.toggle("show-popup");
-  console.log("Side Nav");
-  let sideNavBg = document.querySelector('#side-navig-bg');
-  let sideNavCont = document.querySelector("#side-navig-cont");
-  // document.querySelector("#commentField").value = "";
-  sideNavBg.classList.toggle("show-popup");
-  sideNavCont.classList.toggle("show-menu1");
-  sideNavCont.classList.remove("gen-flex-col");
+    console.log("Side Nav");
+    let sideNavBg = document.querySelector('#side-navig-bg');
+    let sideNavCont = document.querySelector("#side-navig-cont");
+    sideNavBg.classList.toggle("show-popup");
+    sideNavCont.classList.toggle("show-menu1");
+    sideNavCont.classList.remove("gen-flex-col");
   };
 
 function sideNavFunc(event){
-  // var popScrnLogo = document.getElementById("updates");
-  // popScrnLogo.classList.toggle("show-popup");
-  console.log("Side Nav");
-  let sideNavBg = document.querySelector('#side-navig-bg');
-  let sideNavCont = document.querySelector("#side-navig-cont");
-  // document.querySelector("#commentField").value = "";
-  sideNavBg.classList.toggle("show-popup");
-  sideNavCont.classList.toggle("show-menu");
+    console.log("Side Nav");
+    let sideNavBg = document.querySelector('#side-navig-bg');
+    let sideNavCont = document.querySelector("#side-navig-cont");
+    sideNavBg.classList.toggle("show-popup");
+    sideNavCont.classList.toggle("show-menu");
   };
 
 function closeSideNavFunc(){
@@ -78,6 +56,7 @@ if( nav && burger && navLinks.length > 0){
   //
 };
 }
+
 navSlide();
 
 

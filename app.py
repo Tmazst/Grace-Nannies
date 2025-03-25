@@ -703,83 +703,6 @@ class jo_id_cls:
     id_ = None
 
 
-@app.route("/edit_job_ads_form", methods=["POST", "GET"])
-@login_required
-def eidt_job_ads_form():
-    job_ad_form = Job_Ads_Form()
-    job_ads_model = Jobs_Adverts
-
-    db.create_all()
-    job_ad = None
-    jo_id = None
-
-    if request.method == 'POST':
-        # print("Check Start Date: ", job_ad_form.start_date.data,job_ad_form.work_hours_bl.data)
-        if job_ad_form.validate_on_submit():
-            job_post1 = Jobs_Adverts.query.filter_by(job_id=ser.loads(request.args.get("jo_id"))['data_11']).first()
-
-            job_post1.job_title = job_ad_form.job_title.data,
-            job_post1.description = request.form.get('description'),
-            job_post1.category = request.form.get('field_category_sel'),
-            job_post1.responsibilities = job_ad_form.responsibilities.data,
-            job_post1.qualifications = request.form.get('qualifications'),
-            job_post1.contact_person = job_ad_form.posted_by.data,
-            job_post1.job_type = request.form.get('job_type_sel'),
-            job_post1.application_deadline = job_ad_form.application_deadline.data,
-            job_post1.about_company = job_ad_form.about_company.data
-
-            # if bools are True
-            if job_ad_form.pay_type_bl.data:
-                # print('Job Type: ', job_ad_form.pay_type_bl.data)
-                job_post1.pay_type = job_ad_form.other_pay_type.data
-
-            if job_ad_form.other_job_type.data:
-                job_post1.job_type = job_ad_form.other_job_type.data
-
-            if job_ad_form.work_duration_bl.data:
-                job_post1.work_duration = job_ad_form.end_date.data
-                job_post1.work_duration2 = job_ad_form.end_date.data
-
-            if job_ad_form.work_days_bl.data:
-                job_post1.work_days = job_ad_form.work_days.data
-
-            if job_ad_form.work_hours_bl.data:
-                job_post1.work_hours = job_ad_form.work_hours.data
-
-            if job_ad_form.age_range_bl.data:
-                job_post1.age_range = job_ad_form.age_range.data
-
-            if job_ad_form.benefits_bl.data:
-                job_post1.benefits = request.form.get('benefits')
-
-            if not request.form.get('field_category_sel'):
-                job_post1.category = job_ad_form.category.data
-
-            # print("Check Category: ",request.form.get('field_category_sel'))
-            # db.session.add(job_post1)
-            db.session.commit()
-
-            flash('Post Successfully Updated!!', 'success')
-        else:
-            flash('Could not update, please check if all fields are filled properly', 'error')
-            if job_ad_form.errors:
-                for field, errors in job_ad_form.errors.items():
-                    for error in errors:
-                        print("ERRORS:", error)
-            return redirect(url_for("job_adverts"))
-
-    elif request.method == "GET":
-        jo_id = request.args.get("jo_id")
-        # jo_id_func(jo_id)
-        if jo_id:
-            jo_id_cls.id_ = jo_id
-            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id)['data_11']).first()
-
-        else:
-            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id_cls.id_)['data_11']).first()
-
-    return render_template("edit_job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad)
-
 
 class Indeed_Search:
     def indeed_url_nearme(self,location=None):
@@ -1116,6 +1039,18 @@ def job_ads_form(udi=None):
             db.session.commit()
             print("Successful")
 
+            jobs = Jobs_Adverts.query.order_by(Jobs_Adverts.date_posted.desc()).all()
+            obj = jobs[0]
+
+            update_model = Jobs_Adverts_Updates(
+                jb_id = obj.job_id,
+                salary = job_ad_form.salary.data,
+                start_date = job_ad_form.start_date.data
+            )
+
+            db.session.add(update_model)
+            db.session.commit()
+
             flash('Job Posted Successfully!!', 'success')
         else:
             for error in job_ad_form.errors:
@@ -1124,12 +1059,63 @@ def job_ads_form(udi=None):
     return render_template("job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad)
 
 
+@app.route("/edit_job_ads_form", methods=["POST", "GET"])
+@login_required
+def eidt_job_ads_form():
+    job_ad_form = Job_Ads_Form()
+
+    db.create_all()
+    job_ad = None
+    jo_id = None
+
+    if request.method == 'POST':
+
+        if job_ad_form.validate_on_submit():
+            job_post1 = Jobs_Adverts.query.filter_by(job_id=ser.loads(request.args.get("jo_id"))['data_11']).first()
+            updates_obj = Jobs_Adverts_Updates.query.filter_by(jb_id=job_post1.job_id).first()
+
+            job_post1.job_title = job_ad_form.job_title.data
+            job_post1.description = job_ad_form.description.data
+            job_post1.qualifications = job_ad_form.qualifications.data
+            job_post1.benefits = job_ad_form.benefits.data
+            job_post1.application_deadline = job_ad_form.application_deadline.data
+            job_post1.location = job_ad_form.location.data
+
+            #Jobs_Adverts_Updates
+            updates_obj.salary = job_ad_form.salary.data
+            updates_obj.start_date = job_ad_form.start_date.data
+
+            db.session.commit()
+
+            flash('Post Successfully Updated!!', 'success')
+        else:
+            flash('Could not update, please check if all fields are filled properly', 'error')
+            if job_ad_form.errors:
+                for field, errors in job_ad_form.errors.items():
+                    for error in errors:
+                        print("ERRORS:", error)
+            return redirect(url_for("job_adverts"))
+
+    elif request.method == "GET":
+        jo_id = request.args.get("jo_id")
+        # jo_id_func(jo_id)
+        if jo_id:
+            jo_id_cls.id_ = jo_id
+            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id)['data_11']).first()
+
+        else:
+            job_ad = Jobs_Adverts.query.filter_by(job_id=ser.loads(jo_id_cls.id_)['data_11']).first()
+
+    return render_template("edit_job_ads_form.html", job_ad_form=job_ad_form, ser=ser, job_ad=job_ad)
+
+
 @app.route("/job_adverts", methods=["GET", "POST"])
 def job_adverts():
 
     jobs = Jobs_Adverts.query.all()
+    job_updates = Jobs_Adverts_Updates.query.all()
 
-    return render_template("job_ads_gui.html",jobs=jobs)
+    return render_template("job_ads_gui.html",jobs=jobs,job_updates=job_updates)
 
 
 @app.route("/job_ad_opened", methods=["GET", "POST"])
@@ -1581,7 +1567,6 @@ def jb_seeker_acc():
                 print("Error: ", error)
     
     return render_template("seeker_account.html",user=user,form=form)
-
 
 
 @app.route("/user_viewed", methods=["GET", "POST"])

@@ -187,6 +187,16 @@ class Jobs_Adverts(db.Model, UserMixin):
     applicantions = relationship("Applications", backref='All Applications', lazy=True)
 
 
+class Jobs_Adverts_Updates(db.Model, UserMixin):
+
+    __tablename__ = "job_ads_updates"
+
+    id = db.Column(db.Integer, primary_key=True)
+    jb_id = db.Column(db.Integer, ForeignKey('job_ads.job_id'))
+    salary = db.Column(db.Float)
+    start_date = db.Column(db.DateTime)
+
+
 class Applications(db.Model, UserMixin):
 
     __tablename__ = 'job_applications'

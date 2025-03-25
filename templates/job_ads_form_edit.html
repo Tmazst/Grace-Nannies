@@ -60,6 +60,28 @@
                  {% endif %}
              </div>
 
+             <!-------SALARY--------->
+             <div class="job-ad-group marginise-bottom">
+                {{ job_ad_form.salary.label(class="labels")}}<br>
+                 {{ job_ad_form.salary(class="form-control adj-width-60", style="min-height:150px",placeholder="Job salary",{%if job_ad.salary%}value="{{job_ad.salary}}"{%endif%})}}
+                 {% if job_ad_form.salary.errors %}
+                   {% for error in job_ad_form.salary.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-------START DATE--------->
+            <div class="job-ad-group marginise-bottom">
+                {{ job_ad_form.start_date.label(class="labels")}}<br>
+                 {{ job_ad_form.start_date(class="form-control adj-width-60", style="min-height:150px",placeholder="Job start_date",{%if job_ad.start_date%}value="{{job_ad.start_date}}"{%endif%})}}
+                 {% if job_ad_form.start_date.errors %}
+                   {% for error in job_ad_form.start_date.errors %}
+                       <span class="span-error" >*{{error}}</span>
+                   {% endfor %}
+                {% endif %}
+            </div>
+
              <!-------QUALIFICATIONS--------->
              <div class="job-ad-group marginise-bottom">
 
