@@ -166,14 +166,18 @@
             <div class="">
                  <p class="centralise_font size-it" ><span class="material-icons">place</span></p>
                  <div style="margin-top:-10px" class="centralise_font" ><label>{{job.location}}</label></div>
-            </div>
+            </div><br>
 
-            <div style="background-color:ea2a30;flex-grow:5;" >
-                 <p class="centralise_font"></p>
-            </div>
+            {%if job.start_date%}
+            <div class="">
+                <div style="margin-top:-10px;font-weight:600;font-size:12px" class="centralise_font" >Start Date</div>
+                <div style="" class="centralise_font" ><label>{{job.start_date}}</label></div>
+           </div>
+           {%endif%}
 
             <!------------VIEW BUTTON-------------->
-            <div style="dispaly:block">
+            <br>
+            <div>
                  <!--<input class="btns" type="submit" value="Create Account" />-->
                  <!-- <a onclick="checkDate()" class="view_job"  href="/job_ad_opened">View</a> -->
                  <div style="gap:5px" class="maincolor gen-flex" >
